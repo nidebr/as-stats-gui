@@ -21,6 +21,9 @@ $end = time();
 
 if ($showv6) { $first_col = "1"; $second_col = "11"; $offset_second_col = "0";  } else { $first_col = "2"; $second_col = "9"; $offset_second_col = "1"; }
 
+// Mobile Detect for show legend
+$detect = new Mobile_Detect;
+
 $i = 0;
 $aff_astable = '<ul class="nav nav-stacked">';
 
@@ -88,27 +91,48 @@ foreach ($topas as $as => $nbytes) {
 $aff_astable .= '</ul>';
 
 // LEGEND
-
-$aff_legend = "<table class='small'>";
-
 $knownlinks = getknownlinks();
-foreach ($knownlinks as $link) {
-	$aff_legend .= "<tr><td style=\"border: 4px solid #fff;\">";
 
-	$aff_legend .= "<table style=\"border-collapse: collapse; margin: 0; padding: 0\"><tr>";
-  if ($brighten_negative) {
-		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
-		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"opacity: 0.73; background-color: #{$link['color']}\">&nbsp;</td>";
-	} else {
-		$aff_legend .= "<td width=\"18\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
-	}
-	$aff_legend .= "</tr></table>";
+if ( !$detect->isMobile() && !$detect->isTablet() ) {
+  $aff_legend = "<table class='small'>";
 
-	$aff_legend .= "</td><td>&nbsp;" . $link['descr'] . "</td></tr>\n";
+  foreach ($knownlinks as $link) {
+  	$aff_legend .= "<tr><td style=\"border: 4px solid #fff;\">";
+
+  	$aff_legend .= "<table style=\"border-collapse: collapse; margin: 0; padding: 0\"><tr>";
+    if ($brighten_negative) {
+  		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
+  		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"opacity: 0.73; background-color: #{$link['color']}\">&nbsp;</td>";
+  	} else {
+  		$aff_legend .= "<td width=\"18\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
+  	}
+  	$aff_legend .= "</tr></table>";
+
+  	$aff_legend .= "</td><td>&nbsp;" . $link['descr'] . "</td></tr>\n";
+  }
+
+  $aff_legend .= "</table>";
+} else {
+  $aff_legend = "<table class='small'>";
+  $aff_legend .= "<tr>";
+  $aff_legend .= "<td style=\"border: 4px solid #fff;\">";
+
+  $aff_legend .= "<table style=\"border-collapse: collapse; margin: 0; padding: 0\"><tr>";
+  foreach ($knownlinks as $link) {
+    if ($brighten_negative) {
+  		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
+  		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"opacity: 0.73; background-color: #{$link['color']}\">&nbsp;</td>";
+  	} else {
+  		$aff_legend .= "<td width=\"18\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
+  	}
+    $aff_legend .= "<td>&nbsp;" . $link['descr'] . "&nbsp;</td>\n";
+  }
+  $aff_legend .= "</tr></table>";
+
+  $aff_legend .= "</td>";
+  $aff_legend .= "</tr>";
+  $aff_legend .= "</table>";
 }
-
-$aff_legend .= "</table>";
-
 
 ?>
 
@@ -148,7 +172,9 @@ $aff_legend .= "</table>";
           <div class="row">
 
             <div class="col-lg-12">
-              <div class="row affix col-md-12 col-lg-<?php echo $first_col; ?>">
+              <?php
+                if ( $detect->isMobile() || $detect->isTablet() ) {
+              ?>
 
                 <div class="box box-primary">
                   <div class="box-header with-border">
@@ -159,7 +185,22 @@ $aff_legend .= "</table>";
                   </div>
                 </div>
 
+              <?php
+                } else {
+              ?>
+
+              <div class="row affix col-md-12 col-lg-<?php echo $first_col; ?>">
+                <div class="box box-primary">
+                  <div class="box-header with-border">
+                    <h3 class="box-title">Legend</h3>
+                  </div>
+                  <div class="box-body">
+                    <?php echo $aff_legend; ?>
+                  </div>
+                </div>
               </div>
+
+              <?php } ?>
             </div>
 
           </div>

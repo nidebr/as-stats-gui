@@ -1,6 +1,7 @@
 <?php
 require_once("config_defaults.inc");
 require_once('config.inc');
+require_once('plugins/mobile-detect/Mobile_Detect.php');
 
 /* make sure we have enough memory, as some pages can be quite memory intensive */
 ini_set("memory_limit", "256M");

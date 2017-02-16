@@ -124,6 +124,7 @@ if ($compat_rrdtool12) {
 
 /* generate graph area/stack for inbound */
 $i = 0;
+
 foreach ($knownlinks as $link) {
 	if ($outispositive && $brighten_negative)
 		$col = $link['color'] . "BB";
@@ -134,6 +135,7 @@ foreach ($knownlinks as $link) {
 	if ($i > 0)
 		$cmd .= ":STACK";
 	$cmd .= " ";
+
 	$i++;
 }
 
@@ -151,11 +153,13 @@ foreach ($knownlinks as $link) {
 	$i++;
 }
 
+$cmd .= "COMMENT:' \\n' ";
+
 if ($show95th && !$compat_rrdtool12) {
 	$cmd .= "LINE1:tot_in_bits_95th#FF0000 ";
 	$cmd .= "LINE1:tot_out_bits_95th#FF0000 ";
 	$cmd .= "GPRINT:tot_in_bits_95th_pos:'95th in %6.2lf%s' ";
-	$cmd .= "GPRINT:tot_out_bits_95th_pos:'95th out %6.2lf%s' ";
+	$cmd .= "GPRINT:tot_out_bits_95th_pos:'/ 95th out %6.2lf%s\\n' ";
 }
 
 # zero line
