@@ -2,7 +2,10 @@ AS-Stats WebGUI
 ===============
 
 New WebGUI for tool [AS-Stats](https://github.com/manuelkasper/AS-Stats) writted by Manuel Kasper <mk@neon1.net> for Monzoon Networks AG.
+
 See [AS-Stats Repository](https://github.com/manuelkasper/AS-Stats) for more details.
+
+This WebUI is based on [AdminLTE](https://github.com/almasaeed2010/AdminLTE).
 
 ### Screenshot
 ![AS-Stats Screenshot 1](https://github.com/nidebr/as-stats-gui/raw/master/docs/images/screenshot1.png "AS-Stats Screenshot #1")
