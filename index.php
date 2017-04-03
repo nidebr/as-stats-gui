@@ -1,7 +1,6 @@
 <?php include("func.inc"); ?>
 
 <?php
-
 if(!isset($peerusage)) $peerusage = 0;
 if (isset($_GET['n'])) $ntop = (int)$_GET['n'];
 if ($ntop > 200) $ntop = 200;
@@ -15,7 +14,14 @@ if ($peerusage) {
 }
 
 $label = statsLabelForHours($hours);
-$topas = getasstats_top($ntop, $statsfile);
+$knownlinks = getknownlinks();
+$selected_links = array();
+
+foreach($knownlinks as $link){
+	if(isset($_GET["link_${link['tag']}"]))
+		$selected_links[] = $link['tag'];
+}
+$topas = getasstats_top($ntop, $statsfile, $selected_links);
 $start = time() - $hours*3600;
 $end = time();
 
@@ -69,14 +75,14 @@ foreach ($topas as $as => $nbytes) {
   if ($showv6) { $col = "5"; } else { $col="10"; }
   $aff_astable .= '<div class="col-lg-'.$col.'">';
   $aff_astable .= '<span class="pull-right">';
-  $aff_astable .= getHTMLUrl($as, 4, $asinfo['descr'], $start, $end, $peerusage);
+  $aff_astable .= getHTMLUrl($as, 4, $asinfo['descr'], $start, $end, $peerusage, $selected_links);
   $aff_astable .= '</span>';
   $aff_astable .= '</div>';
 
   if ($showv6) {
     $aff_astable .= '<div class="col-lg-5">';
     $aff_astable .= '<span class="pull-right">';
-    $aff_astable .= getHTMLUrl($as, 6, $asinfo['descr'], $start, $end, $peerusage);
+    $aff_astable .= getHTMLUrl($as, 6, $asinfo['descr'], $start, $end, $peerusage, $selected_links);
     $aff_astable .= '</span>';
     $aff_astable .= '</div>';
   }
@@ -91,12 +97,19 @@ foreach ($topas as $as => $nbytes) {
 $aff_astable .= '</ul>';
 
 // LEGEND
-$knownlinks = getknownlinks();
+//$knownlinks = getknownlinks();
 
 if ( !$detect->isMobile() && !$detect->isTablet() ) {
   $aff_legend = "<table class='small'>";
 
   foreach ($knownlinks as $link) {
+    $tag = "link_${link['tag']}";
+
+    $checked = '';
+    if(isset($_GET[$tag]) && $_GET[$tag] == 'on') {
+      $checked = 'checked';
+    }
+
   	$aff_legend .= "<tr><td style=\"border: 4px solid #fff;\">";
 
   	$aff_legend .= "<table style=\"border-collapse: collapse; margin: 0; padding: 0\"><tr>";
@@ -108,7 +121,9 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
   	}
   	$aff_legend .= "</tr></table>";
 
-  	$aff_legend .= "</td><td>&nbsp;" . $link['descr'] . "</td></tr>\n";
+  	$aff_legend .= "</td><td>&nbsp;" . $link['descr'] . "</td>";
+    $aff_legend .= "<td>&nbsp;<input type='checkbox' name='".$tag."' id ='".$tag."' ".$checked."></td>";
+    $aff_legend .= "</tr>\n";
   }
 
   $aff_legend .= "</table>";
@@ -119,6 +134,13 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
 
   $aff_legend .= "<table style=\"border-collapse: collapse; margin: 0; padding: 0\"><tr>";
   foreach ($knownlinks as $link) {
+    $tag = "link_${link['tag']}";
+
+    $checked = '';
+    if(isset($_GET[$tag]) && $_GET[$tag] == 'on') {
+      $checked = 'checked';
+    }
+
     if ($brighten_negative) {
   		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
   		$aff_legend .= "<td width=\"9\" height=\"18\" style=\"opacity: 0.73; background-color: #{$link['color']}\">&nbsp;</td>";
@@ -126,6 +148,8 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
   		$aff_legend .= "<td width=\"18\" height=\"18\" style=\"background-color: #{$link['color']}\">&nbsp;</td>";
   	}
     $aff_legend .= "<td>&nbsp;" . $link['descr'] . "&nbsp;</td>\n";
+
+    $aff_legend .= "<td>&nbsp;<input type='checkbox' name='".$tag."' id ='".$tag."' ".$checked.">&nbsp;</td>";
   }
   $aff_legend .= "</tr></table>";
 
@@ -158,7 +182,7 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
 <div class="wrapper">
 
   <!-- =============================================== -->
-  <?php echo menu(); ?>
+  <?php echo menu($selected_links); ?>
   <!-- =============================================== -->
 
   <div class="content-wrapper">
@@ -176,6 +200,9 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
                 if ( $detect->isMobile() || $detect->isTablet() ) {
               ?>
 
+              <form method='get'>
+                <input type='hidden' name='numhours' value='<?php echo $hours; ?>'/>
+                <input type='hidden' name='n' value='<?php echo $ntop; ?>'/>
                 <div class="box box-primary">
                   <div class="box-header with-border">
                     <h3 class="box-title">Legend</h3>
@@ -183,21 +210,34 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
                   <div class="box-body">
                     <?php echo $aff_legend; ?>
                   </div>
+                  <div class="box-footer">
+                    <button type="submit" class="btn pull-right"><i class="fa fa-search"></i></button>
+                  </div>
                 </div>
+              </form>
 
               <?php
                 } else {
               ?>
 
               <div class="row affix col-md-12 col-lg-<?php echo $first_col; ?>">
-                <div class="box box-primary">
-                  <div class="box-header with-border">
-                    <h3 class="box-title">Legend</h3>
+
+                <form method='get'>
+                  <input type='hidden' name='numhours' value='<?php echo $hours; ?>'/>
+                  <input type='hidden' name='n' value='<?php echo $ntop; ?>'/>
+                  <div class="box box-primary">
+                    <div class="box-header with-border">
+                      <h3 class="box-title">Legend</h3>
+                    </div>
+                    <div class="box-body">
+                      <?php echo $aff_legend; ?>
+                    </div>
+                    <div class="box-footer">
+                      <button type="submit" class="btn pull-right"><i class="fa fa-search"></i></button>
+                    </div>
                   </div>
-                  <div class="box-body">
-                    <?php echo $aff_legend; ?>
-                  </div>
-                </div>
+                </form>
+
               </div>
 
               <?php } ?>

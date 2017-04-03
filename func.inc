@@ -78,49 +78,48 @@ function getknownlinks() {
 	return $knownlinks;
 }
 
-function getasstats_top($ntop, $statfile) {
-	/* first step: walk the data for all ASes to determine the top 5 for the given link */
-	$fd = fopen($statfile, "r");
-	if (!$fd)
+function getasstats_top($ntop, $statfile, $selected_links) {
+	try{
+		$db = new SQLite3($statfile);
+	}catch(Exception $e){
 		return array();
-	$cols = explode("\t", trim(fgets($fd)));
-
-	/* read in up to $ntop AS stats, sum up columns */
-	while (!feof($fd)) {
-		$line = trim(fgets($fd));
-		if (!$line)
-			continue;
-
-		$els = explode("\t", $line);
-
-		/* first element is the AS */
-		$as = $els[0];
+	}
+	if(sizeof($selected_links) == 0){
+		$selected_links = array();
+		foreach(getknownlinks() as $link)
+			$selected_links[] = $link['tag'];
+	}
+	$nlinks = 0;
+	$query_total = '0';
+	$query_links = '';
+	foreach($selected_links as $tag){
+		$query_links .= "${tag}_in, ${tag}_out, ${tag}_v6_in, ${tag}_v6_out, ";
+		$nlinks += 4;
+		$query_total .= " + ${tag}_in + ${tag}_out + ${tag}_v6_in + ${tag}_v6_out";
+	}
+	$query = "select asn, $query_links $query_total as total from stats order by total desc limit $ntop";
+	$asn = $db->query($query);
+	$asstats = array();
+	while($row = $asn->fetchArray()){
 		$tot_in = 0;
 		$tot_out = 0;
 		$tot_v6_in = 0;
 		$tot_v6_out = 0;
-
-		for ($i = 1; $i < count($els); $i++) {
-			if (strpos($cols[$i], "_in") !== false) {
-				if (strpos($cols[$i], "_v6_") !== false)
-					$tot_v6_in += $els[$i];
+		foreach($row as $key => $value){
+			if (strpos($key, '_in') !== false) {
+				if (strpos($key, '_v6_') !== false)
+					$tot_v6_in += $value;
 				else
-					$tot_in += $els[$i];
-			} else {
-				if (strpos($cols[$i], "_v6_") !== false)
-					$tot_v6_out += $els[$i];
+					$tot_in += $value;
+			} else if (strpos($key, '_out') !== false) {
+				if (strpos($key, '_v6_') !== false)
+					$tot_v6_out += $value;
 				else
-					$tot_out += $els[$i];
+					$tot_out += $value;
 			}
 		}
-
-		$asstats[$as] = array($tot_in, $tot_out, $tot_v6_in, $tot_v6_out);
-
-		if (count($asstats) >= $ntop)
-			break;
+		$asstats[$row['asn']] = array($tot_in, $tot_out, $tot_v6_in, $tot_v6_out);
 	}
-	fclose($fd);
-
 	return $asstats;
 }
 
@@ -201,35 +200,30 @@ function clearCacheFileASSET($asset) {
 }
 
 # return the html used in top.php : <a href=blabla><img src=blabla/></url>
-function getHTMLUrl($as, $ipversion, $desc, $start, $end, $peerusage){
-	$result = "";
-
-	$img = getHTMLImg($as, $ipversion, $desc, $start, $end, $peerusage, '', '', false);
-
-	if ( $img ) {
-		$result = "<a href='history.php?as=$as&peerusage=$peerusage&v=$ipversion'>$img</a>";
-	}
-
+function getHTMLUrl($as, $ipversion, $desc, $start, $end, $peerusage, $selected_links = array()){
+	$img = getHTMLImg($as, $ipversion, $desc, $start, $end, $peerusage, '', '', false, $selected_links);
+	$result = "<a href='history.php?as=$as&peerusage=$peerusage&v=$ipversion' target='_blank'>$img</a>";
 	return($result);
 }
 
 # return the html used in history.php (for example) : <img src=blabla/>
-function getHTMLImg($as, $ipversion, $desc, $start, $end, $peerusage, $alt, $class, $history = false){
+function getHTMLImg($as, $ipversion, $desc, $start, $end, $peerusage, $alt, $class, $history = false, $selected_links=array()){
 	global $top_graph_width;
 	global $top_graph_height;
-	$result = "";
-
-	$rrdfile = getRRDFileForAS($as);
-	if (file_exists($rrdfile)) {
-		$dname = rawurlencode("AS$as - $desc - IPV$ipversion");
-		$result = "<img alt='$alt' class='$class' src='gengraph.php?v=$ipversion&as=$as&peerusage=$peerusage&dname=$dname&start=$start&end=$end";
-		if(!$history)
-			$result .= "&width=$top_graph_width&height=$top_graph_height&nolegend=1";
-		$result .= "'";
-		if(!$history)
-			$result .= " width='$top_graph_width' height='$top_graph_height' border='0'";
-		$result .= "/>";
+	$dname = rawurlencode("AS$as - $desc - IPV$ipversion");
+	$result = "<img class='img-responsive' alt='$alt' class='$class' src='gengraph.php?v=$ipversion&as=$as&peerusage=$peerusage&dname=$dname&start=$start&end=$end";
+	if(!$history)
+		$result .= "&width=$top_graph_width&height=$top_graph_height&nolegend=1";
+	if(sizeof($selected_links) != 0){
+		$result .= "&selected_links=";
+		foreach($selected_links as $link)
+			$result .= "$link,";
+		$result = rtrim($result, ',');
 	}
+	$result .= "'";
+	if(!$history)
+		$result .= " width='$top_graph_width' height='$top_graph_height' border='0'";
+	$result .= "/>";
 	return($result);
 }
 
@@ -259,16 +253,15 @@ function debug($txt) {
   print "</pre>";
 }
 
-function menu() {
+function menu($selected_links) {
 	global $top_intervals;
-
+	//debug($selected_links);
 	//echo count($top_intervals);
 
 	$dpagename = basename($_SERVER['PHP_SELF'], ".php");
 	$active_top = $dpagename == "index" ? "active": "";
 	$active_searchas = $dpagename == "history" ? 'class="active"' : "";
 	$active_searchasset = $dpagename == "asset" ? 'class="active"' : "";
-	$active_linkusage = $dpagename == "linkusage" ? "active" : "";
 
   $return = '<header class="main-header">';
   $return .= '<nav class="navbar navbar-static-top">';
@@ -300,25 +293,17 @@ function menu() {
 	$return .='<li '.$active_searchas.'><a href="history.php">View AS</a></li>';
 	$return .='<li '.$active_searchasset.'><a href="asset.php">View AS-SET</a></li>';
 
-	if ( count($top_intervals) < 2 ) {
-  	$return .='<li class="'.$active_linkusage.'"><a href="linkusage.php">Link Usage</a></li>';
-	} else {
-		$return .= '<li class="dropdown '.$active_linkusage.'">';
-		$return .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Link Usage <span class="caret"></span></a>';
-		$return .= '<ul class="dropdown-menu" role="menu">';
-		foreach ($top_intervals as $interval) {
-			$return .= '<li><a href="linkusage.php?numhours=' . $interval['hours'] . '">Link Usage - ' . $interval['label'] . '</a></li>';
-		}
-		$return .= '</ul>';
-		$return .= '</li>';
-	}
-
   $return .='</ul>';
 
 	$val_ntop = isset($_GET['n']) ? $_GET['n'] : "";
 
 	if ($dpagename == "index") {
 		$return .='<form class="navbar-form navbar-left" role="search">';
+		foreach($selected_links as $tag){
+			$tag = "link_".$tag;
+			$return .='<input type="hidden" name="'.$tag.'" value="on">';
+		}
+
 	  $return .='<div class="input-group">';
 	  $return .='<input type="text" class="form-control menu-input" name="n" placeholder="Number of AS" value="'.$val_ntop.'">';
 		$return .='<span class="input-group-btn">';
@@ -372,19 +357,5 @@ function content_header($titre, $small) {
 	$header .= '<hr>';
 
   return $header;
-}
-
-function box_linkusage ($title, $img) {
-	$return = '<div class="box box-primary">';
-	$return .= '<div class="box-header with-border">';
-	$return .= '<i class="fa fa-bar-chart-o"></i>';
-	$return .= '<h3 class="box-title">'.$title.'</h3>';
-	$return .= '</div>';
-	$return .= '<div class="box-body">';
-	$return .= '<center>'.$img.'</center>';
-	$return .= '</div>';
-	$return .= '</div>';
-
-	return $return;
 }
 ?>
