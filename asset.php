@@ -1,6 +1,7 @@
 <?php include("func.inc"); ?>
 
 <?php
+$selected_links = array();
 $val_searchasset = isset($_GET['asset']) ? $_GET['asset'] : "";
 $aff_customlinks = $aff_otheras = $aff_toolsbox_add = "";
 
@@ -158,7 +159,7 @@ $aff_toolsbox .= '</div>';
 <div class="wrapper">
 
   <!-- =============================================== -->
-  <?php echo menu(); ?>
+  <?php echo menu($selected_links); ?>
   <!-- =============================================== -->
 
   <div class="content-wrapper">

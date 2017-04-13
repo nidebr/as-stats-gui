@@ -1,5 +1,8 @@
 <?php include("func.inc"); ?>
 
+<?php
+$selected_links = array();
+?>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -21,7 +24,7 @@
 <div class="wrapper">
 
   <!-- =============================================== -->
-  <?php echo menu(); ?>
+  <?php echo menu($selected_links); ?>
   <!-- =============================================== -->
 
   <div class="content-wrapper">

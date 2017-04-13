@@ -1,7 +1,7 @@
 <?php include("func.inc"); ?>
 
 <?php
-
+$selected_links = array();
 $knownlinks = getknownlinks();
 $hours = 24;
 if (@$_GET['numhours'])
@@ -48,7 +48,7 @@ foreach ($knownlinks as $link) {
 <div class="wrapper">
 
   <!-- =============================================== -->
-  <?php echo menu(); ?>
+  <?php echo menu($selected_links); ?>
   <!-- =============================================== -->
 
   <div class="content-wrapper">

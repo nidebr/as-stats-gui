@@ -1,6 +1,7 @@
 <?php include("func.inc"); ?>
 
 <?php
+$selected_links = array();
 $val_searchas = isset($_GET['as']) ? $_GET['as'] : "";
 $aff_customlinks = "";
 
@@ -69,7 +70,7 @@ if ( isset($_GET['as']) ) {
 <div class="wrapper">
 
   <!-- =============================================== -->
-  <?php echo menu(); ?>
+  <?php echo menu($selected_links); ?>
   <!-- =============================================== -->
 
   <div class="content-wrapper">
