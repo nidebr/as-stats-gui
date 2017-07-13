@@ -1,6 +1,8 @@
 AS-Stats WebGUI
 ===============
 
+[![Build Status](https://api.travis-ci.org/nidebr/as-stats-gui.svg)](http://travis-ci.org/nidebr/as-stats-gui)
+
 New WebGUI for tool [AS-Stats](https://github.com/manuelkasper/AS-Stats) writted by Manuel Kasper <mk@neon1.net> for Monzoon Networks AG.
 
 See [AS-Stats Repository](https://github.com/manuelkasper/AS-Stats) for more details.
@@ -17,3 +19,13 @@ This WebUI is based on [AdminLTE](https://github.com/almasaeed2010/AdminLTE).
 Replace 'www' directory from AS-Stats by this Repository.
 
 config file are same from [AS-Stats Repository](https://github.com/manuelkasper/AS-Stats).
+
+## Since release v0.2
+
+In the configuration file, there is an additional option "$my_asn".
+
+If you put your AS number, the 'View IX Stats' page display the list of your IXs on which you are present.
+
+This allows you to display the stats of all members of your IX.
+
+!!! You must have your data up-to-date on the [peeringdb.com](https://www.peeringdb.com/) database.
