@@ -1,8 +1,6 @@
 AS-Stats WebGUI
 ===============
 
-[![Build Status](https://api.travis-ci.org/nidebr/as-stats-gui.svg)](http://travis-ci.org/nidebr/as-stats-gui)
-
 New WebGUI for tool [AS-Stats](https://github.com/manuelkasper/AS-Stats) writted by Manuel Kasper <mk@neon1.net> for Monzoon Networks AG.
 
 See [AS-Stats Repository](https://github.com/manuelkasper/AS-Stats) for more details.
