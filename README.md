@@ -7,13 +7,12 @@ See [AS-Stats Repository](https://github.com/manuelkasper/AS-Stats) for more det
 
 This WebUI is based on [AdminLTE](https://github.com/almasaeed2010/AdminLTE).
 
-### Screenshot
+# Screenshot
 ![AS-Stats Screenshot 1](https://github.com/nidebr/as-stats-gui/raw/master/docs/images/screenshot1.png "AS-Stats Screenshot #1")
 ![AS-Stats Screenshot 2](https://github.com/nidebr/as-stats-gui/raw/master/docs/images/screenshot2.png "AS-Stats Screenshot #2")
 ![AS-Stats Screenshot 3](https://github.com/nidebr/as-stats-gui/raw/master/docs/images/screenshot3.png "AS-Stats Screenshot #3")
 
-How to
-------
+# How to
 
 Replace 'www' directory from AS-Stats by this Repository.
 

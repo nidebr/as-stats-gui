@@ -30,3 +30,13 @@ li.even {
 .list-group {
 	margin-bottom: 0px !important;
 }
+
+pre {
+  margin: 70px 20px 15px 80px !important;
+}
+
+.searchBox{
+  background-image:url('../images/ajax-loader.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}

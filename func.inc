@@ -3,6 +3,17 @@ require_once("config_defaults.inc");
 require_once('config.inc');
 require_once('plugins/mobile-detect/Mobile_Detect.php');
 
+//Class Autoloader
+spl_autoload_register(function ($className) {
+    $className = strtolower($className);
+    $path = __DIR__."/lib/class/{$className}.php";
+    if (file_exists($path)) {
+        require_once($path);
+    } else {
+        die("The file {$className}.php could not be found.");
+    }
+});
+
 /* make sure we have enough memory, as some pages can be quite memory intensive */
 ini_set("memory_limit", "256M");
 /* note: you might want to put the data from asinfo.txt into an SQL
@@ -78,7 +89,7 @@ function getknownlinks() {
 	return $knownlinks;
 }
 
-function getasstats_top($ntop, $statfile, $selected_links) {
+function getasstats_top($ntop, $statfile, $selected_links, $list_asn = NULL) {
 	try{
 		$db = new SQLite3($statfile);
 	}catch(Exception $e){
@@ -97,7 +108,12 @@ function getasstats_top($ntop, $statfile, $selected_links) {
 		$nlinks += 4;
 		$query_total .= " + ${tag}_in + ${tag}_out + ${tag}_v6_in + ${tag}_v6_out";
 	}
-	$query = "select asn, $query_links $query_total as total from stats order by total desc limit $ntop";
+  if ( $list_asn ) {
+    $where = implode(",", $list_asn);
+    $query = "SELECT asn, $query_links $query_total as total FROM stats WHERE asn IN ( $where ) ORDER BY total desc limit $ntop";
+  } else {
+	  $query = "select asn, $query_links $query_total as total from stats order by total desc limit $ntop";
+  }
 	$asn = $db->query($query);
 	$asstats = array();
 	while($row = $asn->fetchArray()){
@@ -255,13 +271,12 @@ function debug($txt) {
 
 function menu($selected_links) {
 	global $top_intervals;
-	//debug($selected_links);
-	//echo count($top_intervals);
 
 	$dpagename = basename($_SERVER['PHP_SELF'], ".php");
 	$active_top = $dpagename == "index" ? "active": "";
 	$active_searchas = $dpagename == "history" ? 'class="active"' : "";
 	$active_searchasset = $dpagename == "asset" ? 'class="active"' : "";
+  $active_ix = $dpagename == "ix" ? 'class="active"' : "";
 
   $return = '<header class="main-header">';
   $return .= '<nav class="navbar navbar-static-top">';
@@ -292,20 +307,25 @@ function menu($selected_links) {
 
 	$return .='<li '.$active_searchas.'><a href="history.php">View AS</a></li>';
 	$return .='<li '.$active_searchasset.'><a href="asset.php">View AS-SET</a></li>';
+  $return .='<li '.$active_ix.'><a href="ix.php">View IX Stats</a></li>';
 
   $return .='</ul>';
 
 	$val_ntop = isset($_GET['n']) ? $_GET['n'] : "";
 
-	if ($dpagename == "index") {
+	if ($dpagename == "index" || $dpagename == "ix") {
 		$return .='<form class="navbar-form navbar-left" role="search">';
 		foreach($selected_links as $tag){
 			$tag = "link_".$tag;
 			$return .='<input type="hidden" name="'.$tag.'" value="on">';
 		}
 
+    if ( $dpagename == "ix" && isset($_GET['ix']) ) {
+      $return .='<input type="hidden" name="ix" value="'.$_GET['ix'].'">';
+    }
+
 	  $return .='<div class="input-group">';
-	  $return .='<input type="text" class="form-control menu-input" name="n" placeholder="Number of AS" value="'.$val_ntop.'">';
+	  $return .='<input type="text" class="form-control menu-input" name="n" placeholder="Top AS" value="'.$val_ntop.'">';
 		$return .='<span class="input-group-btn">';
 	  $return .='<button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>';
 	  $return .='</span>';
@@ -324,9 +344,10 @@ function menu($selected_links) {
 function footer() {
   $footer = '<footer class="main-footer font-default">';
   $footer .= '<div class="pull-right hidden-xs">';
-  $footer .= '<b>GUI Version</b> 0.1';
+  $footer .= '<b>GUI Version</b> 0.2';
   $footer .= '</div>';
   $footer .= '<strong>AS-Stats v1.6</strong> written by Manuel Kasper for Monzoon Networks AG.';
+	$footer .= '&nbsp;GUI written by Nicolas Debrigode for Hexanet SAS.';
 
   $footer .= '</footer>';
 
