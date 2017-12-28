@@ -1,0 +1,30 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AS-Stats | {{ code }} Error</title>
+  <link rel="icon" href="favicon.ico" />
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../../../web/template/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../../web/template/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../../../web/template/dist/css/skins/_all-skins.min.css">
+</head>
+<body class="hold-transition lockscreen">
+<div class="lockscreen-wrapper">
+  <div class="error-page">
+    <h2 class="headline text-red"> {{ code }}&nbsp;</h2>
+
+    <div class="error-content">
+      <h3><i class="fa fa-warning text-red"></i> Oops! We will work on fixing that right away.</h3>
+
+      <p>
+        {{ error|default('') }}
+      </p>
+
+    </div>
+    <!-- /.error-content -->
+  </div>
+  <!-- /.error-page -->
+</div>
+</body>
+</html>

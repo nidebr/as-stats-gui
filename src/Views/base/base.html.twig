@@ -1,0 +1,48 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  {% block refresh %}{% endblock %}
+  <title>AS-Stats | {% block title %}{% endblock %}</title>
+  <link rel="icon" href="favicon.ico" />
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="../../../web/template/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../../../web/template/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../../web/template/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="../../../web/template/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../../../web/template/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="flags/flags.min.css">
+  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+  {% block css %}{% endblock %}
+</head>
+<body class="hold-transition skin-black-light sidebar-collapse layout-top-nav fixed" style="height: auto;">
+
+<div class="wrapper" style="height: auto;">
+  <!-- top_menu -->
+  {% embed "base/menu.html.twig" %}{% endembed %}
+
+  <div class="content-wrapper">
+    {% block content_wrapper %}{% endblock %}
+    <section class="content">
+      {% block content %}{% endblock %}
+    </section>
+  </div>
+
+  <!-- footer -->
+  {% embed "base/footer.html.twig" %}{% endembed %}
+</div>
+
+{% block modal %}
+{% endblock %}
+
+<script src="../../../web/template/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="../../../web/template/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="../../../web/template/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="../../../web/template/dist/js/adminlte.min.js"></script>
+{% block js %}
+{% endblock %}
+
+</body>
+<html>
