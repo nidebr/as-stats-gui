@@ -3,6 +3,7 @@
 namespace Controllers;
 use Silex\Application;
 use DDesrosiers\SilexAnnotations\Annotations as SLX;
+use Symfony\Component\HttpFoundation\Request;
 use Controllers\Func;
 
 /**
@@ -12,10 +13,11 @@ class Index extends BaseController
 {
   /**
      * @SLX\Route(
-     *      @SLX\Request(method="GET", uri="")
+     *      @SLX\Request(method="GET", uri=""),
+     *      @SLX\Bind(routeName="index")
      * )
   */
-  public function index(Application $app)
+  public function index(Request $request, Application $app)
   {
     $topas = $this->db->GetASStatsTop('5','daystatsfile', array());
 
@@ -29,6 +31,8 @@ class Index extends BaseController
 
       $this->data['customlinks'][$as] = Func::getCustomLinks($as);
     }
+
+    $this->data['active_page'] = Func::getRouteName($request);
 
     return $app['twig']->render('pages/index.html.twig', $this->data);
   }

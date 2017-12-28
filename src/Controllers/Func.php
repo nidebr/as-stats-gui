@@ -2,6 +2,7 @@
 
 namespace Controllers;
 use Application\ConfigApplication as ConfigApplication;
+use Symfony\Component\HttpFoundation\Request;
 
 class Func
 {
@@ -104,5 +105,23 @@ class Func
     }
 
     return join(" | ", $htmllinks);
+  }
+
+  public function getRouteName(Request $request)
+  {
+    $dpagename = $request->get('_route');
+    $active_top = $dpagename == "index" ? "active": "";
+	  $active_searchas = $dpagename == "history" ? "active" : "";
+	  $active_searchasset = $dpagename == "asset" ? "active" : "";
+    $active_ix = $dpagename == "ix" ? "active" : "";
+
+    $return = [
+      'active_top' => $active_top,
+      'active_searchas' => $active_searchas,
+      'active_searchasset' => $active_searchasset,
+      'active_ix' => $active_ix,
+    ];
+
+    return $return;
   }
 }

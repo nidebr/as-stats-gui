@@ -2,6 +2,12 @@ db:
   daystatsfile:
     path: '/data/asstats/asstats/asstats_day.txt'
 
+topinterval:
+  month:
+    hours: '720' # 30x24h
+    statsfile: '/data/asstats/asstats/asstats_month.txt'
+    label: '30 days'
+
 config:
   knownlinksfile: '/data/asstats/conf/knownlinks'
   asinfofile: 'ressources/asinfo.txt'

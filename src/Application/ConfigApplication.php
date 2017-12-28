@@ -21,12 +21,12 @@ class ConfigApplication
 
     public static function getRelease()
     {
-        return self::getConfig()['application']['release'];
+      return self::getConfig()['application']['release'];
     }
 
     public static function getDebug()
     {
-        return self::getConfig()['application']['debug'];
+      return self::getConfig()['application']['debug'];
     }
 
     public static function getControllerRootDirectory()
@@ -36,48 +36,57 @@ class ConfigApplication
 
     public static function getTwigPathDirectory()
     {
-        return self::getRootPathApp().''.self::getConfig()['application']['twig']['path'];
+      return self::getRootPathApp().''.self::getConfig()['application']['twig']['path'];
     }
 
     public static function getTwigTimezone()
     {
-        return self::getConfig()['application']['twig']['timezone'];
+      return self::getConfig()['application']['twig']['timezone'];
     }
 
     public static function getLocale()
     {
-        return self::getConfig()['application']['locale'];
+      return self::getConfig()['application']['locale'];
     }
 
     public static function getASStatsFilePath()
     {
-        return self::getRootPathApp().''.self::getConfig()['application']['asstats_file'];
+      return self::getRootPathApp().''.self::getConfig()['application']['asstats_file'];
     }
 
     public static function getConfigASStats()
     {
-        $input_yaml = file_get_contents(self::getASStatsFilePath());
-        $output = Yaml::parse($input_yaml);
-        return $output;
+      $input_yaml = file_get_contents(self::getASStatsFilePath());
+      $output = Yaml::parse($input_yaml);
+      return $output;
     }
 
     public static function getDbFile()
     {
-        return self::getConfigASStats()['db'];
+      return self::getConfigASStats()['db'];
     }
 
     public static function getKnowlinksFile()
     {
-        return self::getConfigASStats()['config']['knownlinksfile'];
+      return self::getConfigASStats()['config']['knownlinksfile'];
     }
 
     public static function getASInfoFile()
     {
-        return self::getRootPathApp().''.self::getConfigASStats()['config']['asinfofile'];
+      return self::getRootPathApp().''.self::getConfigASStats()['config']['asinfofile'];
     }
 
     public static function getCustomLinks()
     {
-        return self::getConfigASStats()['customlinks'];
+      return self::getConfigASStats()['customlinks'];
+    }
+
+    public static function getTopInterval()
+    {
+      if ( !empty(self::getConfigASStats()['topinterval']) ) {
+        return self::getConfigASStats()['topinterval'];
+      } else {
+        return FALSE;
+      }
     }
 }
