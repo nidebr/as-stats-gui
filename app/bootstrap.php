@@ -23,6 +23,10 @@ $app['twig'] = $app->extend("twig", function (\Twig_Environment $twig, Silex\App
     return Func::format_bytes($stdClassObject);
   }));
 
+  $twig->addFilter( new Twig_SimpleFilter('rawurlencode', function ($stdClassObject) {
+    return rawurlencode($stdClassObject);
+  }));
+
   return $twig;
 });
 

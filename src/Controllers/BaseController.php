@@ -20,5 +20,7 @@ class BaseController
           $this->data['topinterval'][] = $interval;
         }
       }
+
+      $this->data['config'] = ConfigApplication::getASStatsAllConfig();
   }
 }

@@ -89,4 +89,9 @@ class ConfigApplication
         return FALSE;
       }
     }
+
+    public static function getASStatsAllConfig()
+    {
+      return self::getConfigASStats()['config'];
+    }
 }

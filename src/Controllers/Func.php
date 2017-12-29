@@ -46,7 +46,7 @@ class Func
     if (@$asinfodb[$asnum])
 		  return $asinfodb[$asnum];
   	else
-  		return array('name' => "AS$asnum", 'descr' => "AS $asnum");
+  		return array('name' => "AS$asnum", 'descr' => "AS $asnum", 'country' => 'US');
   }
 
   private function readasinfodb()
@@ -127,8 +127,28 @@ class Func
 
   public function getRRDFileForAS($as, $peer = 0)
   {
-    $rrdpath = "/data/asstats/rrd";
+    $rrdpath = ConfigApplication::getASStatsAllConfig()['rrdpath'];
     $prefix = ($peer == 1) ? "$rrdpath/peeras" : "$rrdpath";
 	  return "$prefix/" . sprintf("%02x", $as % 256) . "/$as.rrd";
+  }
+
+  public function statsFileForHours($hours)
+  {
+  	foreach (ConfigApplication::getTopInterval() as $key => $interval) {
+  		if ($interval['hours'] == $hours) {
+  			return $key."statsfile";
+  		}
+  	}
+  	return "daystatsfile";
+  }
+
+  public function statsLabelForHours($hours)
+  {
+  	foreach (ConfigApplication::getTopInterval() as $key => $interval) {
+  		if ($interval['hours'] == $hours) {
+  			return $interval['label'];
+  		}
+  	}
+  	return (int)$hours . " hours";
   }
 }

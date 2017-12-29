@@ -6,12 +6,17 @@ use DDesrosiers\SilexAnnotations\Annotations as SLX;
 use Symfony\Component\HttpFoundation\Request;
 use Controllers\Func;
 use Symfony\Component\HttpFoundation\Response;
+use Application\ConfigApplication as ConfigApplication;
 
 /**
  * @SLX\Controller(prefix="/render")
  */
 class Render
 {
+  public function __construct()
+  {
+    $this->params = ConfigApplication::getASStatsAllConfig();
+  }
   /**
      * @SLX\Route(
      *      @SLX\Request(method="GET", uri=""),
@@ -20,52 +25,55 @@ class Render
   */
   public function index(Request $request, Application $app)
   {
-    $outispositive = false;
-    $showtitledetail = true;
-    $vertical_label = true;			# vertical IN/OUT label in graph
-    $brighten_negative = true;		# brighten the "negative" part of graphs
-    $compat_rrdtool12 = false;
-    $show95th = true;
+    $outispositive = $this->params['outispositive'];
+    $showtitledetail = $this->params['showtitledetail'];
+    $vertical_label = $this->params['vertical_label'];
+    $brighten_negative = $this->params['brighten_negative'];
+    $compat_rrdtool12 = $this->params['compat_rrdtool12'];
+    $show95th = $this->params['show95th'];
+    $rrdtool = $this->params['rrdtool'];
 
-    $rrdtool = "/usr/bin/rrdtool";
+    $req = $request->query->all();
 
-    $params = $request->query->all();
+    if (!preg_match("/^[0-9a-zA-Z]+$/", $req['as'])) die("Invalid AS");
 
-    if (!preg_match("/^[0-9a-zA-Z]+$/", $params['as']))
-	   die("Invalid AS");
+    $width = $this->params['default_graph_width'];
+    $height = $this->params['default_graph_height'];
 
-     $width = '600';
-     $height = '360';
-     if (isset($params['width']))
-     	$width = (int)$params['width'];
-     if (isset($params['height']))
-     	$height = (int)$params['height'];
-     $v6_el = "";
-     if (@$params['v'] == 6)
-     	$v6_el = "v6_";
+    if (isset($req['width'])) $width = (int)$req['width'];
 
-    if(isset($params['peerusage']) && $params['peerusage'] == '1')
+    if (isset($req['height'])) $height = (int)$req['height'];
+
+    $v6_el = "";
+    if (@$req['v'] == 6) $v6_el = "v6_";
+
+    if(isset($req['peerusage']) && $req['peerusage'] == '1') {
     	$peerusage = 1;
-    else
+    } else {
     	$peerusage = 0;
+    }
 
     $knownlinks = Func::getKnowlinks();
 
-    if(isset($params['selected_links'])){
+    if(isset($req['selected_links'])) {
     	$reverse = array();
-    	foreach($knownlinks as $link)
+
+    	foreach($knownlinks as $link) {
     		$reverse[$link['tag']] = array('color' => $link['color'], 'descr' => $link['descr']);
+      }
+
     	$links = array();
-    	foreach(explode(',', $params['selected_links']) as $tag){
+    	foreach(explode(',', $req['selected_links']) as $tag) {
     		$link = array('tag' => $tag,
     				'color' => $reverse[$tag]['color'],
     				'descr' => $reverse[$tag]['descr']);
     		$links[] = $link;
     	}
+
     	$knownlinks = $links;
     }
 
-    $rrdfile = Func::getRRDFileForAS($params['as'], $peerusage);
+    $rrdfile = Func::getRRDFileForAS($req['as'], $peerusage);
 
     if ($compat_rrdtool12) {
     	/* cannot use full-size-mode - must estimate height/width */
@@ -79,8 +87,7 @@ class Render
     	"--slope-mode --alt-autoscale -u 0 -l 0 --imgformat=PNG --base=1000 --height=$height --width=$width " .
     	"--color BACK#ffffff00 --color SHADEA#ffffff00 --color SHADEB#ffffff00 ";
 
-    if (!$compat_rrdtool12)
-    	$cmd .= "--full-size-mode ";
+    if (!$compat_rrdtool12) $cmd .= "--full-size-mode ";
 
     if ($vertical_label) {
     	if($outispositive)
@@ -89,20 +96,20 @@ class Render
     		$cmd .= "--vertical-label '<- OUT | IN ->' ";
     }
 
-    if($showtitledetail && @$params['dname'] != "")
-    	$cmd .= "--title " . escapeshellarg($params['dname']) . " ";
+    if($showtitledetail && @$req['dname'] != "")
+    	$cmd .= "--title " . escapeshellarg($req['dname']) . " ";
     else
-    	if (isset($params['v']) && is_numeric($params['v']))
-    		$cmd .= "--title IPv" . $params['v'] . " ";
+    	if (isset($req['v']) && is_numeric($req['v']))
+    		$cmd .= "--title IPv" . $req['v'] . " ";
 
-    if (isset($params['nolegend']))
+    if (isset($req['nolegend']))
     	$cmd .= "--no-legend ";
 
-    if (isset($params['start']) && is_numeric($params['start']))
-    	$cmd .= "--start " . $params['start'] . " ";
+    if (isset($req['start']) && is_numeric($req['start']))
+    	$cmd .= "--start " . $req['start'] . " ";
 
-    if (isset($params['end']) && is_numeric($params['end']))
-    	$cmd .= "--end " . $params['end'] . " ";
+    if (isset($req['end']) && is_numeric($req['end']))
+    	$cmd .= "--end " . $req['end'] . " ";
 
     /* geneate RRD DEFs */
     foreach ($knownlinks as $link) {
@@ -113,7 +120,7 @@ class Render
     if ($compat_rrdtool12) {
     	/* generate a CDEF for each DEF to multiply by 8 (bytes to bits), and reverse for outbound */
     	foreach ($knownlinks as $link) {
-    	   if ($outispositive) {
+    	  if ($outispositive) {
     			$cmd .= "CDEF:{$link['tag']}_{$v6_el}in_bits={$link['tag']}_{$v6_el}in,-8,* ";
     			$cmd .= "CDEF:{$link['tag']}_{$v6_el}out_bits={$link['tag']}_{$v6_el}out,8,* ";
     		} else {
@@ -200,8 +207,6 @@ class Render
 
     # zero line
     $cmd .= "HRULE:0#00000080";
-    //return new \Symfony\Component\HttpFoundation\BinaryFileResponse(passthru($cmd), 200, array('Content-Type'=>'image/png'), false, 'inline');
-
     $response = new Response();
     $response->headers->set('Content-type', 'image/png');
     $response->sendHeaders();

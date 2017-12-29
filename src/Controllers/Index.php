@@ -19,7 +19,16 @@ class Index extends BaseController
   */
   public function index(Request $request, Application $app)
   {
-    $topas = $this->db->GetASStatsTop('5','daystatsfile', array());
+    $req = $request->query->all();
+
+    if (isset($req['n'])) $ntop = (int)$req['n'];
+    else $ntop = $this->data['config']['ntop'];
+    if ($ntop > 200) $ntop = 200;
+
+    $hours = 24;
+    if (@$req['numhours']) $hours = (int)$req['numhours'];
+
+    $topas = $this->db->GetASStatsTop($ntop,Func::statsFileForHours($hours), array());
 
     foreach ($topas as $as => $nbytes) {
       $this->data['asinfo'][$as]['info'] = Func::GetASInfo($as);
@@ -29,10 +38,22 @@ class Index extends BaseController
         'out' => $nbytes[1],
       ];
 
+      if ( $this->data['config']['showv6'] ) {
+        $this->data['asinfo'][$as]['v6'] = [
+          'in' => $nbytes[2],
+          'out' => $nbytes[3],
+        ];
+      }
+
       $this->data['customlinks'][$as] = Func::getCustomLinks($as);
     }
 
     $this->data['active_page'] = Func::getRouteName($request);
+
+    $this->data['start'] = time() - $hours*3600;
+    $this->data['end'] = time();
+    $this->data['ntop'] = $ntop;
+    $this->data['label'] = Func::statsLabelForHours($hours);
 
     return $app['twig']->render('pages/index.html.twig', $this->data);
   }

@@ -11,6 +11,29 @@ topinterval:
 config:
   knownlinksfile: '/data/asstats/conf/knownlinks'
   asinfofile: 'ressources/asinfo.txt'
+  ## GRAPHS
+  showv6: true
+  show95th: true
+  showtitledetail: true
+  vertical_label: true
+  brighten_negative: true
+  outispositive: false
+  compat_rrdtool12: false
+  ## Default graph size if no parameters are specified ##
+  default_graph_width: 600
+  default_graph_height: 360
+  ## DIV
+  ntop: 20
+  showpeeras: false
+  ## PATHS
+  rrdpath: "/data/asstats/rrd"
+  rrdtool: "/usr/bin/rrdtool"
+  whois: "/usr/bin/whois"
+  ## AS-SET
+  assetpath: false
+  asset_cache_life: 604800 # 604800 seconds = 7 days
+  ## PEERINGDB
+  my_asn: 34863
 
 customlinks:
   PeeringDB: 'https://www.peeringdb.com/asn/%as%'

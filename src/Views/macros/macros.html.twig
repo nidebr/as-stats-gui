@@ -1,0 +1,44 @@
+{% macro getHTMLUrl(as, ipversion, desc, start, end, peerusage, selected_links) %}
+  {% import _self as self %}
+  {% set title = "AS#{as} - #{desc} - IPV#{ipversion}" %}
+
+  {% set img %}
+    {{ self.getHTMLImg(as, ipversion, title, start, end, peerusage, false, selected_links) }}
+  {% endset %}
+  <a href='{{ path('history', {'as': as, 'peerusage': peerusage, 'v': ipversion}) }}' target='_blank'>{{ img }}</a>
+{% endmacro %}
+
+{% macro getHTMLImg(as, ipversion, title, start, end, peerusage, history, selected_links) %}
+  {% set top_graph_width = 600 %}
+  {% set top_graph_height = 220 %}
+
+  {% set options %}
+    {% if history == false %}
+      width='600' height='220' border='0'
+    {% endif  %}
+  {% endset %}
+
+  <img class='img-responsive' src='{{ path('render', {'v': ipversion , 'as': as, 'start': start, 'end': end, 'dname': title, 'width': top_graph_width, 'height': top_graph_height, 'nolegend': '1' }) }}' {{ options }}>
+{% endmacro %}
+
+{% macro content_header(titre, small, outispositive) %}
+  <section class="content-header">
+    <h1>
+      {{ titre }}
+      <small><i>{{ small }}</i></small>
+    </h1>
+
+    {% set traffic %}
+      {% if outispositive %}
+        <i class="fa fa-arrow-up"></i> Outbound traffic <i class="fa fa-arrow-down"></i> Inbound traffic
+      {% else %}
+        <i class="fa fa-arrow-up"></i> Inbound traffic <i class="fa fa-arrow-down"></i> Outbound traffic
+      {% endif %}
+    {% endset %}
+
+    <ol class="breadcrumb">
+      <li>{{ traffic }}</li>
+	  </ol>
+  </section>
+  <hr>
+{% endmacro %}

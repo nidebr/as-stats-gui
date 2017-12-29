@@ -12,11 +12,6 @@ class SqlLite
       $this->db = $app;
   }
 
-  public function index()
-  {
-    return $this->db['daystatsfile']->fetchAll("SELECT * FROM stats LIMIT 5");
-  }
-
   public function GetASStatsTop($ntop, $statsfile, $selected_links, $list_asn = NULL)
   {
     if(sizeof($selected_links) == 0){
@@ -42,7 +37,7 @@ class SqlLite
       $query = "SELECT asn, $query_links $query_total as total FROM stats ORDER BY total DESC limit $ntop";
     }
 
-    $asn =  $this->db['daystatsfile']->fetchAll($query);
+    $asn =  $this->db[$statsfile]->fetchAll($query);
 
     $asstats = array();
     foreach ($asn as $key => $row) {
@@ -67,7 +62,6 @@ class SqlLite
 
       $asstats[$row['asn']] = array($tot_in, $tot_out, $tot_v6_in, $tot_v6_out);
     }
-
     return $asstats;
   }
 }
