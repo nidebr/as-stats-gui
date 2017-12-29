@@ -18,7 +18,7 @@
     {% endif  %}
   {% endset %}
 
-  <img class='img-responsive' src='{{ path('render', {'v': ipversion , 'as': as, 'start': start, 'end': end, 'dname': title, 'width': top_graph_width, 'height': top_graph_height, 'nolegend': '1' }) }}' {{ options }}>
+  <img class='img-responsive' src='{{ path('render', {'v': ipversion , 'as': as, 'start': start, 'end': end, 'dname': title, 'width': top_graph_width, 'height': top_graph_height, 'nolegend': '1', 'selected_links': selected_links|concat_link }) }}' {{ options }}>
 {% endmacro %}
 
 {% macro content_header(titre, small, outispositive) %}

@@ -28,7 +28,16 @@ class Index extends BaseController
     $hours = 24;
     if (@$req['numhours']) $hours = (int)$req['numhours'];
 
-    $topas = $this->db->GetASStatsTop($ntop,Func::statsFileForHours($hours), array());
+    $this->data['knownlinks'] = Func::getKnowlinks();
+
+    $selected_links = array();
+    foreach($this->data['knownlinks'] as $link){
+	     if(isset($req["link_${link['tag']}"]))
+		     $selected_links[] = $link['tag'];
+    }
+    $this->data['selected_links'] = $selected_links;
+    
+    $topas = $this->db->GetASStatsTop($ntop,Func::statsFileForHours($hours), $selected_links);
 
     foreach ($topas as $as => $nbytes) {
       $this->data['asinfo'][$as]['info'] = Func::GetASInfo($as);
@@ -54,6 +63,8 @@ class Index extends BaseController
     $this->data['end'] = time();
     $this->data['ntop'] = $ntop;
     $this->data['label'] = Func::statsLabelForHours($hours);
+    $this->data['hours'] = $hours;
+    $this->data['request'] = $req;
 
     return $app['twig']->render('pages/index.html.twig', $this->data);
   }

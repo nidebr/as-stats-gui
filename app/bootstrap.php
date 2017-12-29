@@ -27,6 +27,13 @@ $app['twig'] = $app->extend("twig", function (\Twig_Environment $twig, Silex\App
     return rawurlencode($stdClassObject);
   }));
 
+  $twig->addFilter( new Twig_SimpleFilter('concat_link', function ($stdClassObject) {
+    foreach($stdClassObject as $link) {
+      $result .= "$link,";
+    }
+    return rtrim($result, ',');
+  }));
+
   return $twig;
 });
 
