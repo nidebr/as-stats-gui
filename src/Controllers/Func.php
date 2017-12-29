@@ -124,4 +124,11 @@ class Func
 
     return $return;
   }
+
+  public function getRRDFileForAS($as, $peer = 0)
+  {
+    $rrdpath = "/data/asstats/rrd";
+    $prefix = ($peer == 1) ? "$rrdpath/peeras" : "$rrdpath";
+	  return "$prefix/" . sprintf("%02x", $as % 256) . "/$as.rrd";
+  }
 }
