@@ -55,7 +55,7 @@ class Render
 
     $knownlinks = Func::getKnowlinks();
 
-    if(isset($req['selected_links'])) {
+    if(isset($req['selected_links']) && !empty($req['selected_links'])) {
     	$reverse = array();
 
     	foreach($knownlinks as $link) {

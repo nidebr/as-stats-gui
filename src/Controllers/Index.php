@@ -35,8 +35,9 @@ class Index extends BaseController
 	     if(isset($req["link_${link['tag']}"]))
 		     $selected_links[] = $link['tag'];
     }
+    var_dump($selected_links);
     $this->data['selected_links'] = $selected_links;
-    
+
     $topas = $this->db->GetASStatsTop($ntop,Func::statsFileForHours($hours), $selected_links);
 
     foreach ($topas as $as => $nbytes) {
