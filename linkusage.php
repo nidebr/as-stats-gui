@@ -1,6 +1,7 @@
 <?php include("func.inc"); ?>
 
 <?php
+$selected_links = array();
 $knownlinks = getknownlinks();
 $hours = 24;
 if (@$_GET['numhours'])
@@ -10,10 +11,10 @@ $i = 0;
 foreach ($knownlinks as $link) {
 	$class = (($i % 2) == 0) ? "" : "even";
 	if ($showv6) {
-		$list_img[$link['tag']] = '<img alt="link graph" src="linkgraph.php?link='.$link['tag'].'&numhours='.$hours.'&width='.$linkusage_graph_width.'&height='.$linkusage_graph_height.'&dname='.rawurlencode($link['descr'] . " - IPv4").'" width="'.$linkusage_graph_width.'" height="'.$linkusage_graph_height.'" border="0" />';
-		$list_img_v6[$link['tag']] = '<img alt="link graph" src="linkgraph.php?link='.$link['tag'].'&numhours='.$hours.'&width='.$linkusage_graph_width.'&height='.$linkusage_graph_height.'&dname='.rawurlencode($link['descr'] . " - IPv6").'&v=6" width="'.$linkusage_graph_width.'" height="'.$linkusage_graph_height.'" border="0" />';
+		$list_img[$link['tag']] = '<img alt="link graph" src="linkgraph.php?link='.$link['tag'].'&numhours='.$hours.'&width='.$default_graph_width.'&height='.$default_graph_height.'&dname='.rawurlencode($link['descr'] . " - IPv4").'&v=4" width="'.$default_graph_width.'" height="'.$default_graph_height.'" border="0" />';
+		$list_img_v6[$link['tag']] = '<img alt="link graph" src="linkgraph.php?link='.$link['tag'].'&numhours='.$hours.'&width='.$default_graph_width.'&height='.$default_graph_height.'&dname='.rawurlencode($link['descr'] . " - IPv6").'&v=6" width="'.$default_graph_width.'" height="'.$default_graph_height.'" border="0" />';
 	} else {
-		$list_img[$link['tag']] = '<img alt="link graph" src="linkgraph.php?link='.$link['tag'].'&numhours='.$hours.'&width='.$linkusage_graph_width.'&height='.$linkusage_graph_height.'&dname='.rawurlencode($link['descr']).'" width="'.$linkusage_graph_width.'" height="'.$linkusage_graph_height.'" border="0" />';
+		$list_img[$link['tag']] = '<img alt="link graph" src="linkgraph.php?link='.$link['tag'].'&numhours='.$hours.'&width='.$default_graph_width.'&height='.$default_graph_height.'&dname='.rawurlencode($link['descr']).'&v=4" width="'.$default_graph_width.'" height="'.$default_graph_height.'" border="0" />';
 	}
 	if ( ($showtitledetail && !$hidelinkusagename) || (!$showtitledetail) ) {
 		$txt_title[$link['tag']] = $link['descr'];

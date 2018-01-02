@@ -54,6 +54,13 @@ $cmd = "$rrdtool graph - " .
 if (!$compat_rrdtool12)
 	$cmd .= "--full-size-mode ";
 
+if ($vertical_label) {
+	if($outispositive)
+		$cmd .= "--vertical-label '<- IN | OUT ->' ";
+	else
+		$cmd .= "--vertical-label '<- OUT | IN ->' ";
+}
+
 if($showtitledetail && @$_GET['dname'] != "")
 	$cmd .= "--title " . escapeshellarg($_GET['dname']) . " ";
 else
