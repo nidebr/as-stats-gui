@@ -277,6 +277,7 @@ function menu($selected_links) {
 	$active_searchas = $dpagename == "history" ? 'class="active"' : "";
 	$active_searchasset = $dpagename == "asset" ? 'class="active"' : "";
   $active_ix = $dpagename == "ix" ? 'class="active"' : "";
+  $active_linkusage = $dpagename == "linkusage" ? 'class="active"' : "";
 
   $return = '<header class="main-header">';
   $return .= '<nav class="navbar navbar-static-top">';
@@ -308,6 +309,20 @@ function menu($selected_links) {
 	$return .='<li '.$active_searchas.'><a href="history.php">View AS</a></li>';
 	$return .='<li '.$active_searchasset.'><a href="asset.php">View AS-SET</a></li>';
   $return .='<li '.$active_ix.'><a href="ix.php">View IX Stats</a></li>';
+  //$return .='<li '.$active_linkusage.'><a href="linkusage.php">Link Usage</a></li>';
+
+  if ( count($top_intervals) < 2 ) {
+		$return .= '<li '.$active_linkusage.'><a href="linkusage.php">Link Usage</a></li>';
+	} else {
+		$return .= '<li class="dropdown '.$active_linkusage.'">';
+		$return .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Link Usage <span class="caret"></span></a>';
+		$return .= '<ul class="dropdown-menu" role="menu">';
+		foreach ($top_intervals as $interval) {
+			$return .= '<li><a href="linkusage.php?numhours=' . $interval['hours'] . '">Link Usage - ' . $interval['label'] . '</a></li>';
+		}
+		$return .= '</ul>';
+		$return .= '</li>';
+	}
 
   $return .='</ul>';
 
@@ -378,5 +393,18 @@ function content_header($titre, $small) {
 	$header .= '<hr>';
 
   return $header;
+}
+
+function box_linkusage ($title, $img) {
+	$return = '<div class="box box-primary">';
+	$return .= '<div class="box-header with-border">';
+	$return .= '<i class="fa fa-bar-chart-o"></i>';
+	$return .= '<h3 class="box-title">'.$title.'</h3>';
+	$return .= '</div>';
+	$return .= '<div class="box-body">';
+	$return .= '<center>'.$img.'</center>';
+	$return .= '</div>';
+	$return .= '</div>';
+	return $return;
 }
 ?>

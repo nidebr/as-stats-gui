@@ -15,6 +15,7 @@ if ($peerusage) {
 
 $label = statsLabelForHours($hours);
 $knownlinks = getknownlinks();
+
 $selected_links = array();
 
 foreach($knownlinks as $link){
@@ -185,9 +186,7 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
     <?php echo content_header('Top ' . $ntop . ' AS', '('.$label.')'); ?>
 
     <section class="content">
-
       <div class="row">
-
         <div class="col-md-12 col-lg-<?php echo $first_col; ?>">
           <div class="row">
 
@@ -270,6 +269,7 @@ if ( !$detect->isMobile() && !$detect->isTablet() ) {
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <script src="plugins/fastclick/fastclick.min.js"></script>
+<script src="plugins/jQueryUI/jquery-ui.min.js"></script>
 <script src="dist/js/app.min.js"></script>
 
 </body>
