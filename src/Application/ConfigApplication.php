@@ -2,6 +2,7 @@
 
 namespace Application;
 use Symfony\Component\Yaml\Yaml;
+use Silex\Application;
 
 class ConfigApplication
 {
@@ -93,5 +94,10 @@ class ConfigApplication
     public static function getASStatsAllConfig()
     {
       return self::getConfigASStats()['config'];
+    }
+
+    public static function getMobile(Application $app)
+    {
+      return !$app['mobile_detect']->isMobile() && !$app['mobile_detect']->isTablet() ? FALSE : TRUE;
     }
 }

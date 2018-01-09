@@ -6,7 +6,8 @@
         "symfony/twig-bridge": "^3.3",
         "symfony/yaml": "^3.3",
         "ddesrosiers/silex-annotation-provider": "~2.0",
-        "doctrine/dbal": "~2.5"
+        "doctrine/dbal": "~2.5",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "autoload": {
         "psr-4": {"": "src"}

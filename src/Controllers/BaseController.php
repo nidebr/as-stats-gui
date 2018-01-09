@@ -9,7 +9,7 @@ class BaseController
 
   public function __construct()
   {
-      global $prog, $app;
+      global $app;
       $this->data['version'] = ConfigApplication::getRelease();
       $this->db = $app['table.sql'];
 
@@ -22,5 +22,6 @@ class BaseController
       }
 
       $this->data['config'] = ConfigApplication::getASStatsAllConfig();
+      $this->data['mobile'] = ConfigApplication::getMobile($app);
   }
 }

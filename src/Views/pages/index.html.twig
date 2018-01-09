@@ -5,10 +5,57 @@
 {% endblock %}
 
 {% block title %}
-Top {{ ntop }} AS ({{ label }}) 
+Top {{ ntop }} AS ({{ label }})
 {% endblock %}
 
 {% block css %}
+<style>
+.affix {
+  top:55px;
+  z-index: 1;
+  width: 6.8%;
+}
+@media (max-width:1680px) {
+  .affix {
+    width: 6.5%;
+  }
+}
+@media (max-width:1600px) {
+  .affix {
+    width: 6.5%;
+  }
+}
+@media (max-width:1440px) {
+  .affix {
+    width: 6.3%;
+  }
+}
+@media (max-width:1280px) {
+  .affix {
+    width: 6.1%;
+  }
+}
+@media (max-width:1024px) {
+  .affix {
+    width: 97%;
+  }
+}
+@media (max-width:768px) {
+  .affix {
+    width: 96%;
+  }
+}
+@media (max-width:667px) {
+  .affix {
+    width: 95.5%;
+  }
+}
+@media (max-width:375px) {
+  .affix {
+    width: 92%;
+  }
+}
+</style>
 {% endblock %}
 
 {% block content_wrapper %}
@@ -16,6 +63,64 @@ Top {{ ntop }} AS ({{ label }})
   {% set label = "(#{label})" %}
   {{ macro.content_header(title, label, config.outispositive ) }}
 {% endblock %}
+
+{% set legend %}
+  <table class='small'>
+    {% for link in knownlinks %}
+      {% set tag = "link_#{ link.tag }" %}
+      {% if request[tag] is defined and request[tag] == 'on' %}
+        {% set checked = 'checked' %}
+      {% else %}
+        {% set checked = '' %}
+      {% endif %}
+      <tr>
+        <td style="border: 4px solid #fff;">
+          <table style="border-collapse: collapse; margin: 0; padding: 0"><tr>
+            {% if config.brighten_negative %}
+              <td width="9" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
+              <td width="9" height="18" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
+            {% else %}
+              <td width="18" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
+            {% endif %}
+          </tr></table>
+        </td>
+        <td>&nbsp; {{ link.descr }}</td>
+        <td>&nbsp;<input type='checkbox' name='{{ tag }}' id ='{{ tag }}' {{ checked }}></td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endset %}
+
+{% set legend_small %}
+<table class='small'>
+  <tr>
+    <td>
+    {% for link in knownlinks %}
+      {% set tag = "link_#{ link.tag }" %}
+      {% if request[tag] is defined and request[tag] == 'on' %}
+        {% set checked = 'checked' %}
+      {% else %}
+        {% set checked = '' %}
+      {% endif %}
+      <td>
+        <table style="border-collapse: collapse; margin: 0; padding: 0">
+          <tr>
+            {% if config.brighten_negative %}
+              <td width="9" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
+              <td width="9" height="18" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
+            {% else %}
+              <td width="18" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
+            {% endif %}
+          </tr>
+        </table>
+      </td>
+      <td>&nbsp; {{ link.descr }}</td>
+      <td>&nbsp;<input type='checkbox' name='{{ tag }}' id ='{{ tag }}' {{ checked }}>&nbsp;&nbsp;</td>
+    {% endfor %}
+    </td>
+  </tr>
+</table>
+{% endset %}
 
 {% set counter = 0 %}
 
@@ -29,31 +134,6 @@ Top {{ ntop }} AS ({{ label }})
   {% set offset_second_col = "1" %}
 {% endif %}
 
-{% set legend %}
-  <table class='small'>
-    {% for link in knownlinks %}
-      {% set tag = "link_#{ link.tag }" %}
-      {% if request[tag] is defined and request[tag] == 'on' %}
-        {% set checked = 'checked' %}
-      {% else %}
-        {% set checked = '' %}
-      {% endif %}
-      <tr><td style="border: 4px solid #fff;">
-        <table style="border-collapse: collapse; margin: 0; padding: 0"><tr>
-          {% if config.brighten_negative %}
-            <td width="9" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
-            <td width="9" height="18" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
-          {% else %}
-            <td width="18" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
-          {% endif %}
-        </tr></table>
-        </td><td>&nbsp; {{ link.descr }}</td>
-        <td>&nbsp;<input type='checkbox' name='{{ tag }}' id ='{{ tag }}' {{ checked }}></td>
-      </tr>
-    {% endfor %}
-  </table>
-{% endset %}
-
 {% set aff_astable %}
   {% for key_as, as_data in asinfo %}
   {% set class %}
@@ -63,7 +143,7 @@ Top {{ ntop }} AS ({{ label }})
   {% endset %}
   <li class="li-padding {{ class }}">
     <div class="row">
-      <div class="col-lg-2">
+      <div class="col-md-4 col-lg-2">
         <b><img src="flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
         <div class="small">In the last {{ label|default('') }}</div>
         <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out</div>
@@ -77,18 +157,18 @@ Top {{ ntop }} AS ({{ label }})
         </div>
       </div>
       {% if config.showv6 %}
-        <div class="col-lg-5">
+        <div class="col-md-12 col-lg-5">
           <span class="pull-right">
             {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links) }}
           </span>
         </div>
-        <div class="col-lg-5">
+        <div class="col-md-12 col-lg-5">
           <span class="pull-right">
             {{ macro.getHTMLUrl(key_as, 6, as_data.info.descr, start, end, 0, selected_links) }}
           </span>
         </div>
       {% else %}
-        <div class="col-lg-10">
+        <div class="col-md-12 col-lg-10">
           <span class="pull-right">
             {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links) }}
           </span>
@@ -102,29 +182,23 @@ Top {{ ntop }} AS ({{ label }})
 {% block content %}
 <div class="row">
   <div class="col-md-12 col-lg-{{ first_col }}">
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="row affix col-md-12 col-lg-{{ first_col }}">
-
-          <form method='get'>
-            <input type='hidden' name='numhours' value='{{ hours }}'/>
-            <input type='hidden' name='n' value='{{ ntop }}'/>
-            <div class="box box-primary">
-              <div class="box-header with-border">
-                <h3 class="box-title">Legend</h3>
-              </div>
-              <div class="box-body">
-                {{ legend }}
-              </div>
-              <div class="box-footer">
-                <button type="submit" class="btn pull-right"><i class="fa fa-search"></i></button>
-              </div>
+      <form method='get'>
+        <input type='hidden' name='numhours' value='{{ hours }}'/>
+        <input type='hidden' name='n' value='{{ ntop }}'/>
+        <div data-spy="affix" data-offset-top="100">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Legend</h3>
             </div>
-          </form>
-
+            <div class="box-body">
+              {{ legend }}
+            </div>
+            <div class="box-footer">
+              <button type="submit" class="btn pull-right"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </form>
   </div>
 
   <div class="col-md-12 col-lg-{{ second_col }} col-lg-offset-{{ offset_second_col }}">
@@ -142,8 +216,6 @@ Top {{ ntop }} AS ({{ label }})
   </div>
 
 </div>
-
-
 {% endblock %}
 
 {% block modal %}

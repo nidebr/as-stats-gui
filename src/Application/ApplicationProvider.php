@@ -42,5 +42,9 @@ class ApplicationProvider implements ServiceProviderInterface
     ));
 
     $app->register(new ErrorProvider());
+
+    $app['mobile_detect'] = function($app) {
+      return new \Mobile_Detect();
+    };
   }
 }
