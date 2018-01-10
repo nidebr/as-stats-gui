@@ -1,0 +1,171 @@
+{% extends "base/base.html.twig" %}
+{% import "macros/macros.html.twig" as macro %}
+
+{% block refresh %}
+{% endblock %}
+
+{% block title %}
+History for AS{{request.as}}: {{ asinfo.descr }}
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content_wrapper %}
+  {% set title = "History for AS#{request.as}" %}
+  {{ macro.content_header(title, asinfo.descr, config.outispositive ) }}
+{% endblock %}
+
+{% set col = config.showv6 ? "6" : "12" %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 col-lg-2">
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Search AS</h3>
+            <div class="box-tools">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="navbar-form navbar-left" role="search" action="{{ path('history') }}">
+              <div class="input-group">
+                <input id="as" type="text" class="form-control menu-input" name="as" placeholder="Search AS" value="{{ request.as }}">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% if customlinks %}
+        <div class="col-lg-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Custom Links</h3>
+
+              <div class="box-tools">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+              {{ customlinks|raw }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <div class="col-md-12 col-lg-10">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Daily</h3>
+
+            <div class="box-tools">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <center>
+              <div class="col-lg-{{ col }}">
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", daily.start, daily.end, 0, true, "", 0) }}
+              </div>
+
+              {% if config.showv6 %}
+                <div class="col-lg-6">
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", daily.start, daily.end, 0, true, "", 0) }}
+                </div>
+              {% endif %}
+            </center>
+          </div>
+        </div>
+
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Hourly</h3>
+
+            <div class="box-tools">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <center>
+              <div class="col-lg-{{ col }}">
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", weekly.start, weekly.end, 0, true, "", 0) }}
+              </div>
+
+              {% if config.showv6 %}
+                <div class="col-lg-6">
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", weekly.start, weekly.end, 0, true, "", 0) }}
+                </div>
+              {% endif %}
+            </center>
+          </div>
+        </div>
+
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Weekly</h3>
+
+            <div class="box-tools">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <center>
+              <div class="col-lg-{{ col }}">
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", monthly.start, monthly.end, 0, true, "", 0) }}
+              </div>
+
+              {% if config.showv6 %}
+                <div class="col-lg-6">
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", monthly.start, monthly.end, 0, true, "", 0) }}
+                </div>
+              {% endif %}
+            </center>
+          </div>
+        </div>
+
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Yearly</h3>
+
+            <div class="box-tools">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <center>
+              <div class="col-lg-{{ col }}">
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", yearly.start, yearly.end, 0, true, "", 0) }}
+              </div>
+
+              {% if config.showv6 %}
+                <div class="col-lg-6">
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", yearly.start, yearly.end, 0, true, "", 0) }}
+                </div>
+              {% endif %}
+            </center>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}

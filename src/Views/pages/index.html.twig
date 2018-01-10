@@ -159,18 +159,18 @@ Top {{ ntop }} AS ({{ label }})
       {% if config.showv6 %}
         <div class="col-md-12 col-lg-5">
           <span class="pull-right">
-            {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links) }}
+            {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links, config.top_graph_width, config.top_graph_height) }}
           </span>
         </div>
         <div class="col-md-12 col-lg-5">
           <span class="pull-right">
-            {{ macro.getHTMLUrl(key_as, 6, as_data.info.descr, start, end, 0, selected_links) }}
+            {{ macro.getHTMLUrl(key_as, 6, as_data.info.descr, start, end, 0, selected_links, config.top_graph_width, config.top_graph_height) }}
           </span>
         </div>
       {% else %}
         <div class="col-md-12 col-lg-10">
           <span class="pull-right">
-            {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links) }}
+            {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links, config.top_graph_width, config.top_graph_height) }}
           </span>
         </div>
       {% endif %}

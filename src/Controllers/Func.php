@@ -107,6 +107,20 @@ class Func
     return join(" | ", $htmllinks);
   }
 
+  public function getCustomLinks_History($as)
+  {
+    if ( ConfigApplication::getCustomLinks() ) {
+      $aff_customlinks = '<div class="list-group list-group-unbordered">';
+      foreach (ConfigApplication::getCustomLinks() as $linkname => $url) {
+        $url = str_replace("%as%", $as, $url);
+        $aff_customlinks .= '<a href='.$url.' target="_blank" class="list-group-item"><i class="fa fa-external-link text-blue"></i> ' . htmlspecialchars($linkname) . '</a>';
+      }
+      $aff_customlinks .= "</div>";
+
+      return $aff_customlinks;
+    } else { return FALSE; }
+  }
+
   public function getRouteName(Request $request)
   {
     $dpagename = $request->get('_route');

@@ -29,10 +29,12 @@ $app['twig'] = $app->extend("twig", function (\Twig_Environment $twig, Silex\App
 
   $twig->addFilter( new Twig_SimpleFilter('concat_link', function ($stdClassObject) {
     $result = "";
-    foreach($stdClassObject as $link) {
-      $result .= "$link,";
-    }
-    return rtrim($result, ',');
+    if ( $stdClassObject ) {
+      foreach($stdClassObject as $link) {
+        $result .= "$link,";
+      }
+      return rtrim($result, ',');
+    } else { return $result; }
   }));
 
   return $twig;

@@ -1,24 +1,21 @@
-{% macro getHTMLUrl(as, ipversion, desc, start, end, peerusage, selected_links) %}
+{% macro getHTMLUrl(as, ipversion, desc, start, end, peerusage, selected_links, width, height) %}
   {% import _self as self %}
   {% set title = "AS#{as} - #{desc} - IPV#{ipversion}" %}
 
   {% set img %}
-    {{ self.getHTMLImg(as, ipversion, title, start, end, peerusage, false, selected_links) }}
+    {{ self.getHTMLImg(as, ipversion, title, start, end, peerusage, false, selected_links, 1, width, height) }}
   {% endset %}
-  <a href='{{ path('history', {'as': as, 'peerusage': peerusage, 'v': ipversion}) }}' target='_blank'>{{ img }}</a>
+  <a href='{{ path('history', {'as': as, 'peerusage': peerusage, 'v': ipversion}) }}'>{{ img }}</a>
 {% endmacro %}
 
-{% macro getHTMLImg(as, ipversion, title, start, end, peerusage, history, selected_links) %}
-  {% set top_graph_width = 600 %}
-  {% set top_graph_height = 220 %}
-
+{% macro getHTMLImg(as, ipversion, title, start, end, peerusage, history, selected_links, nolegend, width, height) %}
   {% set options %}
     {% if history == false %}
       width='600' height='220' border='0'
-    {% endif  %}
+    {% endif %}
   {% endset %}
 
-  <img class='img-responsive' src='{{ path('render', {'v': ipversion , 'as': as, 'start': start, 'end': end, 'dname': title, 'width': top_graph_width, 'height': top_graph_height, 'nolegend': '1', 'selected_links': selected_links|concat_link }) }}' {{ options }}>
+  <img class='img-responsive' src='{{ path('render', {'v': ipversion , 'as': as, 'start': start, 'end': end, 'dname': title, 'width': width, 'height': height, 'nolegend': nolegend, 'selected_links': selected_links|concat_link }) }}' {{ options }}>
 {% endmacro %}
 
 {% macro content_header(titre, small, outispositive) %}

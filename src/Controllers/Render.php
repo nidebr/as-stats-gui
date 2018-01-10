@@ -102,7 +102,7 @@ class Render
     	if (isset($req['v']) && is_numeric($req['v']))
     		$cmd .= "--title IPv" . $req['v'] . " ";
 
-    if (isset($req['nolegend']))
+    if (isset($req['nolegend']) && $req['nolegend'] )
     	$cmd .= "--no-legend ";
 
     if (isset($req['start']) && is_numeric($req['start']))

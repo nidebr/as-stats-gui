@@ -1,0 +1,53 @@
+{% extends "base/base.html.twig" %}
+{% import "macros/macros.html.twig" as macro %}
+
+{% block refresh %}
+{% endblock %}
+
+{% block title %}
+History
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content_wrapper %}
+  {% set title = "History for AS" %}
+  {{ macro.content_header(title, "", config.outispositive ) }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 col-lg-2">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Search AS</h3>
+        <div class="box-tools">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <form class="navbar-form navbar-left" role="search" action="{{ path('history') }}">
+          <div class="input-group">
+            <input id="as" type="text" class="form-control menu-input" name="as" placeholder="Search AS">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+{% block js %}
+<script>
+  window.onload = function() {
+    var input = document.getElementById("as").focus();
+  }
+</script>
+{% endblock %}

@@ -7,13 +7,13 @@
   <title>AS-Stats | {% block title %}{% endblock %}</title>
   <link rel="icon" href="favicon.ico" />
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <link rel="stylesheet" href="../../../web/template/bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../../../web/template/bower_components/font-awesome/css/font-awesome.min.css">
-  <link rel="stylesheet" href="../../../web/template/bower_components/Ionicons/css/ionicons.min.css">
-  <link rel="stylesheet" href="../../../web/template/dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="../../../web/template/dist/css/skins/_all-skins.min.css">
-  <link rel="stylesheet" href="flags/flags.min.css">
-  <link rel="stylesheet" href="css/custom.css">
+  <link rel="stylesheet" href="{{ global.request.baseUrl }}/template/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ global.request.baseUrl }}/template/bower_components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ global.request.baseUrl }}/template/bower_components/Ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="{{ global.request.baseUrl }}/template/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="{{ global.request.baseUrl }}/template/dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="{{ global.request.baseUrl }}/flags/flags.min.css">
+  <link rel="stylesheet" href="{{ global.request.baseUrl }}/css/custom.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
   {% block css %}{% endblock %}
 </head>
@@ -37,10 +37,10 @@
 {% block modal %}
 {% endblock %}
 
-<script src="../../../web/template/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../../../web/template/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../../../web/template/bower_components/fastclick/lib/fastclick.js"></script>
-<script src="../../../web/template/dist/js/adminlte.min.js"></script>
+<script src="{{ global.request.baseUrl }}/template/bower_components/jquery/dist/jquery.min.js"></script>
+<script src="{{ global.request.baseUrl }}/template/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="{{ global.request.baseUrl }}/template/bower_components/fastclick/lib/fastclick.js"></script>
+<script src="{{ global.request.baseUrl }}/template/dist/js/adminlte.min.js"></script>
 {% block js %}
 {% endblock %}
 
