@@ -9,6 +9,8 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Application\ConfigApplication as ConfigApplication;
 use DDesrosiers\SilexAnnotations\AnnotationServiceProvider;
+use \utilphp\util as Util;
+use \Mobile_Detect;
 
 class ApplicationProvider implements ServiceProviderInterface
 {
@@ -29,6 +31,14 @@ class ApplicationProvider implements ServiceProviderInterface
     $app->register(new HttpFragmentServiceProvider());
     $app->register(new SessionServiceProvider());
 
+    $app['mobile_detect'] = function($app) {
+      return new Mobile_Detect();
+    };
+
+    $app['util'] = function($app) {
+      return new Util();
+    };
+
     $app->register(new DoctrineServiceProvider(), array(
       "dbs.options" => DbsProvider::Get()
     ));
@@ -37,14 +47,14 @@ class ApplicationProvider implements ServiceProviderInterface
       return new \Models\SqlLite($app['dbs']);
     };
 
+    $app['whois'] = function() use($app) {
+      return new \Models\Whois($app);
+    };
+
     $app->register(new AnnotationServiceProvider(), array(
       'annot.controllerDir' => realpath(ConfigApplication::getControllerRootDirectory()),
     ));
 
     $app->register(new ErrorProvider());
-
-    $app['mobile_detect'] = function($app) {
-      return new \Mobile_Detect();
-    };
   }
 }

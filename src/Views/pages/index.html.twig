@@ -92,7 +92,7 @@ Top {{ ntop }} AS ({{ label }})
 {% endset %}
 
 {% set legend_small %}
-<table class='small'>
+<table width="100%" class='small'>
   <tr>
     <td>
     {% for link in knownlinks %}
@@ -144,7 +144,7 @@ Top {{ ntop }} AS ({{ label }})
   <li class="li-padding {{ class }}">
     <div class="row">
       <div class="col-md-4 col-lg-2">
-        <b><img src="flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
+        <b><img src="{{ global.request.baseUrl }}/flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
         <div class="small">In the last {{ label|default('') }}</div>
         <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out</div>
         {% if as_data.v6 is defined %}
@@ -191,7 +191,11 @@ Top {{ ntop }} AS ({{ label }})
               <h3 class="box-title">Legend</h3>
             </div>
             <div class="box-body">
-              {{ legend }}
+              {% if mobile %}
+                {{ legend_small }}
+              {% else %}
+                {{ legend }}
+              {% endif %}
             </div>
             <div class="box-footer">
               <button type="submit" class="btn pull-right"><i class="fa fa-search"></i></button>

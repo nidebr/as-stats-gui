@@ -1,0 +1,105 @@
+{% extends "base/base.html.twig" %}
+{% import "macros/macros.html.twig" as macro %}
+
+{% block refresh %}
+{% endblock %}
+
+{% block title %}
+History for AS-SET
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content_wrapper %}
+  {% set title = "History for AS-SET" %}
+  {{ macro.content_header(title, "", config.outispositive ) }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 col-lg-2">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Search AS-SET</h3>
+        <div class="box-tools">
+          <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+      </div>
+      <div class="box-body">
+        <form class="navbar-form navbar-left" role="search" action="{{ path('asset') }}">
+          <div class="input-group">
+            <input id="asset" type="text" class="form-control menu-input" name="asset" placeholder="Search AS-SET">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-md-2">
+
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Tools Box</h3>
+      </div>
+      <div class="box-body">
+        <div class="list-group list-group-unbordered">
+          <a id="clear" href="{{ path('asset/clear') }}" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove all AS-SET cache files.</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+<div id="modal_clear" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div id="reponse_ajax"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+  window.onload = function() {
+    var input = document.getElementById("asset").focus();
+  }
+</script>
+
+<script>
+  $('#clear').click(function(event) {
+      event.preventDefault();
+      $.ajax({
+          url: $(this).attr('href'),
+          success: function(response) {
+              var json = $.parseJSON(response);
+              if ( json.fail ) {
+                $("#reponse_ajax").html('<div class=\"alert alert-danger alert-dismissable\"><i class=\"icon fa fa-ban\"></i>&nbsp;Unable to clear all cache files.</div>');
+              } else {
+                if ( !json.ok ) {
+                  $("#reponse_ajax").html('<div class=\"alert alert-info alert-dismissable\"><i class=\"icon fa fa-info\"></i>&nbsp;The cache is already cleared.</div>');
+                } else {
+                  $("#reponse_ajax").html("<div class=\"alert alert-success alert-dismissable\"><i class='icon fa fa-check'></i>&nbsp;Clear cache files done.</div>");
+                }
+              }
+              setTimeout(function () { location.reload(); }, 2 * 1000);
+          },
+          beforeSend: function () {
+             $("#modal_clear").modal('show');
+          }
+      });
+      return false;
+  });
+</script>
+{% endblock %}

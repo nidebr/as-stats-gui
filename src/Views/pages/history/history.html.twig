@@ -77,12 +77,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", daily.start, daily.end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", daily.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", daily.start, daily.end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", daily.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>
@@ -100,12 +100,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", weekly.start, weekly.end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", weekly.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", weekly.start, weekly.end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", weekly.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>
@@ -123,12 +123,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", monthly.start, monthly.end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", monthly.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", monthly.start, monthly.end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", monthly.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>
@@ -146,12 +146,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", yearly.start, yearly.end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", yearly.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", yearly.start, yearly.end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", yearly.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>

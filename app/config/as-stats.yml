@@ -36,7 +36,7 @@ config:
   rrdtool: "/usr/bin/rrdtool"
   whois: "/usr/bin/whois"
   ## AS-SET
-  assetpath: false
+  assetpath: "asset"
   asset_cache_life: 604800 # 604800 seconds = 7 days
   ## PEERINGDB
   my_asn: 34863

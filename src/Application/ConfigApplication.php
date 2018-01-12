@@ -100,4 +100,20 @@ class ConfigApplication
     {
       return !$app['mobile_detect']->isMobile() && !$app['mobile_detect']->isTablet() ? FALSE : TRUE;
     }
+
+    public static function getASSetPath()
+    {
+      return self::getConfigASStats()['config']['assetpath'];
+    }
+
+    public static function getASSetCacheLife()
+    {
+      return self::getConfigASStats()['config']['asset_cache_life'];
+    }
+
+    public static function getWhois()
+    {
+      return self::getConfigASStats()['config']['whois'];
+    }
+
 }

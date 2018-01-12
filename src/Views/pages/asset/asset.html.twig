@@ -1,0 +1,318 @@
+{% extends "base/base.html.twig" %}
+{% import "macros/macros.html.twig" as macro %}
+
+{% block refresh %}
+{% endblock %}
+
+{% block title %}
+History for AS-SET: {{ asset }}
+{% endblock %}
+
+{% block css %}
+<style>
+.affix {
+  top:55px;
+  z-index: 1;
+  width: 15.04%;
+}
+@media (max-width:1680px) {
+  .affix {
+    width: 14.85%;
+  }
+}
+@media (max-width:1600px) {
+  .affix {
+    width: 14.85%;
+  }
+}
+@media (max-width:1440px) {
+  .affix {
+    width: 14.54%;
+  }
+}
+@media (max-width:1280px) {
+  .affix {
+    width: 14.34%;
+  }
+}
+@media (max-width:1024px) {
+  .affix {
+    width: 97%;
+  }
+}
+@media (max-width:768px) {
+  .affix {
+    width: 96%;
+  }
+}
+@media (max-width:667px) {
+  .affix {
+    width: 95.5%;
+  }
+}
+@media (max-width:375px) {
+  .affix {
+    width: 92%;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content_wrapper %}
+  {% set title = "History for AS-SET" %}
+  {% set label = "#{asset} (#{label})" %}
+  {{ macro.content_header(title, label, config.outispositive ) }}
+{% endblock %}
+
+{% set aff_other_asset %}
+  {% if other_asset is not null %}
+    <div class="col-lg-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Other AS-SET</h3>
+        </div>
+        <div class="box-body">
+          <ul class="nav nav-stacked">
+            {% for o_asset in other_asset %}
+              <li class="li-customlinks">
+                <a href="{{ path('asset', { 'asset': o_asset }) }}">{{ o_asset }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endset %}
+
+{% set legend %}
+  <table width="100%" class='small'>
+    {% for link in knownlinks %}
+      {% set tag = "link_#{ link.tag }" %}
+      {% if request[tag] is defined and request[tag] == 'on' %}
+        {% set checked = 'checked' %}
+      {% else %}
+        {% set checked = '' %}
+      {% endif %}
+      <tr>
+        <td width='15%' style="border: 4px solid #fff;">
+          <table style="border-collapse: collapse; margin: 0; padding: 0"><tr>
+            {% if config.brighten_negative %}
+              <td width="9" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
+              <td width="9" height="18" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
+            {% else %}
+              <td width="18" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
+            {% endif %}
+          </tr></table>
+        </td>
+        <td>&nbsp; {{ link.descr }}</td>
+        <td>&nbsp;<input type='checkbox' name='{{ tag }}' id ='{{ tag }}' {{ checked }}></td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endset %}
+
+{% set counter = 0 %}
+
+{% set aff_astable %}
+  {% for key_as, as_data in asinfo %}
+    {% set class %}
+      {% if (counter % 2) != 0 %}
+        even
+      {% endif %}
+    {% endset %}
+    <li class="li-padding {{ class }}">
+      <div class="row">
+        <div class="col-md-4 col-lg-2">
+          <b><img src="{{ global.request.baseUrl }}/flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
+          <div class="small">In the last {{ label|default('') }}</div>
+          <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out</div>
+          {% if as_data.v6 is defined %}
+            <div class="small">IPv6: ~ {{ as_data.v6.in|format_bytes }} in / {{ as_data.v6.out|format_bytes }} out</div>
+          {% endif %}
+          <span class="small">{{ attribute(customlinks, key_as)|raw }}</span>
+          <div class="rank">
+            {% set counter = counter + 1 %}
+            # {{ counter }}
+          </div>
+        </div>
+        {% if config.showv6 %}
+          <div class="col-md-12 col-lg-5">
+            <span class="pull-right">
+              {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links, config.top_graph_width, config.top_graph_height) }}
+            </span>
+          </div>
+          <div class="col-md-12 col-lg-5">
+            <span class="pull-right">
+              {{ macro.getHTMLUrl(key_as, 6, as_data.info.descr, start, end, 0, selected_links, config.top_graph_width, config.top_graph_height) }}
+            </span>
+          </div>
+        {% else %}
+          <div class="col-md-12 col-lg-10">
+            <span class="pull-right">
+              {{ macro.getHTMLUrl(key_as, 4, as_data.info.descr, start, end, 0, selected_links, config.top_graph_width, config.top_graph_height) }}
+            </span>
+          </div>
+        {% endif %}
+      </div>
+    </li>
+  {% endfor %}
+  {% for key_as, as_data in asinfo_nodata %}
+    {% set class %}
+      {% if (counter % 2) != 0 %}
+        even
+      {% endif %}
+    {% endset %}
+    <li class="li-padding {{ class }}">
+      <div class="row">
+        <div class="col-md-4 col-lg-2">
+          <b><img src="{{ global.request.baseUrl }}/flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
+          <div class="small">In the last {{ label|default('') }}</div>
+          <span class="small">{{ attribute(customlinks, key_as)|raw }}</span>
+          <div class="rank">
+            {% set counter = counter + 1 %}
+            # {{ counter }}
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-10">
+          <center>No data found for AS{{ key_as }}</center>
+        </div>
+      </div>
+    </li>
+  {% endfor %}
+{% endset %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12 col-lg-2">
+    <div class="row">
+
+      <div class="col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Search AS-SET</h3>
+            <div class="box-tools">
+              <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div>
+          </div>
+          <div class="box-body">
+            <form class="navbar-form navbar-left" role="search" action="{{ path('asset') }}">
+              <div class="input-group">
+                <input id="asset" type="text" class="form-control menu-input" name="asset" placeholder="Search AS-SET" value="{{ asset }}">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {# METTRE AFFICHAGE SI C'EST DU CACHE #}
+      {% if cache %}
+        <div class="col-lg-12">
+          <div class="alert alert-warning"><i class="icon fa fa-info"></i>&nbsp;Data from cache file.</div>
+        </div>
+      {% endif %}
+
+      <div class="col-lg-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Tools Box</h3>
+          </div>
+          <div class="box-body">
+            <div class="list-group list-group-unbordered">
+              <a id="clear_one" href="{{ path('asset/clear/one', { 'file': asset }) }}" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove AS-SET cache file for {{ asset }}</a>
+              <a id="clear" href="{{ path('asset/clear') }}" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove all AS-SET cache files.</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+        <form method='get'>
+          <input type='hidden' name='asset' value='{{ asset }}'/>
+          <div data-spy="affix" data-offset-top="400">
+            <div class="box box-primary">
+              <div class="box-header with-border">
+                <h3 class="box-title">Legend</h3>
+              </div>
+              <div class="box-body">
+                {{ legend }}
+              </div>
+              <div class="box-footer">
+                <button type="submit" class="btn pull-right"><i class="fa fa-search"></i></button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      {{ aff_other_asset }}
+
+    </div>
+  </div>
+  <div class="col-md-12 col-lg-10">
+    <div class="box box-primary">
+      <div class="box-body">
+        <ul class="nav nav-stacked">
+          {{ aff_astable }}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+<div id="modal_clear" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div id="reponse_ajax"></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+  $('#clear').click(function(event) {
+      event.preventDefault();
+      $.ajax({
+          url: $(this).attr('href'),
+          success: function(response) {
+              var json = $.parseJSON(response);
+              if ( json.fail ) {
+                $("#reponse_ajax").html('<div class=\"alert alert-danger alert-dismissable\"><i class=\"icon fa fa-ban\"></i>&nbsp;Unable to clear all cache files.</div>');
+              } else {
+                if ( !json.ok ) {
+                  $("#reponse_ajax").html('<div class=\"alert alert-info alert-dismissable\"><i class=\"icon fa fa-info\"></i>&nbsp;The cache is already cleared.</div>');
+                } else {
+                  $("#reponse_ajax").html("<div class=\"alert alert-success alert-dismissable\"><i class='icon fa fa-check'></i>&nbsp;Clear cache files done.</div>");
+                }
+              }
+              setTimeout(function () { window.location.replace("{{ path('asset') }}"); }, 2 * 1000);
+          },
+          beforeSend: function () {
+             $("#modal_clear").modal('show');
+          }
+      });
+      return false;
+  });
+</script>
+
+<script>
+  $('#clear_one').click(function(event) {
+      event.preventDefault();
+      $.ajax({
+          url: $(this).attr('href'),
+          success: function(response) {
+            setTimeout(function () { window.location.replace("{{ path('asset') }}"); }, 1 * 1000);
+          },
+      });
+      return false;
+  });
+</script>
+{% endblock %}

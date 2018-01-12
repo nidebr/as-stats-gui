@@ -26,22 +26,16 @@ class History extends BaseController
       $this->data['asinfo'] = Func::GetASInfo($req['as']);
       $this->data['customlinks'] = Func::getCustomLinks_History($req['as']);
 
+      $this->data['end'] = time();
+
       $this->data['daily']['start'] = time() - 24 * 3600;
-      $this->data['daily']['end'] = time();
-
       $this->data['weekly']['start'] = time() - 6.9 * 86400;
-      $this->data['weekly']['end'] = time();
-
       $this->data['monthly']['start'] = time() - 30 * 86400;
-      $this->data['monthly']['end'] = time();
-
       $this->data['yearly']['start'] = time() - 365 * 86400;
-      $this->data['yearly']['end'] = time();
 
-
-      return $app['twig']->render('pages/history.html.twig', $this->data);
+      return $app['twig']->render('pages/history/history.html.twig', $this->data);
     } else {
-      return $app['twig']->render('pages/history_search.html.twig', $this->data);
+      return $app['twig']->render('pages/history/search.html.twig', $this->data);
     }
   }
 }

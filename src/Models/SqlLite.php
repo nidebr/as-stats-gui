@@ -9,7 +9,7 @@ class SqlLite
 
   public function __construct($app)
   {
-      $this->db = $app;
+    $this->db = $app;
   }
 
   public function GetASStatsTop($ntop, $statsfile, $selected_links, $list_asn = NULL)

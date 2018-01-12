@@ -21,19 +21,21 @@
           <li><a href="{{ path('index') }}">Top AS</a></li>
           {% endif %}
           <li class="{{ active_page.active_searchas }}"><a href="{{ path('history') }}">View AS</a></li>
-          <li class="{{ active_page.active_searchasset }}"><a href="asset.php">View AS-SET</a></li>
+          <li class="{{ active_page.active_searchasset }}"><a href="{{ path('asset') }}">View AS-SET</a></li>
           <li class="{{ active_page.active_ix }}"><a href="ix.php">View IX Stats</a></li>
         </ul>
-        <form class="navbar-form navbar-left" role="search">
-          <div class="input-group">
-            <input type="text" class="form-control menu-input" name="n" placeholder="Top AS" value="">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-flat button-input">
-                <i class="fa fa-search"></i>
-              </button>
-            </span>
-          </div>
-        </form>
+        {% if active_page.active_top == "active" %}
+          <form class="navbar-form navbar-left" role="search">
+            <div class="input-group">
+              <input type="text" class="form-control menu-input" name="n" placeholder="Top AS" value="">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-flat button-input">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </form>
+        {% endif %}
       </div>
     </div>
   </nav>
