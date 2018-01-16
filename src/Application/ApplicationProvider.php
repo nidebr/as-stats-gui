@@ -9,6 +9,10 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Application\ConfigApplication as ConfigApplication;
 use DDesrosiers\SilexAnnotations\AnnotationServiceProvider;
+/*use Silex\Provider\TranslationServiceProvider;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Silex\Provider\SymfonyBridgesServiceProvider;*/
 use \utilphp\util as Util;
 use \Mobile_Detect;
 
@@ -49,6 +53,10 @@ class ApplicationProvider implements ServiceProviderInterface
 
     $app['whois'] = function() use($app) {
       return new \Models\Whois($app);
+    };
+
+    $app['peeringdb'] = function() use($app) {
+      return new \Models\PeeringDB();
     };
 
     $app->register(new AnnotationServiceProvider(), array(

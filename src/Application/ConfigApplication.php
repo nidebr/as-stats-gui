@@ -116,4 +116,8 @@ class ConfigApplication
       return self::getConfigASStats()['config']['whois'];
     }
 
+    public static function getUrlPeeringDB()
+    {
+      return self::getConfigASStats()['api']['peeringdb']['host'].''.self::getConfigASStats()['api']['peeringdb']['url'];
+    }
 }

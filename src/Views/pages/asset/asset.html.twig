@@ -85,64 +85,6 @@ History for AS-SET: {{ asset }}
   {% endif %}
 {% endset %}
 
-{% set legend %}
-  <table width="100%" class='small'>
-    {% for link in knownlinks %}
-      {% set tag = "link_#{ link.tag }" %}
-      {% if request[tag] is defined and request[tag] == 'on' %}
-        {% set checked = 'checked' %}
-      {% else %}
-        {% set checked = '' %}
-      {% endif %}
-      <tr>
-        <td width='15%' style="border: 4px solid #fff;">
-          <table style="border-collapse: collapse; margin: 0; padding: 0"><tr>
-            {% if config.brighten_negative %}
-              <td width="9" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
-              <td width="9" height="18" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
-            {% else %}
-              <td width="18" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
-            {% endif %}
-          </tr></table>
-        </td>
-        <td>&nbsp; {{ link.descr }}</td>
-        <td>&nbsp;<input type='checkbox' name='{{ tag }}' id ='{{ tag }}' {{ checked }}></td>
-      </tr>
-    {% endfor %}
-  </table>
-{% endset %}
-
-{% set legend_small %}
-<table width="100%" class='small'>
-  <tr>
-    <td>
-    {% for link in knownlinks %}
-      {% set tag = "link_#{ link.tag }" %}
-      {% if request[tag] is defined and request[tag] == 'on' %}
-        {% set checked = 'checked' %}
-      {% else %}
-        {% set checked = '' %}
-      {% endif %}
-      <td>
-        <table style="border-collapse: collapse; margin: 0; padding: 0">
-          <tr>
-            {% if config.brighten_negative %}
-              <td width="9" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
-              <td width="9" height="18" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
-            {% else %}
-              <td width="18" height="18" style="background-color: #{{ link.color }}">&nbsp;</td>
-            {% endif %}
-          </tr>
-        </table>
-      </td>
-      <td>&nbsp; {{ link.descr }}</td>
-      <td>&nbsp;<input type='checkbox' name='{{ tag }}' id ='{{ tag }}' {{ checked }}>&nbsp;&nbsp;</td>
-    {% endfor %}
-    </td>
-  </tr>
-</table>
-{% endset %}
-
 {% set counter = 0 %}
 
 {% set aff_astable %}
@@ -269,9 +211,9 @@ History for AS-SET: {{ asset }}
               </div>
               <div class="box-body">
                 {% if mobile %}
-                  {{ legend_small }}
+                  {{ include('/base/legend_small.html.twig') }}
                 {% else %}
-                  {{ legend }}
+                  {{ include('/base/legend.html.twig') }}
                 {% endif %}
               </div>
               <div class="box-footer">

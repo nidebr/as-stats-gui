@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col-md-12">
+  	<form method='get'>
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">My IX</h3>
+        </div>
+        <div class="box-body">
+        	<select name="ix" id="ix" class="form-control">
+            <option value="">Select IX</option>
+            {% for list_myix in myix %}
+              {% set selected %}
+                {% if request.ix is defined and request.ix == list_myix.ix_id %}
+                  selected
+                {% endif %}
+              {% endset %}
+              <option {{ selected }} value="{{ list_myix.ix_id }}">{{ list_myix.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <input type='hidden' id='name_myix' name='name_myix'/>
+      {% if selected_links %}
+        {% for link in selected_links %}
+          {% set tag = "link_#{ link }" %}
+          <input type='hidden' name='{{ tag }}' value='on'/>
+        {% endfor %}
+      {% endif %}
+      <input type='hidden' name='numhours' value='{{ hours }}'/>
+    </form>
+  </div>
+</div>

@@ -41,6 +41,14 @@ config:
   ## PEERINGDB
   my_asn: 34863
 
+api:
+  peeringdb:
+    host: 'https://peeringdb.com'
+    url : '/api'
+    user: ''
+    pass: ''
+    token : ''
+
 customlinks:
   PeeringDB: 'https://www.peeringdb.com/asn/%as%'
   robtex: 'https://www.robtex.com/as/as%as%.html'

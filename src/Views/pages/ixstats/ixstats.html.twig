@@ -1,0 +1,208 @@
+{% extends "base/base.html.twig" %}
+{% import "macros/macros.html.twig" as macro %}
+
+{% set add_title %}
+  {% if request.name_ix is defined %}
+    {{ request.name_ix }}
+  {% endif %}
+
+  {% if request.name_myix is defined %}
+    {{ request.name_myix }}
+  {% endif %}
+{% endset %}
+
+{% block refresh %}
+{% endblock %}
+
+{% block title %}
+IX Stats: {{ add_title }}
+{% endblock %}
+
+{% block css %}
+<style>
+.affix {
+  top:55px;
+  z-index: 1;
+  width: 6.8%;
+}
+@media (max-width:1680px) {
+  .affix {
+    width: 6.5%;
+  }
+}
+@media (max-width:1600px) {
+  .affix {
+    width: 6.5%;
+  }
+}
+@media (max-width:1440px) {
+  .affix {
+    width: 6.3%;
+  }
+}
+@media (max-width:1280px) {
+  .affix {
+    width: 6.1%;
+  }
+}
+@media (max-width:1024px) {
+  .affix {
+    width: 97%;
+  }
+}
+@media (max-width:768px) {
+  .affix {
+    width: 96%;
+  }
+}
+@media (max-width:667px) {
+  .affix {
+    width: 95.5%;
+  }
+}
+@media (max-width:375px) {
+  .affix {
+    width: 92%;
+  }
+}
+</style>
+{% endblock %}
+
+{% if topinterval is defined %}
+  {% set col_search = 4 %}
+  {% set col_search_no_myasn = 6 %}
+{% else %}
+  {% set col_search = 6 %}
+  {% set col_search_no_myasn = 12 %}
+{% endif %}
+
+{% if config.showv6 %}
+  {% set first_col = "1" %}
+  {% set second_col = "11" %}
+  {% set offset_second_col = "0" %}
+{% else %}
+  {% set first_col = "2" %}
+  {% set second_col = "9" %}
+  {% set offset_second_col = "1" %}
+{% endif %}
+
+{% block content_wrapper %}
+  {% set title = "IX Stats - #{add_title}" %}
+  {% set label = "(top #{ntop} - #{label})" %}
+  {{ macro.content_header(title, label, config.outispositive ) }}
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-12 col-lg-{{ first_col }}">
+      <form method='get'>
+        <input type='hidden' name='ix' value='{{ request.ix }}'/>
+        <input type='hidden' name='numhours' value='{{ hours }}'/>
+        {% if request.name_myix is defined %}
+          <input type='hidden' name='name_myix' value='{{ request.name_myix }}'/>
+        {% endif %}
+        {% if request.name_ix is defined %}
+          <input type='hidden' name='name_ix' value='{{ request.name_ix }}'/>
+        {% endif %}
+        <div data-spy="affix" data-offset-top="100">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Legend</h3>
+            </div>
+            <div class="box-body">
+              {% if mobile %}
+                {{ include('/base/legend_small.html.twig') }}
+              {% else %}
+                {{ include('/base/legend.html.twig') }}
+              {% endif %}
+            </div>
+            <div class="box-footer">
+              <button type="submit" class="btn pull-right"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-12 col-lg-{{ second_col }} col-lg-offset-{{ offset_second_col }}">
+      <div class="row">
+        {% if config.my_asn %}
+          <div class="col-md-12 col-lg-{{ col_search }}">
+            {{ include('/pages/ixstats/_myix.html.twig') }}
+          </div>
+          <div class="col-md-12 col-lg-{{ col_search }}">
+            {{ include('/pages/ixstats/_allix.html.twig') }}
+          </div>
+          {% if topinterval is defined %}
+            <div class="col-md-12 col-lg-4">
+              {{ include('/pages/ixstats/_interval.html.twig') }}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="col-md-{{ col_search_no_myasn }}">
+            {{ include('/pages/ixstats/_allix.html.twig') }}
+          </div>
+          {% if topinterval is defined %}
+            <div class="col-md-12 col-lg-6">
+              {{ include('/pages/ixstats/_interval.html.twig') }}
+            </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    {{ include('/pages/ixstats/_graphs.html.twig') }}
+  </div>
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+{% block js %}
+<script src="{{ global.request.baseUrl }}/template/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="{{ global.request.baseUrl }}/template/plugins/typeahead/bootstrap3-typeahead.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#peeringdb').typeahead({
+      source: function (query, process) {
+        $.ajax({
+          url: '{{ path('get_ixname') }}',
+          dataType: 'JSON',
+          minLength: 2,
+          data: 'name=' + query,
+          success: function(data) {
+						if ( data !== null ) {
+            	process(data);
+						} else {
+							$("#message").html('<small class="form-text text-muted">No IX found.</small>');
+						}
+          },
+          beforeSend: function () {
+             $("#peeringdb").addClass("searchBox");
+          },
+          complete: function () {
+             $("#peeringdb").removeClass("searchBox");
+          },
+        });
+      },
+      updater : function (item) {
+				$("form input[name=ix]").val(item.id);
+				//$("#ix").val("");
+				this.$element[0].value = item.name;
+      	this.$element[0].form.submit();
+        return item.name;
+      },
+      autoselect: true,
+    });
+  });
+</script>
+
+<script type='text/javascript'>
+$(function() {
+    $('#ix').change(function() {
+        var name = $(this).find(':selected')[0].text;
+        $('#name_ix').val(name);
+        this.form.submit();
+    });
+});
+</script>
+{% endblock %}

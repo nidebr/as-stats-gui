@@ -33,9 +33,11 @@
       {% endif %}
     {% endset %}
 
+    {% if outispositive != "NONE" %}
     <ol class="breadcrumb">
       <li>{{ traffic }}</li>
 	  </ol>
+    {% endif %}
   </section>
   <hr>
 {% endmacro %}

@@ -127,7 +127,7 @@ class Func
     $active_top = $dpagename == "index" ? "active": "";
 	  $active_searchas = $dpagename == "history" ? "active" : "";
 	  $active_searchasset = $dpagename == "asset" ? "active" : "";
-    $active_ix = $dpagename == "ix" ? "active" : "";
+    $active_ix = $dpagename == "ixstats" ? "active" : "";
 
     $return = [
       'active_top' => $active_top,

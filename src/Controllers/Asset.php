@@ -45,6 +45,7 @@ class Asset extends BaseController
 
       $topas = $this->db->GetASStatsTop(200, Func::statsFileForHours($hours), $selected_links, $this->data['aslist']);
 
+      $this->data['asinfo'] = NULL;
       foreach ($topas as $as => $nbytes) {
         $this->data['asinfo'][$as]['info'] = Func::GetASInfo($as);
 

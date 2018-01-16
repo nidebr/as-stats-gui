@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-md-12">
+    <form method='get' id="search_ix_name">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Search IX</h3>
+        </div>
+        <div class="box-body">
+          <input type="text" class="form-control" name="name_ix" placeholder="Search IX" id="peeringdb" data-provide="typeahead" autocomplete="off" value="{{ request.name_ix|default('') }}">
+          <input type='hidden' id='ix' name='ix'/>
+          <div id="message"></div>
+        </div>
+      </div>
+      {% if selected_links %}
+        {% for link in selected_links %}
+          {% set tag = "link_#{ link }" %}
+          <input type='hidden' name='{{ tag }}' value='on'/>
+        {% endfor %}
+      {% endif %}
+      <input type='hidden' name='numhours' value='{{ hours }}'/>
+    </form>
+  </div>
+</div>

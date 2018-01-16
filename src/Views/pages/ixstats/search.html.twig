@@ -1,0 +1,88 @@
+{% extends "base/base.html.twig" %}
+{% import "macros/macros.html.twig" as macro %}
+
+{% block refresh %}
+{% endblock %}
+
+{% block title %}
+IX Stats
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content_wrapper %}
+  {% set title = "IX Stats" %}
+  {{ macro.content_header(title, "", 'NONE' ) }}
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    {% if config.my_asn %}
+      <div class="col-md-12 col-lg-6">
+        {{ include('/pages/ixstats/_myix.html.twig') }}
+      </div>
+      <div class="col-md-12 col-lg-6">
+        {{ include('/pages/ixstats/_allix.html.twig') }}
+      </div>
+    {% else %}
+      <div class="col-md-12">
+        {{ include('/pages/ixstats/_allix.html.twig') }}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+{% block js %}
+<script src="{{ global.request.baseUrl }}/template/bower_components/jquery-ui/jquery-ui.min.js"></script>
+<script src="{{ global.request.baseUrl }}/template/plugins/typeahead/bootstrap3-typeahead.min.js"></script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('#peeringdb').typeahead({
+      source: function (query, process) {
+        $.ajax({
+          url: '{{ path('get_ixname') }}',
+          dataType: 'JSON',
+          minLength: 2,
+          data: 'name=' + query,
+          success: function(data) {
+						if ( data !== null ) {
+            	process(data);
+						} else {
+							$("#message").html('<small class="form-text text-muted">No IX found.</small>');
+						}
+          },
+          beforeSend: function () {
+             $("#peeringdb").addClass("searchBox");
+          },
+          complete: function () {
+             $("#peeringdb").removeClass("searchBox");
+          },
+        });
+      },
+      updater : function (item) {
+				$("form input[name=ix]").val(item.id);
+				//$("#ix").val("");
+				this.$element[0].value = item.name;
+      	this.$element[0].form.submit();
+        return item.name;
+      },
+      autoselect: true,
+    });
+  });
+</script>
+
+<script type='text/javascript'>
+$(function() {
+    $('#ix').change(function() {
+        var name = $(this).find(':selected')[0].text;
+        $('#name_myix').val(name);
+        this.form.submit();
+    });
+});
+</script>
+{% endblock %}

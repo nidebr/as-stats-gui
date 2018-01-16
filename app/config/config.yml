@@ -4,7 +4,7 @@ application:
   release: '1.0'
   controller: 'src/Controllers'
   model: 'src/Models'
-  locale: 'fr'
+  locale: 'en'
   debug: TRUE
   template_dir: 'web/template'
   twig:
