@@ -128,12 +128,14 @@ class Func
 	  $active_searchas = $dpagename == "history" ? "active" : "";
 	  $active_searchasset = $dpagename == "asset" ? "active" : "";
     $active_ix = $dpagename == "ixstats" ? "active" : "";
+    $active_linkusage = $dpagename == "linkusage" ? "active" : "";
 
     $return = [
       'active_top' => $active_top,
       'active_searchas' => $active_searchas,
       'active_searchasset' => $active_searchasset,
       'active_ix' => $active_ix,
+      'active_linkusage' => $active_linkusage,
     ];
 
     return $return;

@@ -23,6 +23,7 @@
           <li class="{{ active_page.active_searchas }}"><a href="{{ path('history') }}">View AS</a></li>
           <li class="{{ active_page.active_searchasset }}"><a href="{{ path('asset') }}">View AS-SET</a></li>
           <li class="{{ active_page.active_ix }}"><a href="{{ path('ixstats') }}">View IX Stats</a></li>
+          <li class="{{ active_page.active_linkusage }}"><a href="{{ path('linkusage') }}">Link Usage</a></li>
         </ul>
         {% if active_page.active_top == "active" or active_page.active_ix == "active" %}
           <form class="navbar-form navbar-left" role="search">

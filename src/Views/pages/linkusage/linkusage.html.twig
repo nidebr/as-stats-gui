@@ -1,0 +1,58 @@
+{% extends "base/base.html.twig" %}
+{% import "macros/macros.html.twig" as macro %}
+
+{% block refresh %}
+{% endblock %}
+
+{% block title %}
+LinkUasge - Top 10 AS - per link usage
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block content_wrapper %}
+  {% set title = "Top 10 AS - per link usage" %}
+  {% set label = "(#{label})" %}
+  {{ macro.content_header(title, label, config.outispositive ) }}
+{% endblock %}
+
+{% set aff_graph %}
+  {% for links in knownlinks %}
+    {% if config.showv6 %}
+      <div class="row">
+        <div class="col-lg-12">
+          {% set img %}
+            <div class="row">
+              <div class="col-md-12 col-lg-6">
+                {{ macro.getImgLinkUsage(links.tag, 4, hours, links.descr, config.default_graph_width, config.default_graph_height) }}
+              </div>
+              <div class="col-md-12 col-lg-6">
+                {{ macro.getImgLinkUsage(links.tag, 6, hours, links.descr, config.default_graph_width, config.default_graph_height) }}
+              </div>
+            </div>
+          {% endset %}
+
+          {% set title %}
+            {% if config.showtitledetail and config.hidelinkusagename is empty or config.showtitledetail is empty %}
+              Link Usage for {{ links.descr }}
+            {% else %}
+              Link Usage
+            {% endif %}
+          {% endset %}
+          {{ macro.box_linkusage(title, img)}}
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endset %}
+
+{% block content %}
+{{ aff_graph }}
+{% endblock %}
+
+{% block modal %}
+{% endblock %}
+
+{% block js %}
+{% endblock %}

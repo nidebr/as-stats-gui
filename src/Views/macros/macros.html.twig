@@ -1,6 +1,6 @@
 {% macro getHTMLUrl(as, ipversion, desc, start, end, peerusage, selected_links, width, height) %}
   {% import _self as self %}
-  {% set title = "AS#{as} - #{desc} - IPV#{ipversion}" %}
+  {% set title = "AS#{as} - #{desc} - IPv#{ipversion}" %}
 
   {% set img %}
     {{ self.getHTMLImg(as, ipversion, title, start, end, peerusage, false, selected_links, 1, width, height) }}
@@ -16,6 +16,11 @@
   {% endset %}
 
   <img class='img-responsive' src='{{ path('render', {'v': ipversion , 'as': as, 'start': start, 'end': end, 'dname': title, 'width': width, 'height': height, 'nolegend': nolegend, 'selected_links': selected_links|concat_link }) }}' {{ options }}>
+{% endmacro %}
+
+{% macro getImgLinkUsage(link, version, numhours, title, width, height) %}
+  {% set title = "#{title} - IPv#{version}" %}
+  <img class='img-responsive' src='{{ path('render-linkusage', {'link': link , 'numhours': numhours, 'dname': title, 'width': width, 'height': height, 'v': version}) }}'>
 {% endmacro %}
 
 {% macro content_header(titre, small, outispositive) %}
@@ -40,4 +45,16 @@
     {% endif %}
   </section>
   <hr>
+{% endmacro %}
+
+{% macro box_linkusage(title, img) %}
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <i class="fa fa-bar-chart-o"></i>
+      <h3 class="box-title">{{ title }}</h3>
+    </div>
+    <div class="box-body">
+      <center>{{ img }}</center>
+    </div>
+  </div>
 {% endmacro %}
