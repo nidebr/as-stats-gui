@@ -150,21 +150,28 @@ class Func
 
   public function statsFileForHours($hours)
   {
-  	foreach (ConfigApplication::getTopInterval() as $key => $interval) {
-  		if ($interval['hours'] == $hours) {
-  			return $key."statsfile";
-  		}
-  	}
+    $top = ConfigApplication::getTopInterval();
+    if ( $top ) {
+    	foreach ($top as $key => $interval) {
+    		if ($interval['hours'] == $hours) {
+    			return $key."statsfile";
+    		}
+    	}
+    }
   	return "daystatsfile";
   }
 
   public function statsLabelForHours($hours)
   {
-  	foreach (ConfigApplication::getTopInterval() as $key => $interval) {
-  		if ($interval['hours'] == $hours) {
-  			return $interval['label'];
-  		}
-  	}
-  	return (int)$hours . " hours";
+    $top = ConfigApplication::getTopInterval();
+
+    if ( $top ) {
+    	foreach ($top as $key => $interval) {
+    		if ($interval['hours'] == $hours) {
+    			return $interval['label'];
+    		}
+    	}
+    }
+    return (int)$hours . " hours";
   }
 }

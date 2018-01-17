@@ -17,10 +17,12 @@ class DbsProvider
     }
 
     $dbs = ConfigApplication::getTopInterval();
-    foreach ($dbs as $key => $val)
-    {
-        $db[$key."statsfile"]['path'] = $val['statsfile'];
-        $db[$key."statsfile"]['driver'] = 'pdo_sqlite';
+    if ( $dbs ) {
+      foreach ($dbs as $key => $val)
+      {
+          $db[$key."statsfile"]['path'] = $val['statsfile'];
+          $db[$key."statsfile"]['driver'] = 'pdo_sqlite';
+      }
     }
 
     return $db;
