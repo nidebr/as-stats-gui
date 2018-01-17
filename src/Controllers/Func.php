@@ -3,9 +3,17 @@
 namespace Controllers;
 use Application\ConfigApplication as ConfigApplication;
 use Symfony\Component\HttpFoundation\Request;
+use Silex\Application;
 
 class Func
 {
+  protected $app;
+
+  public function __construct($app)
+  {
+    $this->app = $app;
+  }
+
   public function getKnowlinks()
   {
     $knownlinksfile = ConfigApplication::getKnowlinksFile();
@@ -168,10 +176,11 @@ class Func
     if ( $top ) {
     	foreach ($top as $key => $interval) {
     		if ($interval['hours'] == $hours) {
-    			return $interval['label'];
+          $label = explode(' ', $interval['label']);
+    			return $label[0] . " " . $this->app['translator']->trans($label[1]);
     		}
     	}
     }
-    return (int)$hours . " hours";
+    return (int)$hours . " " . $this->app['translator']->trans("hours");
   }
 }

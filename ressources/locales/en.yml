@@ -1,0 +1,14 @@
+in.the.last: In the last %hours%
+hours: hours
+days: days
+inbound.traffic: Inbound traffic
+outbound.traffic: Outbound traffic
+oops.page.not.found: Oops! Page not found.
+oops.work.on.fixing: Oops! We will work on fixing that right away.
+oops.method.not.allowed: Oops! Method Not Allowed.
+error: Error
+view.as: View AS
+view.asset: View AS-SET
+view.ixstats: View IX Stats
+link.usage: Link Usage
+usage: Usage

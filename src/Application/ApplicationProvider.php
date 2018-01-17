@@ -9,10 +9,9 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Application\ConfigApplication as ConfigApplication;
 use DDesrosiers\SilexAnnotations\AnnotationServiceProvider;
-/*use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\LocaleServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Silex\Provider\SymfonyBridgesServiceProvider;*/
 use \utilphp\util as Util;
 use \Mobile_Detect;
 
@@ -59,10 +58,29 @@ class ApplicationProvider implements ServiceProviderInterface
       return new \Models\PeeringDB();
     };
 
+    $app['func'] = function() use($app) {
+      return new \Controllers\Func($app);
+    };
+
     $app->register(new AnnotationServiceProvider(), array(
       'annot.controllerDir' => realpath(ConfigApplication::getControllerRootDirectory()),
     ));
 
     $app->register(new ErrorProvider());
+
+    $app->register(new LocaleServiceProvider());
+    $app->register(new TranslationServiceProvider(), array(
+      'locale_fallbacks' => array('en'),
+      'locale'           => ConfigApplication::getLocale(),
+    ));
+
+    $app->extend('translator', function($translator, $app) {
+      $translator->addLoader('yaml', new YamlFileLoader());
+
+      $translator->addResource('yaml', __DIR__.'/../../ressources/locales/en.yml', 'en');
+      $translator->addResource('yaml', __DIR__.'/../../ressources/locales/fr.yml', 'fr');
+
+      return $translator;
+    });
   }
 }

@@ -32,9 +32,9 @@
 
     {% set traffic %}
       {% if outispositive %}
-        <i class="fa fa-arrow-up"></i> Outbound traffic <i class="fa fa-arrow-down"></i> Inbound traffic
+        <i class="fa fa-arrow-up"></i> {{ 'outbound.traffic' | trans }} <i class="fa fa-arrow-down"></i> {{ 'inbound.traffic' | trans }}
       {% else %}
-        <i class="fa fa-arrow-up"></i> Inbound traffic <i class="fa fa-arrow-down"></i> Outbound traffic
+        <i class="fa fa-arrow-up"></i> {{ 'inbound.traffic' | trans }} <i class="fa fa-arrow-down"></i> {{ 'outbound.traffic' | trans }}
       {% endif %}
     {% endset %}
 
