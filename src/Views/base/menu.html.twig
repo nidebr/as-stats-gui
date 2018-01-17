@@ -18,12 +18,24 @@
               </ul>
             </li>
           {% else %}
-          <li><a href="{{ path('index') }}">Top AS</a></li>
+            <li class="{{ active_page.active_top }}"><a href="{{ path('index') }}">Top AS</a></li>
           {% endif %}
           <li class="{{ active_page.active_searchas }}"><a href="{{ path('history') }}">View AS</a></li>
           <li class="{{ active_page.active_searchasset }}"><a href="{{ path('asset') }}">View AS-SET</a></li>
           <li class="{{ active_page.active_ix }}"><a href="{{ path('ixstats') }}">View IX Stats</a></li>
-          <li class="{{ active_page.active_linkusage }}"><a href="{{ path('linkusage') }}">Link Usage</a></li>
+          {% if topinterval is defined %}
+            <li class="dropdown {{ active_page.active_linkusage }}">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Link Usage <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="{{ path('linkusage') }}">Usage - 24 hours</a></li>
+                {% for top in topinterval %}
+                  <li><a href="{{ path('linkusage', {'numhours': top.hours }) }}">Usage - {{ top.label }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% else %}
+            <li class="{{ active_page.active_linkusage }}"><a href="{{ path('linkusage') }}">Link Usage</a></li>
+          {% endif %}
         </ul>
         {% if active_page.active_top == "active" or active_page.active_ix == "active" %}
           <form class="navbar-form navbar-left" role="search">
