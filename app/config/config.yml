@@ -4,8 +4,8 @@ application:
   release: '1.0'
   controller: 'src/Controllers'
   model: 'src/Models'
-  locale: 'fr'
-  debug: TRUE
+  locale: 'en'
+  debug: FALSE
   template_dir: 'web/template'
   twig:
     enable_cache: FALSE
