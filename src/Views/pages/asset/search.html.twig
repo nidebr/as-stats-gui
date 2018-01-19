@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block title %}
-History for AS-SET
+{{ 'history'|trans|capitalize }} {{'for'|trans}} AS-SET
 {% endblock %}
 
 {% block css %}
 {% endblock %}
 
 {% block content_wrapper %}
-  {% set title = "History for AS-SET" %}
+  {% set title = "#{'history'|trans|capitalize} #{'for'|trans} AS-SET" %}
   {{ macro.content_header(title, "", 'NONE' ) }}
 {% endblock %}
 
@@ -21,7 +21,7 @@ History for AS-SET
   <div class="col-md-12 col-lg-2">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">Search AS-SET</h3>
+        <h3 class="box-title">{{ 'search'|trans|capitalize }} AS-SET</h3>
         <div class="box-tools">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
@@ -29,7 +29,7 @@ History for AS-SET
       <div class="box-body">
         <form class="navbar-form navbar-left" role="search" action="{{ path('asset') }}">
           <div class="input-group">
-            <input id="asset" type="text" class="form-control menu-input" name="asset" placeholder="Search AS-SET">
+            <input id="asset" type="text" class="form-control menu-input" name="asset" placeholder="{{ 'search'|trans|capitalize }} AS-SET">
             <span class="input-group-btn">
               <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
             </span>
@@ -45,11 +45,11 @@ History for AS-SET
 
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">Tools Box</h3>
+        <h3 class="box-title">{{'tools.box'|trans}}</h3>
       </div>
       <div class="box-body">
         <div class="list-group list-group-unbordered">
-          <a id="clear" href="{{ path('asset/clear') }}" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove all AS-SET cache files.</a>
+          <a id="clear" href="{{ path('asset/clear') }}" class="list-group-item"><i class="fa fa-remove text-red"></i> {{'remove.all.asset.cache.file'|trans}}.</a>
         </div>
       </div>
     </div>
@@ -85,12 +85,12 @@ History for AS-SET
           success: function(response) {
               var json = $.parseJSON(response);
               if ( json.fail ) {
-                $("#reponse_ajax").html('<div class=\"alert alert-danger alert-dismissable\"><i class=\"icon fa fa-ban\"></i>&nbsp;Unable to clear all cache files.</div>');
+                $("#reponse_ajax").html('<div class=\"alert alert-danger alert-dismissable\"><i class=\"icon fa fa-ban\"></i>&nbsp;{{'unable.to.clear.cache'|trans}}.</div>');
               } else {
                 if ( !json.ok ) {
-                  $("#reponse_ajax").html('<div class=\"alert alert-info alert-dismissable\"><i class=\"icon fa fa-info\"></i>&nbsp;The cache is already cleared.</div>');
+                  $("#reponse_ajax").html('<div class=\"alert alert-info alert-dismissable\"><i class=\"icon fa fa-info\"></i>&nbsp;{{'cache.is.already.cleared'|trans}}.</div>');
                 } else {
-                  $("#reponse_ajax").html("<div class=\"alert alert-success alert-dismissable\"><i class='icon fa fa-check'></i>&nbsp;Clear cache files done.</div>");
+                  $("#reponse_ajax").html("<div class=\"alert alert-success alert-dismissable\"><i class='icon fa fa-check'></i>&nbsp;{{'clear.cache.done'|trans}}.</div>");
                 }
               }
               setTimeout(function () { location.reload(); }, 2 * 1000);

@@ -1,14 +1,50 @@
 in.the.last: Dans les %hours%
 hours: heures
 days: jours
+hour: heure
+day: jour
+month: mois
+months: mois
+year: année
+years: années
 inbound.traffic: Trafic entrant
 outbound.traffic: Trafic sortant
 oops.page.not.found: Oops! Page non trouvée.
 oops.work.on.fixing: Oops! Nous allons travailler pour régler le problème tout de suite.
 oops.method.not.allowed: Oops! Méthode non autorisée.
-error: Erreur
+error: erreur
 view.as: Voir AS
 view.asset: Voir AS-SET
 view.ixstats: Voir IX Stats
-link.usage: Utilisation des Liens
-usage: Utilisation
+links.usage: Utilisation des Liens
+usage: utilisation
+release: version
+written.by: écrit par
+for: pour
+legend: légende
+in: entrant
+out: sortant
+search: rechercher
+history: historique
+links: liens
+link: lien
+custom.links: Liens Personnalisés
+daily: quotidien
+hourly: hebdomadaire
+weekly: mensuel
+yearly: annuel
+tools.box: Boîte à Outils
+remove.all.asset.cache.file: Supprimer tout le cache
+clear.cache.done: Le cache est vide
+cache.is.already.cleared: Le cache est déjà vide
+unable.to.clear.cache: Impossible de vider le cache
+other: autre
+no.data.found: pas de données
+data.from.cache: Données du fichier de cache
+remove.asset.cache.file.for: Supprimer le cache pour
+per.link.usage: utilisation par lien
+link.usage: utilisation du lien
+ix.stats: Statistiques IX
+my.ix: Mes IX
+select: sélectionner
+interval: intervalle

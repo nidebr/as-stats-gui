@@ -5,7 +5,6 @@ use Silex\Application;
 use DDesrosiers\SilexAnnotations\Annotations as SLX;
 use Symfony\Component\HttpFoundation\Request;
 use Application\ConfigApplication as ConfigApplication;
-use Controllers\Func;
 
 /**
  * @SLX\Controller(prefix="/ixstats")
@@ -20,13 +19,13 @@ class IXStats extends BaseController
   */
   public function index(Request $request, Application $app)
   {
-    $this->data['active_page'] = Func::getRouteName($request);
+    $this->data['active_page'] = $app['func']->getRouteName($request);
     $req = $request->query->all();
 
     $hours = 24;
     if (@$req['numhours']) $hours = (int)$req['numhours'];
 
-    $this->data['knownlinks'] = Func::getKnowlinks();
+    $this->data['knownlinks'] = $app['func']->getKnowlinks();
     $selected_links = array();
     foreach($this->data['knownlinks'] as $link){
        if(isset($req["link_${link['tag']}"]))
@@ -47,11 +46,11 @@ class IXStats extends BaseController
       $this->data['request'] = $req;
 
       $list_asn = $app['peeringdb']->GetIXASN($req['ix']);
-      $topas = $this->db->GetASStatsTop($ntop, Func::statsFileForHours($hours), $selected_links, $list_asn);
+      $topas = $this->db->GetASStatsTop($ntop, $app['func']->statsFileForHours($hours), $selected_links, $list_asn);
 
       $this->data['asinfo'] = NULL;
       foreach ($topas as $as => $nbytes) {
-        $this->data['asinfo'][$as]['info'] = Func::GetASInfo($as);
+        $this->data['asinfo'][$as]['info'] = $app['func']->GetASInfo($as);
 
         $this->data['asinfo'][$as]['v4'] = [
           'in' => $nbytes[0],
@@ -65,13 +64,13 @@ class IXStats extends BaseController
           ];
         }
 
-        $this->data['customlinks'][$as] = Func::getCustomLinks($as);
+        $this->data['customlinks'][$as] = $app['func']->getCustomLinks($as);
       }
 
       $this->data['start'] = time() - $hours*3600;
       $this->data['end'] = time();
       $this->data['ntop'] = $ntop;
-      $this->data['label'] = Func::statsLabelForHours($hours);
+      $this->data['label'] = $app['func']->statsLabelForHours($hours);
       return $app['twig']->render('pages/ixstats/ixstats.html.twig', $this->data);
     }
 

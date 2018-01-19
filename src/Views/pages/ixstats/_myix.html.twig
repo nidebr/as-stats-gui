@@ -3,11 +3,11 @@
   	<form method='get'>
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">My IX</h3>
+          <h3 class="box-title">{{'my.ix'|trans}}</h3>
         </div>
         <div class="box-body">
         	<select name="ix" id="ix" class="form-control">
-            <option value="">Select IX</option>
+            <option value="">{{'select'|trans|capitalize}} IX</option>
             {% for list_myix in myix %}
               {% set selected %}
                 {% if request.ix is defined and request.ix == list_myix.ix_id %}

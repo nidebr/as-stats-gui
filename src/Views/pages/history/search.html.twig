@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block title %}
-History
+{{ 'history'|trans|capitalize }}
 {% endblock %}
 
 {% block css %}
 {% endblock %}
 
 {% block content_wrapper %}
-  {% set title = "History for AS" %}
+  {% set title = "#{'history'|trans|capitalize}" %}
   {{ macro.content_header(title, "", 'NONE' ) }}
 {% endblock %}
 
@@ -21,7 +21,7 @@ History
   <div class="col-md-12 col-lg-2">
     <div class="box box-primary">
       <div class="box-header with-border">
-        <h3 class="box-title">Search AS</h3>
+        <h3 class="box-title">{{ 'search'|trans|capitalize }} AS</h3>
         <div class="box-tools">
           <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
         </div>
@@ -29,7 +29,7 @@ History
       <div class="box-body">
         <form class="navbar-form navbar-left" role="search" action="{{ path('history') }}">
           <div class="input-group">
-            <input id="as" type="text" class="form-control menu-input" name="as" placeholder="Search AS">
+            <input id="as" type="text" class="form-control menu-input" name="as" placeholder="{{ 'search'|trans|capitalize }} AS">
             <span class="input-group-btn">
               <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
             </span>

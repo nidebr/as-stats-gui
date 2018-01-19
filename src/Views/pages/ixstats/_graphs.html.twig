@@ -13,10 +13,10 @@
       <div class="row">
         <div class="col-md-4 col-lg-2">
           <b><img src="{{ global.request.baseUrl }}/flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
-          <div class="small">In the last {{ label|default('') }}</div>
-          <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out</div>
+          <div class="small">{{ 'in.the.last' | trans( {'%hours%': label|default('')} ) }}</div>
+          <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} {{ 'in'|trans }} / {{ as_data.v4.out|format_bytes }} {{ 'out'|trans }}</div>
           {% if as_data.v6 is defined %}
-            <div class="small">IPv6: ~ {{ as_data.v6.in|format_bytes }} in / {{ as_data.v6.out|format_bytes }} out</div>
+            <div class="small">IPv6: ~ {{ as_data.v6.in|format_bytes }} {{ 'in'|trans }} / {{ as_data.v6.out|format_bytes }} {{ 'out'|trans }}</div>
           {% endif %}
           <span class="small">{{ attribute(customlinks, key_as)|raw }}</span>
           <div class="rank">

@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block title %}
-History for AS{{request.as}}: {{ asinfo.descr }}
+{{ 'history'|trans|capitalize }} {{ 'for'|trans }} AS{{request.as}}: {{ asinfo.descr }}
 {% endblock %}
 
 {% block css %}
 {% endblock %}
 
 {% block content_wrapper %}
-  {% set title = "History for AS#{request.as}" %}
+  {% set title = "#{'history'|trans|capitalize} #{'for'|trans} AS#{request.as}" %}
   {{ macro.content_header(title, asinfo.descr, config.outispositive ) }}
 {% endblock %}
 
@@ -26,7 +26,7 @@ History for AS{{request.as}}: {{ asinfo.descr }}
       <div class="col-lg-12">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Search AS</h3>
+            <h3 class="box-title">{{ 'search'|trans|capitalize }} AS</h3>
             <div class="box-tools">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             </div>
@@ -34,7 +34,7 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <form class="navbar-form navbar-left" role="search" action="{{ path('history') }}">
               <div class="input-group">
-                <input id="as" type="text" class="form-control menu-input" name="as" placeholder="Search AS" value="{{ request.as }}">
+                <input id="as" type="text" class="form-control menu-input" name="as" placeholder="{{ 'search'|trans|capitalize }} AS" value="{{ request.as }}">
                 <span class="input-group-btn">
                   <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
                 </span>
@@ -47,7 +47,7 @@ History for AS{{request.as}}: {{ asinfo.descr }}
         <div class="col-lg-12">
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Custom Links</h3>
+              <h3 class="box-title">{{ 'custom.links'|trans }}</h3>
 
               <div class="box-tools">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -68,7 +68,7 @@ History for AS{{request.as}}: {{ asinfo.descr }}
       <div class="col-md-12">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Daily</h3>
+            <h3 class="box-title">{{'daily'|trans|capitalize}}</h3>
 
             <div class="box-tools">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -77,12 +77,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", daily.start, end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPv4", daily.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", daily.start, end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPv6", daily.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>
@@ -91,7 +91,7 @@ History for AS{{request.as}}: {{ asinfo.descr }}
 
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Hourly</h3>
+            <h3 class="box-title">{{'hourly'|trans|capitalize}}</h3>
 
             <div class="box-tools">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -100,12 +100,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", weekly.start, end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPv4", weekly.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", weekly.start, end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPv6", weekly.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>
@@ -114,7 +114,7 @@ History for AS{{request.as}}: {{ asinfo.descr }}
 
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Weekly</h3>
+            <h3 class="box-title">{{'weekly'|trans|capitalize}}</h3>
 
             <div class="box-tools">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -123,12 +123,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", monthly.start, end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPv4", monthly.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", monthly.start, end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPv6", monthly.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>
@@ -137,7 +137,7 @@ History for AS{{request.as}}: {{ asinfo.descr }}
 
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Yearly</h3>
+            <h3 class="box-title">{{'yearly'|trans|capitalize}}</h3>
 
             <div class="box-tools">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
@@ -146,12 +146,12 @@ History for AS{{request.as}}: {{ asinfo.descr }}
           <div class="box-body">
             <center>
               <div class="col-lg-{{ col }}">
-                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPV4", yearly.start, end, 0, true, "", 0) }}
+                {{ macro.getHTMLImg(request.as, 4, "AS#{request.as} - #{asinfo.descr} - IPv4", yearly.start, end, 0, true, "", 0) }}
               </div>
 
               {% if config.showv6 %}
                 <div class="col-lg-6">
-                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPV6", yearly.start, end, 0, true, "", 0) }}
+                  {{ macro.getHTMLImg(request.as, 6, "AS#{request.as} - #{asinfo.descr} - IPv6", yearly.start, end, 0, true, "", 0) }}
                 </div>
               {% endif %}
             </center>

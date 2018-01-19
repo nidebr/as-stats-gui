@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block title %}
-LinkUasge - Top 10 AS - per link usage
+{{'link.usage'|trans}} - Top 10 AS
 {% endblock %}
 
 {% block css %}
 {% endblock %}
 
 {% block content_wrapper %}
-  {% set title = "Top 10 AS - per link usage" %}
+  {% set title = "Top 10 AS - #{'per.link.usage'|trans}" %}
   {% set label = "(#{label})" %}
   {{ macro.content_header(title, label, config.outispositive ) }}
 {% endblock %}
@@ -35,9 +35,9 @@ LinkUasge - Top 10 AS - per link usage
 
           {% set title %}
             {% if config.showtitledetail and config.hidelinkusagename is empty or config.showtitledetail is empty %}
-              Link Usage for {{ links.descr }}
+              {{'link.usage'|trans|capitalize}} {{'for'|trans}} {{ links.descr }}
             {% else %}
-              Link Usage
+              {{'link.usage'|trans|capitalize}}
             {% endif %}
           {% endset %}
           {{ macro.box_linkusage(title, img)}}

@@ -18,7 +18,7 @@
       <h3><i class="fa fa-warning text-light-blue"></i> Oops!</h3>
 
       <p>
-        {{ error|default('')|raw }}
+        {{ 'error'|trans|default('')|raw|capitalize }}
       </p>
 
     </div>

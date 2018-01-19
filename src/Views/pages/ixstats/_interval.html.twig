@@ -3,18 +3,19 @@
     <form method='get' id="search_ix_name">
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">Interval</h3>
+          <h3 class="box-title">{{'interval'|trans|capitalize}}</h3>
         </div>
         <div class="box-body">
           <select name="numhours" id="numhours" class="form-control" onchange="this.form.submit()">
-            <option value="24">24 hours</option>
+            <option value="24">24 {{'hours'|trans}}</option>
             {% for top in topinterval %}
               {% set selected %}
                 {% if hours is defined and hours == top.hours %}
                   selected
                 {% endif %}
               {% endset %}
-              <option {{ selected }} value="{{ top.hours }}">{{ top.label }}</option>
+              {% set label = top.label|split(' ') %}
+              <option {{ selected }} value="{{ top.hours }}">{{ label[0] }} {{ label[1]|trans }}</option>
             {% endfor %}
         </div>
       </div>

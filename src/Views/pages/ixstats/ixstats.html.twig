@@ -15,7 +15,7 @@
 {% endblock %}
 
 {% block title %}
-IX Stats: {{ add_title }}
+{{'ix.stats'|trans}}: {{ add_title }}
 {% endblock %}
 
 {% block css %}
@@ -87,7 +87,7 @@ IX Stats: {{ add_title }}
 {% endif %}
 
 {% block content_wrapper %}
-  {% set title = "IX Stats - #{add_title}" %}
+  {% set title = "#{'ix.stats'|trans} - #{add_title}" %}
   {% set label = "(top #{ntop} - #{label})" %}
   {{ macro.content_header(title, label, config.outispositive ) }}
 {% endblock %}
@@ -107,7 +107,7 @@ IX Stats: {{ add_title }}
         <div data-spy="affix" data-offset-top="100">
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Legend</h3>
+              <h3 class="box-title">{{'legend'|trans|capitalize}}</h3>
             </div>
             <div class="box-body">
               {% if mobile %}

@@ -5,7 +5,6 @@ use Silex\Application;
 use DDesrosiers\SilexAnnotations\Annotations as SLX;
 use Symfony\Component\HttpFoundation\Request;
 use Application\ConfigApplication as ConfigApplication;
-use Controllers\Func;
 
 /**
  * @SLX\Controller(prefix="/asset")
@@ -21,7 +20,7 @@ class Asset extends BaseController
   public function index(Request $request, Application $app)
   {
     $req = $request->query->all();
-    $this->data['active_page'] = Func::getRouteName($request);
+    $this->data['active_page'] = $app['func']->getRouteName($request);
 
     if ( isset($req['asset']) ) {
       $hours = 24;
@@ -33,7 +32,7 @@ class Asset extends BaseController
       $this->data['aslist'] = $whois['aslist'];
       $this->data['other_asset'] = $whois['other_asset'];
 
-      $this->data['knownlinks'] = Func::getKnowlinks();
+      $this->data['knownlinks'] = $app['func']->getKnowlinks();
 
       $selected_links = array();
       foreach($this->data['knownlinks'] as $link){
@@ -43,11 +42,11 @@ class Asset extends BaseController
       $this->data['selected_links'] = $selected_links;
       $this->data['request'] = $req;
 
-      $topas = $this->db->GetASStatsTop(200, Func::statsFileForHours($hours), $selected_links, $this->data['aslist']);
+      $topas = $this->db->GetASStatsTop(200, $app['func']->statsFileForHours($hours), $selected_links, $this->data['aslist']);
 
       $this->data['asinfo'] = NULL;
       foreach ($topas as $as => $nbytes) {
-        $this->data['asinfo'][$as]['info'] = Func::GetASInfo($as);
+        $this->data['asinfo'][$as]['info'] = $app['func']->GetASInfo($as);
 
         $this->data['asinfo'][$as]['v4'] = [
           'in' => $nbytes[0],
@@ -61,19 +60,19 @@ class Asset extends BaseController
           ];
         }
 
-        $this->data['customlinks'][$as] = Func::getCustomLinks($as);
+        $this->data['customlinks'][$as] = $app['func']->getCustomLinks($as);
       }
 
       foreach ( $this->data['aslist'] as $as ) {
         if ( !array_key_exists($as, $topas) ) {
-          $this->data['asinfo_nodata'][$as]['info'] = Func::GetASInfo($as);
-          $this->data['customlinks'][$as] = Func::getCustomLinks($as);
+          $this->data['asinfo_nodata'][$as]['info'] = $app['func']->GetASInfo($as);
+          $this->data['customlinks'][$as] = $app['func']->getCustomLinks($as);
         }
       }
 
       $this->data['start'] = time() - $hours*3600;
       $this->data['end'] = time();
-      $this->data['label'] = Func::statsLabelForHours($hours);
+      $this->data['label'] = $app['func']->statsLabelForHours($hours);
       $this->data['hours'] = $hours;
 
       #$app['util']::var_dump($this->data);

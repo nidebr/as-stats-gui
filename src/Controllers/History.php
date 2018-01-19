@@ -4,7 +4,6 @@ namespace Controllers;
 use Silex\Application;
 use DDesrosiers\SilexAnnotations\Annotations as SLX;
 use Symfony\Component\HttpFoundation\Request;
-use Controllers\Func;
 
 /**
  * @SLX\Controller(prefix="/history")
@@ -20,11 +19,11 @@ class History extends BaseController
   public function index(Request $request, Application $app)
   {
     $req = $request->query->all();
-    $this->data['active_page'] = Func::getRouteName($request);
+    $this->data['active_page'] = $app['func']->getRouteName($request);
     if ( isset($req['as']) ) {
       $this->data['request'] = $req;
-      $this->data['asinfo'] = Func::GetASInfo($req['as']);
-      $this->data['customlinks'] = Func::getCustomLinks_History($req['as']);
+      $this->data['asinfo'] = $app['func']->GetASInfo($req['as']);
+      $this->data['customlinks'] = $app['func']->getCustomLinks_History($req['as']);
 
       $this->data['end'] = time();
 

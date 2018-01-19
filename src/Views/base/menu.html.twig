@@ -13,7 +13,8 @@
               <ul class="dropdown-menu" role="menu">
                 <li><a href="{{ path('index') }}">Top AS - 24 {{ 'hours' | trans}}</a></li>
                 {% for top in topinterval %}
-                  <li><a href="{{ path('index', {'numhours': top.hours }) }}">Top AS - {{ top.label }}</a></li>
+                  {% set label = top.label|split(' ') %}
+                  <li><a href="{{ path('index', {'numhours': top.hours }) }}">Top AS - {{ label[0] }} {{ label[1]|trans }}</a></li>
                 {% endfor %}
               </ul>
             </li>
@@ -25,16 +26,17 @@
           <li class="{{ active_page.active_ix }}"><a href="{{ path('ixstats') }}">{{ 'view.ixstats' | trans }}</a></li>
           {% if topinterval is defined %}
             <li class="dropdown {{ active_page.active_linkusage }}">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{ 'link.usage' | trans }} <span class="caret"></span></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{ 'links.usage' | trans }} <span class="caret"></span></a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="{{ path('linkusage') }}">{{ 'usage' | trans}} - 24 {{ 'hours' | trans}}</a></li>
+                <li><a href="{{ path('linkusage') }}">{{ 'usage' | trans | capitalize }} - 24 {{ 'hours' | trans}}</a></li>
                 {% for top in topinterval %}
-                  <li><a href="{{ path('linkusage', {'numhours': top.hours }) }}">{{ 'usage' | trans}} - {{ top.label }}</a></li>
+                  {% set label = top.label|split(' ') %}
+                  <li><a href="{{ path('linkusage', {'numhours': top.hours }) }}">{{ 'usage' | trans | capitalize }} - {{ label[0] }} {{ label[1]|trans }}</a></li>
                 {% endfor %}
               </ul>
             </li>
           {% else %}
-            <li class="{{ active_page.active_linkusage }}"><a href="{{ path('linkusage') }}">{{ 'link.usage' | trans }}</a></li>
+            <li class="{{ active_page.active_linkusage }}"><a href="{{ path('linkusage') }}">{{ 'links.usage' | trans }}</a></li>
           {% endif %}
         </ul>
         {% if active_page.active_top == "active" or active_page.active_ix == "active" %}

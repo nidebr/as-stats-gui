@@ -4,7 +4,6 @@ namespace Controllers;
 use Silex\Application;
 use DDesrosiers\SilexAnnotations\Annotations as SLX;
 use Symfony\Component\HttpFoundation\Request;
-use Controllers\Func;
 use Symfony\Component\HttpFoundation\Response;
 use Application\ConfigApplication as ConfigApplication;
 
@@ -54,7 +53,7 @@ class Render
     	$peerusage = 0;
     }
 
-    $knownlinks = Func::getKnowlinks();
+    $knownlinks = $app['func']->getKnowlinks();
 
     if(isset($req['selected_links']) && !empty($req['selected_links'])) {
     	$reverse = array();
@@ -74,7 +73,7 @@ class Render
     	$knownlinks = $links;
     }
 
-    $rrdfile = Func::getRRDFileForAS($req['as'], $peerusage);
+    $rrdfile = $app['func']->getRRDFileForAS($req['as'], $peerusage);
 
     if ($compat_rrdtool12) {
     	/* cannot use full-size-mode - must estimate height/width */
@@ -244,7 +243,7 @@ class Render
     $hours = 24;
     if (@$req['numhours']) $hours = (int)$req['numhours'];
 
-    $topas = $app['table.sql']->GetASStatsTop($numtop,Func::statsFileForHours($hours), array($req['link']));
+    $topas = $app['table.sql']->GetASStatsTop($numtop,$app['func']->statsFileForHours($hours), array($req['link']));
 
     $width = $this->params['default_graph_width'];
     $height = $this->params['default_graph_height'];
@@ -252,7 +251,7 @@ class Render
     if (@$req['width']) $width = (int)$req['width'];
     if (@$req['height']) $height = (int)$req['height'];
 
-    $knownlinks = Func::getKnowlinks();
+    $knownlinks = $app['func']->getKnowlinks();
 
     if ($compat_rrdtool12) {
     	/* cannot use full-size-mode - must estimate height/width */
@@ -286,7 +285,7 @@ class Render
 
     /* geneate RRD DEFs */
     foreach ($topas as $as => $traffic) {
-    	$rrdfile = Func::getRRDFileForAS($as);
+    	$rrdfile = $app['func']->getRRDFileForAS($as);
     	$cmd .= "DEF:as{$as}_{$v6_el}in=\"$rrdfile\":{$link}_{$v6_el}in:AVERAGE ";
     	$cmd .= "DEF:as{$as}_{$v6_el}out=\"$rrdfile\":{$link}_{$v6_el}out:AVERAGE ";
     }
@@ -305,7 +304,7 @@ class Render
     /* generate graph area/stack for inbound */
     $i = 0;
     foreach ($topas as $as => $traffic) {
-    	$asinfo = Func::GetASInfo($as);
+    	$asinfo = $app['func']->GetASInfo($as);
     	$descr = str_replace(":", "\\:", utf8_decode($asinfo['descr']));
 
     	$cmd .= "AREA:as{$as}_{$v6_el}in_bits#{$ascolors[$i]}:\"AS{$as} ({$descr})\\n\"";

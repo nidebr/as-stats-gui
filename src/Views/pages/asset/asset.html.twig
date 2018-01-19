@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block title %}
-History for AS-SET: {{ asset }}
+{{ 'history'|trans|capitalize }} {{'for'|trans}} AS-SET: {{ asset }}
 {% endblock %}
 
 {% block css %}
@@ -59,7 +59,7 @@ History for AS-SET: {{ asset }}
 {% endblock %}
 
 {% block content_wrapper %}
-  {% set title = "History for AS-SET" %}
+  {% set title = "#{'history'|trans|capitalize} #{'for'|trans} AS-SET" %}
   {% set label = "#{asset} (#{label})" %}
   {{ macro.content_header(title, label, config.outispositive ) }}
 {% endblock %}
@@ -69,7 +69,7 @@ History for AS-SET: {{ asset }}
     <div class="col-lg-12">
       <div class="box box-primary">
         <div class="box-header with-border">
-          <h3 class="box-title">Other AS-SET</h3>
+          <h3 class="box-title">{{'other'|trans|capitalize}} AS-SET</h3>
         </div>
         <div class="box-body">
           <ul class="nav nav-stacked">
@@ -98,10 +98,10 @@ History for AS-SET: {{ asset }}
       <div class="row">
         <div class="col-md-4 col-lg-2">
           <b><img src="{{ global.request.baseUrl }}/flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
-          <div class="small">In the last {{ label|default('') }}</div>
-          <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out</div>
+          <div class="small">{{ 'in.the.last' | trans( {'%hours%': label|default('')} ) }}</div>
+          <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} {{ 'in'|trans }} / {{ as_data.v4.out|format_bytes }} {{ 'out'|trans }}</div>
           {% if as_data.v6 is defined %}
-            <div class="small">IPv6: ~ {{ as_data.v6.in|format_bytes }} in / {{ as_data.v6.out|format_bytes }} out</div>
+            <div class="small">IPv6: ~ {{ as_data.v6.in|format_bytes }} {{ 'in'|trans }} / {{ as_data.v6.out|format_bytes }} {{ 'out'|trans }}</div>
           {% endif %}
           <span class="small">{{ attribute(customlinks, key_as)|raw }}</span>
           <div class="rank">
@@ -140,7 +140,6 @@ History for AS-SET: {{ asset }}
       <div class="row">
         <div class="col-md-4 col-lg-2">
           <b><img src="{{ global.request.baseUrl }}/flags/blank.gif" class="flag flag-{{ as_data.info.country|lower }}"/> AS{{ key_as }}: </b><small><i>{{ as_data.info.descr }}</i></small>
-          <div class="small">In the last {{ label|default('') }}</div>
           <span class="small">{{ attribute(customlinks, key_as)|raw }}</span>
           <div class="rank">
             {% set counter = counter + 1 %}
@@ -148,7 +147,7 @@ History for AS-SET: {{ asset }}
           </div>
         </div>
         <div class="col-md-12 col-lg-10">
-          <center>No data found for AS{{ key_as }}</center>
+          <center>{{'no.data.found'|trans|capitalize}} {{'for'|trans}} AS{{ key_as }}</center>
         </div>
       </div>
     </li>
@@ -163,7 +162,7 @@ History for AS-SET: {{ asset }}
       <div class="col-lg-12">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Search AS-SET</h3>
+            <h3 class="box-title">{{ 'search'|trans|capitalize }} AS-SET</h3>
             <div class="box-tools">
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
             </div>
@@ -171,7 +170,7 @@ History for AS-SET: {{ asset }}
           <div class="box-body">
             <form class="navbar-form navbar-left" role="search" action="{{ path('asset') }}">
               <div class="input-group">
-                <input id="asset" type="text" class="form-control menu-input" name="asset" placeholder="Search AS-SET" value="{{ asset }}">
+                <input id="asset" type="text" class="form-control menu-input" name="asset" placeholder="{{ 'search'|trans|capitalize }} AS-SET" value="{{ asset }}">
                 <span class="input-group-btn">
                   <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
                 </span>
@@ -183,19 +182,19 @@ History for AS-SET: {{ asset }}
 
       {% if cache %}
         <div class="col-lg-12">
-          <div class="alert alert-warning"><i class="icon fa fa-info"></i>&nbsp;Data from cache file.</div>
+          <div class="alert alert-warning"><i class="icon fa fa-info"></i>&nbsp;{{'data.from.cache'|trans}}.</div>
         </div>
       {% endif %}
 
       <div class="col-lg-12">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Tools Box</h3>
+            <h3 class="box-title">{{'tools.box'|trans}}</h3>
           </div>
           <div class="box-body">
             <div class="list-group list-group-unbordered">
-              <a id="clear_one" href="{{ path('asset/clear/one', { 'file': asset }) }}" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove AS-SET cache file for {{ asset }}</a>
-              <a id="clear" href="{{ path('asset/clear') }}" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove all AS-SET cache files.</a>
+              <a id="clear_one" href="{{ path('asset/clear/one', { 'file': asset }) }}" class="list-group-item"><i class="fa fa-remove text-red"></i> {{'remove.asset.cache.file.for'|trans}} {{ asset }}</a>
+              <a id="clear" href="{{ path('asset/clear') }}" class="list-group-item"><i class="fa fa-remove text-red"></i> {{'remove.all.asset.cache.file'|trans}}.</a>
             </div>
           </div>
         </div>
@@ -207,7 +206,7 @@ History for AS-SET: {{ asset }}
           <div data-spy="affix" data-offset-top="400">
             <div class="box box-primary">
               <div class="box-header with-border">
-                <h3 class="box-title">Legend</h3>
+                <h3 class="box-title">{{'legend'|trans|capitalize}}</h3>
               </div>
               <div class="box-body">
                 {% if mobile %}
@@ -261,12 +260,12 @@ History for AS-SET: {{ asset }}
           success: function(response) {
               var json = $.parseJSON(response);
               if ( json.fail ) {
-                $("#reponse_ajax").html('<div class=\"alert alert-danger alert-dismissable\"><i class=\"icon fa fa-ban\"></i>&nbsp;Unable to clear all cache files.</div>');
+                $("#reponse_ajax").html('<div class=\"alert alert-danger alert-dismissable\"><i class=\"icon fa fa-ban\"></i>&nbsp;{{'unable.to.clear.cache'|trans}}.</div>');
               } else {
                 if ( !json.ok ) {
-                  $("#reponse_ajax").html('<div class=\"alert alert-info alert-dismissable\"><i class=\"icon fa fa-info\"></i>&nbsp;The cache is already cleared.</div>');
+                  $("#reponse_ajax").html('<div class=\"alert alert-info alert-dismissable\"><i class=\"icon fa fa-info\"></i>&nbsp;{{'cache.is.already.cleared'|trans}}.</div>');
                 } else {
-                  $("#reponse_ajax").html("<div class=\"alert alert-success alert-dismissable\"><i class='icon fa fa-check'></i>&nbsp;Clear cache files done.</div>");
+                  $("#reponse_ajax").html("<div class=\"alert alert-success alert-dismissable\"><i class='icon fa fa-check'></i>&nbsp;{{'clear.cache.done'|trans}}.</div>");
                 }
               }
               setTimeout(function () { window.location.replace("{{ path('asset') }}"); }, 2 * 1000);
