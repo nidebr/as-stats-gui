@@ -326,7 +326,7 @@ function menu($selected_links) {
 
   $return .='</ul>';
 
-	$val_ntop = isset($_GET['n']) ? $_GET['n'] : "";
+	$val_ntop = isset($_GET['n']) ? htmlentities($_GET['n']) : "";
 
 	if ($dpagename == "index" || $dpagename == "ix") {
 		$return .='<form class="navbar-form navbar-left" role="search">';
@@ -336,7 +336,7 @@ function menu($selected_links) {
 		}
 
     if ( $dpagename == "ix" && isset($_GET['ix']) ) {
-      $return .='<input type="hidden" name="ix" value="'.$_GET['ix'].'">';
+      $return .='<input type="hidden" name="ix" value="'.htmlspecialchars($_GET['ix']).'">';
     }
 
 	  $return .='<div class="input-group">';

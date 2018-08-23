@@ -39,7 +39,7 @@ if ( isset($_GET['action']) ) {
   	header("Location: asset.php");
   } else if ( $action == "clear" and $asset ) {
   	clearCacheFileASSET($asset);
-  	header("Location: asset.php?asset=".$asset."");
+    header("Location: asset.php?asset=".urlencode($asset));
   }
 }
 
@@ -49,9 +49,9 @@ if ( $asset ) {
   $start = time() - $hours*3600;
   $end = time();
 
-  $title = "AS-Stats | History for AS-SET: ".$asset;
+  $title = "AS-Stats | History for AS-SET: ".htmlentities($asset);
   $header = 'History for AS-SET';
-  $header_small = $asset;
+  $header_small = htmlentities($asset);
   $select_form = "";
 
   $aslist = getASSET($asset);
@@ -191,11 +191,11 @@ if ( $asset ) {
   } else {
     $aff_astable .= '<div class="alert alert-info">';
     $aff_astable .= '<h4><i class="icon fa fa-warning"></i> Alert!</h4>';
-    $aff_astable .= 'No data for AS-SET <b>' . $asset . '</b>';
+    $aff_astable .= 'No data for AS-SET <b>' . htmlentities($asset) . '</b>';
     $aff_astable .= '</div>';
   }
   // TOOLSBOX
-  $aff_toolsbox_add = '<a href="asset.php?asset='.$asset.'&action=clear" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove AS-SET cache file for '.$asset.'.</a>';
+  $aff_toolsbox_add = '<a href="asset.php?asset='.htmlentities($asset).'&action=clear" class="list-group-item"><i class="fa fa-remove text-red"></i> Remove AS-SET cache file for '.htmlentities($asset).'.</a>';
 } else {
   $title = "AS-Stats | View AS-SET";
   $header = 'History for AS-SET';
@@ -252,7 +252,7 @@ $aff_toolsbox .= '</div>';
                 <div class="box-body">
                   <form class="navbar-form navbar-left" role="search">
                   <div class="input-group">
-                  <input type="text" class="form-control menu-input" name="asset" placeholder="Search AS-SET" value="<?php echo $val_searchasset; ?>">
+                  <input type="text" class="form-control menu-input" name="asset" placeholder="Search AS-SET" value="<?php echo htmlspecialchars($val_searchasset); ?>">
                   <span class="input-group-btn">
                   <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
                   </span>
@@ -284,7 +284,7 @@ $aff_toolsbox .= '</div>';
             <div class="col-lg-12">
 
               <form method='get'>
-                <input type='hidden' name='asset' value='<?php echo $asset; ?>'/>
+                <input type='hidden' name='asset' value='<?php echo htmlspecialchars($asset); ?>'/>
                 <div class="box box-primary">
                   <div class="box-header with-border">
                     <h3 class="box-title">Legend</h3>

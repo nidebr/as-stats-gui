@@ -223,7 +223,7 @@ if ( $ix_id ) {
   <!-- =============================================== -->
 
   <div class="content-wrapper">
-    <?php echo content_header($ix_name . ' Top ' . $ntop . ' AS', '('.$label.')'); ?>
+    <?php echo content_header(htmlentities($ix_name) . ' Top ' . $ntop . ' AS', '('.$label.')'); ?>
 
     <section class="content">
 			<div class="row">
@@ -261,7 +261,7 @@ if ( $ix_id ) {
                   <input type='hidden' name='numhours' value='<?php echo $hours; ?>'/>
                   <input type='hidden' name='n' value='<?php echo $ntop; ?>'/>
 									<input type='hidden' name='ix' value='<?php echo $ix_id; ?>'/>
-									<input type='hidden' name='name_ix' value='<?php echo $name_ix; ?>'/>
+									<input type='hidden' name='name_ix' value='<?php echo htmlspecialchars($name_ix); ?>'/>
                   <div class="box box-primary">
                     <div class="box-header with-border">
                       <h3 class="box-title">Legend</h3>
@@ -309,8 +309,7 @@ if ( $ix_id ) {
                     <h3 class="box-title">Search IX</h3>
                   </div>
                   <div class="box-body">
-                    <?php $val_name_ix = isset($_GET['name_ix']) ? $_GET['name_ix'] : ""; ?>
-                    <input type="text" class="form-control" name="name_ix" placeholder="Search IX" id="peeringdb" data-provide="typeahead" autocomplete="off" value="<?php echo $val_name_ix; ?>">
+                    <input type="text" class="form-control" name="name_ix" placeholder="Search IX" id="peeringdb" data-provide="typeahead" autocomplete="off" value="<?php echo htmlspecialchars($name_ix); ?>">
                     <input type='hidden' id='ix' name='ix'/>
                     <div id="message"></div>
                   </div>
@@ -323,7 +322,7 @@ if ( $ix_id ) {
 							<form method='get'>
                 <input type='hidden' name='ix' value='<?php echo $ix_id; ?>'/>
                 <input type='hidden' name='n' value='<?php echo $ntop; ?>'/>
-								<input type='hidden' name='name_ix' value='<?php echo $name_ix; ?>'/>
+								<input type='hidden' name='name_ix' value='<?php echo htmlspecialchars($name_ix); ?>'/>
                 <div class="box box-primary">
                   <div class="box-header with-border">
                     <h3 class="box-title">Interval</h3>
