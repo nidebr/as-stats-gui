@@ -35,7 +35,9 @@ if(isset($_GET['selected_links'])){
 	foreach($knownlinks as $link)
 		$reverse[$link['tag']] = array('color' => $link['color'], 'descr' => $link['descr']);
 	$links = array();
-	foreach(explode(',', $_GET['selected_links']) as $tag){
+    foreach(explode(',', $_GET['selected_links']) as $tag){
+        if (preg_match('/[^a-zA-Z0-9]/', $tag))
+            continue;
 		$link = array('tag' => $tag,
 				'color' => $reverse[$tag]['color'],
 				'descr' => $reverse[$tag]['descr']);

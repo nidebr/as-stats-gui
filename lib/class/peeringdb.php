@@ -90,7 +90,8 @@ class PeeringDB {
   }
 
   public function GetIXName( $regex = NULL) {
-    if ( $regex ) { $regex = '?name__contains='.$regex; }
+    if (is_string($regex)) { $regex = '?name__contains='.urlencode($regex); }
+    else $regex = '';
     $json = json_decode($this->sendRequest($this->url."/ix".$regex));
     return $json->data;
   }
