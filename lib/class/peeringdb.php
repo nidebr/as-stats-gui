@@ -79,7 +79,7 @@ class PeeringDB {
   }
 
   public function GetIXASN($id = NULL) {
-    $return = "";
+    $return = array();
     if ( $id ) {
       foreach ($this->GetIXMembers($id) as $key => $value) {
         $return[] = $value->asn;
