@@ -23,7 +23,11 @@ if (@$_GET['numhours'])
 	$hours = (int)$_GET['numhours'];
 
 $statsfile = statsFileForHours($hours);
-$topas = getasstats_top($numtop, $statsfile, array($_GET['link']));
+if (@$_GET['v'] == 6) {
+	$topas = getasstats_top($numtop, $statsfile, array($_GET['link']), $list_asn = NULL, $v=6);
+}else {
+	$topas = getasstats_top($numtop, $statsfile, array($_GET['link']));
+}
 
 /* now make a beautiful graph :) */
 header("Content-Type: image/png");

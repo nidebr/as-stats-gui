@@ -89,7 +89,7 @@ function getknownlinks() {
 	return $knownlinks;
 }
 
-function getasstats_top($ntop, $statfile, $selected_links, $list_asn = NULL) {
+function getasstats_top($ntop, $statfile, $selected_links, $list_asn = NULL, $v = NULL) {
 	try{
 		$db = new SQLite3($statfile);
 	}catch(Exception $e){
@@ -104,9 +104,17 @@ function getasstats_top($ntop, $statfile, $selected_links, $list_asn = NULL) {
 	$query_total = '0';
 	$query_links = '';
 	foreach($selected_links as $tag){
-		$query_links .= "${tag}_in, ${tag}_out, ${tag}_v6_in, ${tag}_v6_out, ";
+		if ($v == 4 || $v == NULL) {
+			$query_links .= "${tag}_in, ${tag}_out, ";
+		} else {
+	        	$query_links .=	"${tag}_v6_in, ${tag}_v6_out, ";
+		}
 		$nlinks += 4;
-		$query_total .= " + ${tag}_in + ${tag}_out + ${tag}_v6_in + ${tag}_v6_out";
+		if ($v == 4 || $v == NULL) {
+			$query_total .= " + ${tag}_in + ${tag}_out";
+		} else {
+			$query_total .= " + ${tag}_v6_in + ${tag}_v6_out";
+		}
 	}
   if ( $list_asn ) {
     $where = implode(",", $list_asn);
