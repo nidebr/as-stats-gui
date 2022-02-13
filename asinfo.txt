@@ -68416,3 +68416,4 @@
 212238	CDNEXT	CDNEXT - Datacamp Limited,GB	GB
 207114	SKYNET-AS	Skynet Plus LLC,UA	UA
 393552	COL-LPC	Longmont Power & Communications,US	US
+30860	YURTEH-AS	Virtual Systems LLC,UA	UA
