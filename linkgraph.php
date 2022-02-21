@@ -94,6 +94,7 @@ $i = 0;
 foreach ($topas as $as => $traffic) {
 	$asinfo = getASInfo($as);
 	$descr = str_replace(":", "\\:", utf8_decode($asinfo['descr']));
+	$descr = str_replace('"', '\\"', $descr);
 
 	$cmd .= "AREA:as{$as}_{$v6_el}in_bits#{$ascolors[$i]}:\"AS{$as} ({$descr})\\n\"";
 	if ($i > 0)
