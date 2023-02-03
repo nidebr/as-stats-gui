@@ -68434,3 +68434,7 @@
 34700	CITYNET-AS	MAXNET TELECOM, LTD,UA	UA
 44679	BinBox-Global-Services	INVITE Systems SRL,RO	RO
 35758	HQserv_communication_solutions	Rachamim Aviel Twito trading as A.B INTERNET SOLUTIONS,IL	IL
+207353	Ruform	RUTUBE,Ruform LLC,RU	RU
+202422	GHOST	G-Core Labs S.A.,LU	LU
+14593	SPACEX-STARLINK	SPACEX-STARLINK,Space Exploration Technologies Corporation,US	US
+
