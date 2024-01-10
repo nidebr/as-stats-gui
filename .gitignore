@@ -10,7 +10,7 @@ composer.lock
 yarn.lock
 ###< symfony/framework-bundle ###
 
-/.env.dev
+/.env.local
 /.dev.yml
 
 ###> symfony/webpack-encore-bundle ###
