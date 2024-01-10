@@ -1,0 +1,8 @@
+proxy:
+    domains:
+        - as-stats-gui
+
+http:
+    document_root: public/
+    passthru: index.php
+    use_gzip: true
