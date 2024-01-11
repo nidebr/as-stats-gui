@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IndexController extends AbstractController
+class IndexController extends BaseController
 {
     #[Route(
         path: '/',
@@ -17,9 +16,12 @@ class IndexController extends AbstractController
     )]
     public function index(): Response
     {
+        $this->base_data['content_wrapper']['titre'] = 'dede';
+
+        dump($this->base_data);
+
         return $this->render('pages/index.html.twig', [
-            /*'base_data' => $this->base_data,
-            'changelog' => $changelog,*/
+            'base_data' => $this->base_data,
         ]);
     }
 }

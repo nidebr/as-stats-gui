@@ -1,0 +1,15 @@
+<div class="page-header">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <div class="d-flex row align-items-center">
+                {% if base_data['content_wrapper']['titre'] is defined %}
+                    <div class="col-auto">
+                        <h2 class="page-title">
+                            {{ base_data['content_wrapper']['titre'] | default('') }}
+                        </h2>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
