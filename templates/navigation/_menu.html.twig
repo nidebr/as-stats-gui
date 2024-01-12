@@ -1,0 +1,39 @@
+<div class="collapse navbar-collapse" id="navbar-menu">
+    <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+        <ul class="navbar-nav">
+            {% if base_data.top_interval %}
+                <li class="nav-item dropdown {% if "top_as" == current_menu %}active{% endif %}">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            {{ icon('menu_home') }}
+                        </span>
+                        <span class="nav-link-title">
+                            Top AS
+                        </span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('index') }}">
+                            Top AS - 24 hours
+                        </a>
+                        {% for key, item in base_data.top_interval %}
+                            <a class="dropdown-item" href="{{ path('index_topinterval', {'topinterval': key}) }}">
+                                Top AS - {{ item.label }}
+                            </a>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('index') }}">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        {{ icon('menu_home') }}
+                    </span>
+                        <span class="nav-link-title">
+                      Top AS
+                    </span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

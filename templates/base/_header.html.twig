@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand-md navbar-light d-print-none">
+<header class="navbar navbar-expand-md d-print-none">
     <div class="container-xl">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
             <span class="navbar-toggler-icon"></span>
@@ -8,15 +8,20 @@
                 <span class="text-uppercase">AS-Stats</span>
             </a>
         </h1>
+
         <div class="navbar-nav flex-row order-md-last">
-            <div class="nav-item">
-                <span class="nav-link text-danger fw-bold" id="branch"></span>
+            <div class="my-1 flex-grow-1 flex-md-grow-0 order-first">
+                <form method="get" autocomplete="off" novalidate="">
+                    <div class="input-icon">
+                        <span class="input-icon-addon">
+                            {{ icon('filter') }}
+                        </span>
+                        <input type="text" name='top' class="form-control" value="{{ base_data.request.top|default('') }}" placeholder="Top AS">
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="navbar-nav flex-row order-md-last">
-            <div class="d-none d-md-flex">
-                {#% include "navigation/menu/_user_menu.html.twig" %#}
-            </div>
-        </div>
+
+        {% include "navigation/_menu.html.twig" %}
     </div>
 </header>

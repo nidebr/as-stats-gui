@@ -1,0 +1,17 @@
+config:
+    top: 20
+    daystatsfile: /home/nidebr/data/DEV/asstats/stats/asstats_day.txt"
+
+top_intervals:
+    30days:
+        hours: 720 #30*24
+        statsfile: /home/nidebr/data/DEV/asstats/stats/asstats_month.txt
+        label: 30 days
+    3months:
+        hours: 2160 #30*24*3
+        statsfile: /home/nidebr/data/DEV/asstats/stats/asstats_3month.txt
+        label: 3 months
+    1year:
+        hours: 8760 #30*24*3
+        statsfile: /home/nidebr/data/DEV/asstats/stats/asstats_year.txt
+        label: 1 year
