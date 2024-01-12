@@ -12,6 +12,12 @@ enum Icon: string
     // Form
     case filter = 'ti-filter';
 
+    // Alert
+    case alert_triangle = 'ti-alert-triangle';
+    case alert_circle = 'ti-alert-circle';
+    case info_circle = 'ti-info-circle';
+    case check = 'ti-check';
+
     /**
      * @return array<string>
      */

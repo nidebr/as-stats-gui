@@ -17,27 +17,11 @@ class IndexController extends BaseController
         name: 'index',
         methods: ['GET'],
     )]
-    public function index(
-        ConfigApplication $Config,
-    ): Response
+    public function index(): Response
     {
-        /*if(\isset($this->base_data['request']['top'])) {
-            $top = $this->base_data['request']['top'];
-        } else {
-            $top = $Config::getAsStatsConfig()['top'];
-        }*/
-
-        dump($this->base_data['request']);
-
-        /*if (\array_key_exists('top', $this->base_data['request'])) {
-            dump(1);
-        } else {
-            dump(2);
-        }*/
-
         $this->base_data['content_wrapper']['titre'] = \sprintf(
             'Top %s (%s)',
-            \array_key_exists('top', $this->base_data['request']) :: $this->base_data['request']['top'] ?? $Config::getAsStatsConfig()['top'],
+            $this->base_data['top'],
             '24 hours'
         );
 
@@ -54,7 +38,7 @@ class IndexController extends BaseController
     public function indexTopInterval(
         ConfigApplication $Config,
         string $topinterval,
-    ): Response{
+    ): Response {
         $this->base_data['content_wrapper']['titre'] = \sprintf(
             'Top %s (%s)',
             $Config::getAsStatsConfig()['top'],

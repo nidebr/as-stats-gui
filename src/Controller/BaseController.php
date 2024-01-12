@@ -18,6 +18,18 @@ class BaseController extends AbstractController
     ) {
         $this->base_data['release'] = $Config::getRelease();
         $this->base_data['top_interval'] = $Config::getAsStatsTopInterval();
-        $this->base_data['request'] = $requestStack->getCurrentRequest()->query->all();
+        $this->base_data['request'] = $requestStack->getCurrentRequest()->query->all(); /* @phpstan-ignore-line */
+
+        $this->base_data['top'] = $Config::getAsStatsConfig()['top'];
+
+        if (\array_key_exists('top', $this->base_data['request'])) {
+            $this->base_data['request']['top'] = \intval($this->base_data['request']['top']);
+
+            if ($this->base_data['request']['top'] > 200) {
+                $this->base_data['top'] = 200;
+            } elseif ($this->base_data['request']['top']) {
+                $this->base_data['top'] = $this->base_data['request']['top'];
+            }
+        }
     }
 }

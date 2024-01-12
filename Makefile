@@ -1,4 +1,4 @@
-.PHONY: help install uninstall outdated proxy start stop log
+.PHONY: help install uninstall outdated proxy start stop log code-check phpstan analysis
 
 default: help
 
@@ -18,6 +18,18 @@ upgrade: ## Mise à jour des dépendances PHP
 
 outdated: ## Vérifier que les dépendances sont à jour
 	composer outdated --direct
+
+# CODE #################################################################################################################
+
+code-check: ## Vérification du code PHP
+	make phpstan
+	make analysis
+
+analysis: ## Analyse de la qualité du code PHP
+	./vendor/bin/phpinsights analyse src -c config/checkers/phpinsights.php
+
+phpstan: ## Analyse statique du code PHP
+	./vendor/bin/phpstan analyse -c config/checkers/phpstan.neon
 
 # SERVEUR SYMFONY ######################################################################################################
 

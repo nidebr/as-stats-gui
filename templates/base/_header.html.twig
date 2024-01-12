@@ -16,7 +16,7 @@
                         <span class="input-icon-addon">
                             {{ icon('filter') }}
                         </span>
-                        <input type="text" name='top' class="form-control" value="{{ base_data.request.top|default('') }}" placeholder="Top AS">
+                        <input type="number" name='top' min=1 class="form-control" value="{{ base_data.request.top|default('') }}" placeholder="Top AS">
                     </div>
                 </form>
             </div>
