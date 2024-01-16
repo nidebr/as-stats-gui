@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application;
 
+use App\Exception\ConfigErrorException;
 use Symfony\Component\Yaml\Yaml;
 
 class ConfigApplication
@@ -38,21 +39,61 @@ class ConfigApplication
         return self::getConfig()['application']['locale'];
     }
 
-    public static function getAsStatsTopInterval(): mixed
+    private static function getAsStatsConfig(): array
+    {
+        if (false === \array_key_exists('config', self::getConfigAsStats())) {
+            throw new ConfigErrorException('Unable to found config variable');
+        }
+
+        return self::getConfigAsStats()['config'];
+    }
+
+    /**
+     * @throws ConfigErrorException
+     */
+    public static function getAsStatsConfigTop(): int
+    {
+        if (false === \array_key_exists('top', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.top variable');
+        }
+
+        return self::getAsStatsConfig()['top'];
+    }
+
+    /**
+     * @throws ConfigErrorException
+     */
+    public static function getAsStatsConfigKnownLinksFile(): string
+    {
+        if (false === \array_key_exists('knownlinksfile', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.knownlinksfile variable');
+        }
+
+        if (!self::getAsStatsConfig()['knownlinksfile']) {
+            throw new ConfigErrorException('Unable to found config.knownlinksfile variable');
+        }
+
+        return self::getAsStatsConfig()['knownlinksfile'];
+    }
+
+    public static function getAsStatsConfigTopInterval(): array
     {
         if (false === \array_key_exists('top_intervals', self::getConfigAsStats())) {
-            return false;
+            return [];
         }
 
         return self::getConfigAsStats()['top_intervals'];
     }
 
-    public static function getAsStatsConfig(): mixed
+    /**
+     * @throws ConfigErrorException
+     */
+    public static function getAsStatsConfigDayStatsFile(): string
     {
-        if (false === \array_key_exists('config', self::getConfigAsStats())) {
-            return false;
+        if (false === \array_key_exists('daystatsfile', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.daystatsfile variable');
         }
 
-        return self::getConfigAsStats()['config'];
+        return self::getAsStatsConfig()['daystatsfile'];
     }
 }

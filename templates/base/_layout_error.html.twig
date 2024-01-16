@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+        <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+        <title>AS-Stats | {% block title %}{{ title|default('') }}{% endblock %}</title>
+
+        <link rel="stylesheet" href="{{ asset('assets/templates/tabler.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/tabler-icons/tabler-icons.min.css') }}">
+    </head>
+
+    <body class="border-top-wide border-primary d-flex flex-column">
+        <div class="page" style="justify-content: center !important;">
+            <div class="container-narrow py-4">
+                <div class="empty">
+                    {% embed "base/_flashbag.html.twig" %}{% endembed %}
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabler Core -->
+        <script src="{{ asset('assets/templates/tabler.min.js') }}"></script>
+    </body>
+</html>

@@ -17,10 +17,10 @@ class BaseController extends AbstractController
         RequestStack $requestStack,
     ) {
         $this->base_data['release'] = $Config::getRelease();
-        $this->base_data['top_interval'] = $Config::getAsStatsTopInterval();
+        $this->base_data['top_interval'] = $Config::getAsStatsConfigTopInterval();
         $this->base_data['request'] = $requestStack->getCurrentRequest()->query->all(); /* @phpstan-ignore-line */
 
-        $this->base_data['top'] = $Config::getAsStatsConfig()['top'];
+        $this->base_data['top'] = $Config::getAsStatsConfigTop();
 
         if (\array_key_exists('top', $this->base_data['request'])) {
             $this->base_data['request']['top'] = \intval($this->base_data['request']['top']);

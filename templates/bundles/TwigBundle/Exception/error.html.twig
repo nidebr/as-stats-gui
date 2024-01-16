@@ -1,0 +1,11 @@
+{% extends "base/_layout_error.html.twig" %}
+
+{% block title %}Error {{ status_code }}{% endblock %}
+
+{% block content %}
+    <div class="empty-header">{{ status_code }}</div>
+    <p class="empty-title">Oops… </p>
+    <p class="empty-subtitle text-secondary">
+        {{ exception.message|default(status_text) }}
+    </p>
+{% endblock %}
