@@ -20,7 +20,7 @@
                                     <span class="flag flag-{{ as_data.info.country|lower }}"></span>
                                     <strong>AS{{ as }}:</strong>
                                     <span class="small text-uppercase"><i>{{ as_data.info.name|default(as_data.info.description) }}</i></span>
-                                    <div class="small">In the last {{ data.hours|default('24 hours') }}</div>
+                                    <div class="small">In the last {{ hours|default('24 hours') }}</div>
                                     <div class="small">IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out</div>
                                     {% if configapplication_graph_showv6() %}
                                         <div class="small">IPv6: ~ {{ as_data.v6.in|format_bytes }} in / {{ as_data.v6.out|format_bytes }} out</div>

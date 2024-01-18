@@ -16,7 +16,7 @@ class GetAsDataRepository
      * @throws Exception
      * @throws DbErrorException
      */
-    public static function get(int $top): array
+    public static function get(int $top, ?string $topInterval = null): array
     {
         if (!$top) {
             return [];
@@ -24,7 +24,13 @@ class GetAsDataRepository
 
         $return = [];
 
-        $data = new DbAsStatsRepository(ConfigApplication::getAsStatsConfigDayStatsFile());
+        if ($topInterval) {
+            $dbName = ConfigApplication::getAsStatsConfigTopInterval()[$topInterval]['statsfile'];
+        } else {
+            $dbName = ConfigApplication::getAsStatsConfigDayStatsFile();
+        }
+
+        $data = new DbAsStatsRepository($dbName);
         $asInfoRepository = new DbAsInfoRepository();
 
         foreach ($data->getASStatsTop($top, []) as $as => $nbytes) {

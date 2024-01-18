@@ -50,6 +50,7 @@ class IndexController extends BaseController
     )]
     public function indexTopInterval(
         ConfigApplication $Config,
+        GetAsDataRepository $asDataRepository,
         string $topinterval,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = \sprintf(
@@ -60,6 +61,8 @@ class IndexController extends BaseController
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
+            'data' => $asDataRepository::get($this->base_data['top'], $topinterval),
+            'hours' => $Config::getAsStatsConfigTopInterval()[$topinterval]['label'],
         ]);
     }
 }
