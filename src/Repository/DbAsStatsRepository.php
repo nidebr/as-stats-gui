@@ -45,8 +45,8 @@ class DbAsStatsRepository
         $query_links = '';
 
         foreach ($selected_links as $tag) {
-            $query_links .= "{$tag}_in, {$tag}_out, {$tag}_v6_in, {$tag}_v6_out, ";
-            $query_total .= " + {$tag}_in + {$tag}_out + {$tag}_v6_in + {$tag}_v6_out";
+            $query_links .= \sprintf('%1$s_in, %1$s_out, %1$s_v6_in, %1$s_v6_out, ', $tag);
+            $query_total .= \sprintf(' + %1$s_in + %1$s_out + %1$s_v6_in + %1$s_v6_out', $tag);
         }
 
         try {
@@ -78,14 +78,14 @@ class DbAsStatsRepository
             $tot_v6_out = 0;
 
             foreach ($row as $key => $value) {
-                if (!\str_contains($key, '_in')) {
-                    if (!\str_contains($key, '_v6_')) {
+                if (false !== \str_contains($key, '_in')) {
+                    if (false !== \str_contains($key, '_v6_')) {
                         $tot_v6_in += $value;
                     } else {
                         $tot_in += $value;
                     }
-                } elseif (!\str_contains($key, '_out')) {
-                    if (!\str_contains($key, '_v6_')) {
+                } elseif (false !== \str_contains($key, '_out')) {
+                    if (false !== \str_contains($key, '_v6_')) {
                         $tot_v6_out += $value;
                     } else {
                         $tot_out += $value;

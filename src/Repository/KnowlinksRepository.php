@@ -13,6 +13,7 @@ class KnowlinksRepository
 {
     /**
      * @throws ConfigErrorException
+     * @throws KnownLinksEmptyException
      */
     public static function get(): array
     {

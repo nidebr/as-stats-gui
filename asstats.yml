@@ -2,8 +2,9 @@ config:
     top: 20
     daystatsfile: '/home/nidebr/data/DEV/asstats/stats/asstats_day.txt'
     knownlinksfile: '/home/nidebr/data/DEV/asstats/conf/knownlinks'
-    #asinfofile: 'ressources/asinfo.txt'
     asinfofile: 'ressources/asinfo.db'
+    graph:
+        showv6: true
 
 ##
 # Custom time intervals for top N AS */
@@ -21,3 +22,15 @@ top_intervals:
         hours: 8760 #30*24*3
         statsfile: '/home/nidebr/data/DEV/asstats/stats/asstats_year.txt'
         label: '1 year'
+
+##
+# Custom links for top N AS */
+##
+customlinks:
+    PeeringDB: 'https://www.peeringdb.com/asn/%as%'
+    Robtex: 'https://www.robtex.com/as/as%as%.html'
+    HE: 'http://bgp.he.net/AS%as%'
+    RIPEstat: 'https://stat.ripe.net/AS%as%#tabId=at-a-glance'
+    CIDR v4: 'http://www.cidr-report.org/cgi-bin/as-report?as=AS%as%&view=2.0'
+    CIDR v6: 'http://www.cidr-report.org/cgi-bin/as-report?as=AS%as%&view=2.0&v=6'
+    Radar Qrator: 'https://radar.qrator.net/as%as%/'

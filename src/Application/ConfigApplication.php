@@ -49,11 +49,6 @@ class ConfigApplication
         return self::getConfig()['application']['release'];
     }
 
-    public static function getLocale(): mixed
-    {
-        return self::getConfig()['application']['locale'];
-    }
-
     private static function getAsStatsConfig(): array
     {
         if (false === \array_key_exists('config', self::getConfigAsStats())) {
@@ -100,6 +95,15 @@ class ConfigApplication
         return self::getConfigAsStats()['top_intervals'];
     }
 
+    public static function getAsStatsConfigCustomLinks(): array
+    {
+        if (false === \array_key_exists('customlinks', self::getConfigAsStats())) {
+            return [];
+        }
+
+        return self::getConfigAsStats()['customlinks'];
+    }
+
     /**
      * @throws ConfigErrorException
      */
@@ -112,6 +116,9 @@ class ConfigApplication
         return self::getAsStatsConfig()['daystatsfile'];
     }
 
+    /**
+     * @throws ConfigErrorException
+     */
     public static function getAsStatsConfigAsInfoFile(): string
     {
         if (false === \array_key_exists('asinfofile', self::getAsStatsConfig())) {
@@ -119,5 +126,17 @@ class ConfigApplication
         }
 
         return self::getRootPathApp().self::getAsStatsConfig()['asinfofile'];
+    }
+
+    /**
+     * @throws ConfigErrorException
+     */
+    public static function getAsStatsConfigGraph(): array
+    {
+        if (false === \array_key_exists('graph', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.graph variable');
+        }
+
+        return self::getAsStatsConfig()['graph'];
     }
 }
