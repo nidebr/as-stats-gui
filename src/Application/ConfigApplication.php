@@ -11,6 +11,12 @@ class ConfigApplication
 {
     private const string CONFIG_APP_FILE = 'config/app/config.yml';
     private const string CONFIG_ASSTATS_FILE = 'asstats.yml';
+    private string $environment;
+
+    public function __construct(string $environment)
+    {
+        $this->environment = $environment;
+    }
 
     private static function getRootPathApp(): string
     {
@@ -27,6 +33,15 @@ class ConfigApplication
     {
         $input = file_get_contents(self::getRootPathApp().self::CONFIG_ASSTATS_FILE);
         return (array) Yaml::parse((string) $input);
+    }
+
+    public function isDev(): bool
+    {
+        if ('dev' === $this->environment) {
+            return true;
+        }
+
+        return false;
     }
 
     public static function getRelease(): mixed
@@ -95,5 +110,14 @@ class ConfigApplication
         }
 
         return self::getAsStatsConfig()['daystatsfile'];
+    }
+
+    public static function getAsStatsConfigAsInfoFile(): string
+    {
+        if (false === \array_key_exists('asinfofile', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.asinfofile variable');
+        }
+
+        return self::getRootPathApp().self::getAsStatsConfig()['asinfofile'];
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Application\ConfigApplication;
 use App\Exception\KnownLinksEmptyException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ class KnownLinksEmptyListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly Environment $twig,
+        private readonly ConfigApplication $config,
     ) {
     }
 
@@ -27,6 +29,10 @@ class KnownLinksEmptyListener implements EventSubscriberInterface
 
     public function onKernelException(ExceptionEvent $event): void
     {
+        if ($this->config->isDev()) {
+            return;
+        }
+
         $exception = $event->getThrowable();
 
         if (!$exception instanceof KnownLinksEmptyException) {

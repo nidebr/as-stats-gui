@@ -5,14 +5,25 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Application\ConfigApplication;
-use App\Repository\Db;
+use App\Exception\ConfigErrorException;
+use App\Exception\DbErrorException;
+use App\Repository\AsInfoRepository;
+use App\Repository\DbAsStatsRepository;
 use App\Util\Annotation\Menu;
+use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Menu('top_as')]
 class IndexController extends BaseController
 {
+    protected array $data = [];
+
+    /**
+     * @throws ConfigErrorException
+     * @throws DbErrorException
+     * @throws Exception
+     */
     #[Route(
         path: '/',
         name: 'index',
@@ -26,8 +37,19 @@ class IndexController extends BaseController
             '24 hours'
         );
 
-        $data = new Db(ConfigApplication::getAsStatsConfigDayStatsFile());
-        dump($data->getASStatsTop(20, []));
+        $data = new DbAsStatsRepository(ConfigApplication::getAsStatsConfigDayStatsFile());
+
+        foreach ($data->getASStatsTop($this->base_data['top'], []) as $as => $nbytes) {
+            $this->data['asinfo'][$as]['v4'] = [
+                'in' => $nbytes[0],
+                'out' => $nbytes[1],
+            ];
+        }
+
+        dump($this->data);
+
+        //$dede = AsInfoRepository::get(15169);
+        //dump($dede);
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,

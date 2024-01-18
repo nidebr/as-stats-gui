@@ -36,7 +36,7 @@ phpstan: ## Analyse statique du code PHP
 proxy: ## Démarre le proxy du serveur Symfony
 	symfony proxy:start
 
-start: proxy node ## Server start
+start: proxy ## Server start
 	symfony server:start -d
 
 stop: ## Server stop
