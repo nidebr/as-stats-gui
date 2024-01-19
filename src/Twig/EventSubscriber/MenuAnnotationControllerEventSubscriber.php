@@ -27,6 +27,9 @@ readonly class MenuAnnotationControllerEventSubscriber implements EventSubscribe
         ];
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function handle(ControllerEvent $event): void
     {
         $controllers = $event->getController();
@@ -43,7 +46,7 @@ readonly class MenuAnnotationControllerEventSubscriber implements EventSubscribe
 
         $methodAttribute = $this->getMethodeAttribute($controller, $methodName);
 
-        if (null !== $methodAttribute) {
+        if ($methodAttribute instanceof Menu) {
             $this->registerMenuToTwig($methodAttribute);
 
             return;
@@ -51,7 +54,7 @@ readonly class MenuAnnotationControllerEventSubscriber implements EventSubscribe
 
         $classAttribute = $this->getClassAttribute($controller);
 
-        if (null !== $classAttribute) {
+        if ($classAttribute instanceof Menu) {
             $this->registerMenuToTwig($classAttribute);
 
             return;

@@ -54,7 +54,7 @@ class KnowlinksRepository
             }
         }
 
-        if (!$knownlinks) {
+        if ([] === $knownlinks) {
             throw new KnownLinksEmptyException('File knownlinks file is empty');
         }
 

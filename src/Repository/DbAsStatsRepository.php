@@ -34,7 +34,7 @@ class DbAsStatsRepository
      */
     public function getASStatsTop(int $ntop, array $selected_links, array $list_asn = []): array
     {
-        if (!$selected_links) {
+        if ([] === $selected_links) {
             $selected_links = [];
             foreach (KnowlinksRepository::get() as $link) {
                 $selected_links[] = $link['tag'];
@@ -50,7 +50,7 @@ class DbAsStatsRepository
         }
 
         try {
-            if ($list_asn) {
+            if ([] !== $list_asn) {
                 $asn = $this->cnx->createQueryBuilder()
                     ->select(\sprintf('asn, %s %s as total', $query_links, $query_total))
                     ->from('stats')
@@ -78,14 +78,14 @@ class DbAsStatsRepository
             $tot_v6_out = 0;
 
             foreach ($row as $key => $value) {
-                if (false !== \str_contains($key, '_in')) {
-                    if (false !== \str_contains($key, '_v6_')) {
+                if (\str_contains($key, '_in')) {
+                    if (\str_contains($key, '_v6_')) {
                         $tot_v6_in += $value;
                     } else {
                         $tot_in += $value;
                     }
-                } elseif (false !== \str_contains($key, '_out')) {
-                    if (false !== \str_contains($key, '_v6_')) {
+                } elseif (\str_contains($key, '_out')) {
+                    if (\str_contains($key, '_v6_')) {
                         $tot_v6_out += $value;
                     } else {
                         $tot_out += $value;

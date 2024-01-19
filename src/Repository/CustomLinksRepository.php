@@ -18,7 +18,7 @@ class CustomLinksRepository
                 $htmllinks[] = \sprintf('<a href="%s" target="_blank">%s</a>', $url, \htmlspecialchars($linkname));
             }
 
-            return join(' | ', $htmllinks);
+            return \implode(' | ', $htmllinks);
         } catch (\Exception) {
             return '';
         }

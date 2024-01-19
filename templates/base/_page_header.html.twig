@@ -5,7 +5,7 @@
                 {% if base_data['content_wrapper']['titre'] is defined %}
                     <div class="col-auto">
                         <h2 class="page-title">
-                            {{ base_data['content_wrapper']['titre'] | default('') }}
+                            {{ base_data['content_wrapper']['titre']|default('') }}
                         </h2>
                     </div>
                 {% endif %}

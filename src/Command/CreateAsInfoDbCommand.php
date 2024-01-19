@@ -53,7 +53,7 @@ class CreateAsInfoDbCommand extends Command
         $this->io->write('Get data ');
         $getData = $this->getData($sendCommand);
 
-        if (!$getData) {
+        if ('' === $getData || '0' === $getData) {
             $this->io->warning('Unable to get data.');
 
             return Command::FAILURE;
@@ -64,7 +64,7 @@ class CreateAsInfoDbCommand extends Command
         $this->io->write('Parse data ');
         $parsedData = $this->parseData($getData);
 
-        if (!$parsedData) {
+        if ([] === $parsedData) {
             $this->io->warning('No data to process.');
 
             return Command::FAILURE;

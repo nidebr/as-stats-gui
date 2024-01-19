@@ -23,11 +23,11 @@ class BaseController extends AbstractController
         $this->base_data['top'] = $Config::getAsStatsConfigTop();
 
         if (\array_key_exists('top', $this->base_data['request'])) {
-            $this->base_data['request']['top'] = \intval($this->base_data['request']['top']);
+            $this->base_data['request']['top'] = (int) $this->base_data['request']['top'];
 
             if ($this->base_data['request']['top'] > 200) {
-                $this->base_data['top'] = 200;
-            } elseif ($this->base_data['request']['top']) {
+                $this->base_data['top'] = $this->base_data['request']['top'] = 200;
+            } elseif (0 !== $this->base_data['request']['top']) {
                 $this->base_data['top'] = $this->base_data['request']['top'];
             }
         }

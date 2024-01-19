@@ -37,11 +37,7 @@ class ConfigApplication
 
     public function isDev(): bool
     {
-        if ('dev' === $this->environment) {
-            return true;
-        }
-
-        return false;
+        return 'dev' === $this->environment;
     }
 
     public static function getRelease(): mixed

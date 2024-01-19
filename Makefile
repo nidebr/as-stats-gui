@@ -24,12 +24,16 @@ outdated: ## Vérifier que les dépendances sont à jour
 code-check: ## Vérification du code PHP
 	make phpstan
 	make analysis
+	make rector
 
 analysis: ## Analyse de la qualité du code PHP
-	./vendor/bin/phpinsights analyse src -c config/checkers/phpinsights.php
+	./vendor/bin/phpinsights analyse src -c phpinsights.php
 
 phpstan: ## Analyse statique du code PHP
-	./vendor/bin/phpstan analyse -c config/checkers/phpstan.neon
+	./vendor/bin/phpstan analyse -c phpstan.neon
+
+rector: ## Analyse refactoring du code PHP
+	./vendor/bin/rector process --dry-run --config=rector.php
 
 # SERVEUR SYMFONY ######################################################################################################
 

@@ -18,7 +18,7 @@ class GetAsDataRepository
      */
     public static function get(int $top, ?string $topInterval = null): array
     {
-        if (!$top) {
+        if (0 === $top) {
             return [];
         }
 

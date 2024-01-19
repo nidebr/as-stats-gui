@@ -70,7 +70,7 @@ class DbAsInfoRepository
 
             $io->progressFinish();
 
-            if ($count) {
+            if (0 !== $count) {
                 $filesystem->remove(\sprintf('%s.bak', $this->dbname));
 
                 return true;

@@ -1,6 +1,6 @@
 {% extends "base/_layout.html.twig" %}
 
-{% block title %}dede{% endblock %}
+{% block title %}Top {{ base_data.top }} AS ({{ hours|default('24 hours') }}){% endblock %}
 
 {% block css %}
     {{ parent() }}
@@ -26,6 +26,10 @@
                                         <div class="small">IPv6: ~ {{ as_data.v6.in|format_bytes }} in / {{ as_data.v6.out|format_bytes }} out</div>
                                     {% endif %}
                                     <div class="small">{{ attribute(data.customlinks, as)|raw }}</div>
+                                    <div class="display-6 fw-bold my-3 rank">
+                                        {% set counter = counter + 1 %}
+                                        # {{ counter }}
+                                    </div>
                                 </div>
                                 <div class="col">
                                     graph_v4
@@ -37,8 +41,6 @@
                                 {% endif %}
                             </div>
                         </div>
-
-                        {% set counter = counter + 1 %}
                     {% endfor %}
                 </div>
             </div>

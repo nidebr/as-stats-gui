@@ -44,7 +44,7 @@ class KnownLinksEmptyListener implements EventSubscriberInterface
                 'status_code' => 500,
                 'status_text' => \sprintf('Problem on asstats.yml : %s', $exception->getMessage()),
             ]),
-            500,
+            Response::HTTP_INTERNAL_SERVER_ERROR,
         );
 
         $event->setResponse($response);

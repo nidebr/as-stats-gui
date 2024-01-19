@@ -44,7 +44,7 @@ class FileNotFoundListener implements EventSubscriberInterface
                 'status_code' => 500,
                 'status_text' => $exception->getMessage(),
             ]),
-            500,
+            Response::HTTP_INTERNAL_SERVER_ERROR,
         );
 
         $event->setResponse($response);
