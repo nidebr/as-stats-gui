@@ -15,7 +15,7 @@
                 <div class="space-y">
                     {% for as, as_data in data.asinfo %}
                         {% set counter = counter + 1 %}
-                        {% embed 'core/card_top.html.twig' with { as: as, as_data: as_data, data: data, counter: counter, hours: hours|default('24 hours') } only %}
+                        {% embed 'core/card_top.html.twig' with {as: as, as_data: as_data, data: data, counter: counter, hours: hours|default('24 hours')} only %}
                             {% block rank %}
                                 <div class="display-6 fw-bold my-3 rank">
                                     # {{ counter }}
