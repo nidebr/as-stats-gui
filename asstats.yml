@@ -5,6 +5,8 @@ config:
     asinfofile: 'ressources/asinfo.db'
     graph:
         showv6: true
+        outispositive: false
+        brighten_negative: true
 
 ##
 # Custom time intervals for top N AS */

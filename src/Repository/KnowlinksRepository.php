@@ -34,7 +34,7 @@ class KnowlinksRepository
                 continue; /* empty line or comment */
             }
 
-            [$routerip, $ifindex, $tag, $descr, $color] = \explode("\t", $line);
+            [$routerip, $ifindex, $tag, $descr, $color] = \preg_split('/\\t+/', $line); /* @phpstan-ignore-line */
             $known = false;
 
             foreach ($knownlinks as $link) {

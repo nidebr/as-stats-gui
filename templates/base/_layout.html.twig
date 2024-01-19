@@ -16,25 +16,22 @@
 
     <body class="layout-fluid">
         <div class="page">
-            <!-- /.header -->
             {% include 'base/_header.html.twig' %}
+            {% include 'base/_legend.html.twig' %}
 
             <div class="page-wrapper">
                 <div class="container-xl">
-                    <!-- Page title -->
                     {% include "base/_page_header.html.twig" %}
                 </div>
 
                 <div class="page-body">
                     <div class="container-xl">
                         {% embed "base/_flashbag.html.twig" %}{% endembed %}
-                        <!-- /.content -->
                         {% block content %}{% endblock %}
                     </div>
                 </div>
             </div>
 
-            <!-- /.footer -->
             {% include 'base/_footer.html.twig' %}
         </div>
 

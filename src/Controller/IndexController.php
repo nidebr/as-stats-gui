@@ -8,6 +8,7 @@ use App\Application\ConfigApplication;
 use App\Exception\ConfigErrorException;
 use App\Exception\DbErrorException;
 use App\Repository\GetAsDataRepository;
+use App\Repository\KnowlinksRepository;
 use App\Util\Annotation\Menu;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,6 +41,7 @@ class IndexController extends BaseController
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
             'data' => $asDataRepository::get($this->base_data['top']),
+            'knownlinks' => KnowlinksRepository::get(),
         ]);
     }
 
@@ -63,6 +65,7 @@ class IndexController extends BaseController
             'base_data' => $this->base_data,
             'data' => $asDataRepository::get($this->base_data['top'], $topinterval),
             'hours' => $Config::getAsStatsConfigTopInterval()[$topinterval]['label'],
+            'knownlinks' => KnowlinksRepository::get(),
         ]);
     }
 }

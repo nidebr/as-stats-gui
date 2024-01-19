@@ -1,0 +1,56 @@
+<div class="card">
+    <div class="row g-0">
+        <div class="col-auto">
+            {% if (block('rank') is defined and block('rank') is not empty) %}
+                <div class="card-body">
+                    {% block rank %}{% endblock %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="col">
+            <div class="card-body {% if (block('rank') is defined and block('rank') is not empty) %}ps-0{% endif %}">
+                <div class="row">
+                    <div class="col">
+                        {% if block('title') is defined and block('title') is not empty %}
+                            {% block title %}{% endblock %}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mt-1">
+                        graph_v4
+                    </div>
+                    {% if configapplication_graph_showv6() %}
+                        <div class="col-5">
+                            graph_v6
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="mt-3 list-inline list-inline-dots mb-0 text-secondary d-sm-block d-none">
+                            <div class="list-inline-item">
+                                {{ icon('top_hours', 'icon icon-inline fix-icon-inline') }}
+                                In the last {{ hours }}
+                            </div>
+                            <div class="list-inline-item">
+                                {{ icon('top_ip', 'icon icon-inline fix-icon-inline') }}
+                                IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out
+                            </div>
+                            {% if configapplication_graph_showv6() %}
+                                <div class="list-inline-item">
+                                    {{ icon('top_ip', 'icon icon-inline fix-icon-inline') }}
+                                    IPv6: ~ {{ as_data.v6.in|format_bytes }} in / {{ as_data.v6.out|format_bytes }} out
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    {% if block('customlinks') is defined and block('customlinks') is not empty %}
+                        {% block customlinks %}{% endblock %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -18,6 +18,11 @@ enum Icon: string
     case info_circle = 'ti-info-circle';
     case check = 'ti-check';
 
+    case top_hours = 'ti-clock';
+    case top_ip = 'ti-chart-pie';
+    case up = 'ti-arrow-up';
+    case down = 'ti-arrow-down';
+
     /**
      * @return array<string>
      */

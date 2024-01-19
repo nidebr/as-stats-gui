@@ -1,0 +1,33 @@
+<div class="navbar-expand-md">
+    <div class="collapse navbar-collapse" id="navbar-menu">
+        <div class="navbar navbar-light">
+            <div class="container-xl">
+                <div class="table-responsive">
+                    <table class="table table-borderless table-vcenter">
+                        <tbody>
+                            <tr>
+                                {% if knownlinks is defined %}
+                                    {% for link in knownlinks %}
+                                        <td>
+                                            <table class="table-legend">
+                                                <tr>
+                                                    {% if configapplication_graph('brighten_negative') %}
+                                                        <td class="table-legend-td table-legend-td-brighten" style="background-color: #{{ link.color }}">&nbsp;</td>
+                                                        <td class="table-legend-td table-legend-td-brighten" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
+                                                    {% else %}
+                                                        <td class="table-legend-td" style="background-color: #{{ link.color }}">&nbsp;</td>
+                                                    {% endif %}
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td class="small">{{ link.descr }}</td>
+                                    {% endfor %}
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

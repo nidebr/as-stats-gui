@@ -23,6 +23,8 @@ class ConfigApplicationExtension extends AbstractExtension
     {
         return [
             new TwigFunction('configapplication_graph_showv6', [$this, 'getGraphShowV6']),
+            new TwigFunction('configapplication_graph_outispositive', [$this, 'getGraphOutIsPositive']),
+            new TwigFunction('configapplication_graph', [$this, 'getConfigGraph']),
         ];
     }
 
@@ -32,5 +34,23 @@ class ConfigApplicationExtension extends AbstractExtension
     public function getGraphShowV6(): bool
     {
         return $this->configApplication::getAsStatsConfigGraph()['showv6'];
+    }
+
+    public function getGraphOutIsPositive(): bool
+    {
+        return $this->configApplication::getAsStatsConfigGraph()['outispositive'];
+    }
+
+    public function getConfigGraph(string $key): mixed
+    {
+        if ($key === '' || $key === '0') {
+            return '';
+        }
+
+        if (false === \array_key_exists($key, $this->configApplication::getAsStatsConfigGraph())) {
+            throw new ConfigErrorException(\sprintf('Unable to find config.graph.%s variable', $key));
+        }
+
+        return $this->configApplication::getAsStatsConfigGraph()[$key];
     }
 }

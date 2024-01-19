@@ -15,10 +15,10 @@ class CustomLinksRepository
 
             foreach (ConfigApplication::getAsStatsConfigCustomLinks() as $linkname => $url) {
                 $url = \str_replace('%as%', \sprintf('%s', $as), $url);
-                $htmllinks[] = \sprintf('<a href="%s" target="_blank">%s</a>', $url, \htmlspecialchars($linkname));
+                $htmllinks[] = \sprintf('<a href="%s" class="badge badge-outline text-secondary fw-normal badge-pill" target="_blank">%s</a>', $url, \htmlspecialchars($linkname));
             }
 
-            return \implode(' | ', $htmllinks);
+            return \implode(' ', $htmllinks);
         } catch (\Exception) {
             return '';
         }

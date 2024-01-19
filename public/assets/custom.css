@@ -1,3 +1,22 @@
 .rank {
     color: #aaa !important;
 }
+
+.fix-icon-inline {
+    vertical-align: -0.05rem !important;
+}
+
+.table-legend {
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+}
+
+.table-legend-td {
+    width: 18px;
+    height: 18px;
+}
+
+.table-legend-td-brighten {
+    width: 9px !important;
+}
