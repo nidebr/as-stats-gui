@@ -20,3 +20,7 @@
 .table-legend-td-brighten {
     width: 9px !important;
 }
+
+.sticky-top-legend {
+    top: 5px !important;
+}
