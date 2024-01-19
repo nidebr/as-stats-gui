@@ -1,0 +1,36 @@
+name: Twigcs
+
+on: [push, pull_request]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Install PHP with extensions
+              uses: shivammathur/setup-php@v2
+              with:
+                  coverage: none
+                  #extensions: intl
+                  php-version: '8.3'
+                  tools: composer
+
+            - name: Determine composer cache directory
+              id: composer-cache
+              run: echo "directory=$(composer config cache-dir)" >> $GITHUB_OUTPUT
+
+            - name: Cache dependencies installed with composer
+              uses: actions/cache@v3
+              with:
+                  path: ${{ steps.composer-cache.outputs.directory }}
+                  key: composer-${{ runner.os }}-${{ hashFiles('composer.*') }}
+                  restore-keys: composer-${{ runner.os }}-composer-
+
+            - name: Install dependencies
+              run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+            - name: Run twigcs
+              run: vendor/bin/twigcs --config .twig_cs.dist.php
