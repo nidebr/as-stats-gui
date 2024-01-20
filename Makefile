@@ -25,6 +25,7 @@ code-check: ## Vérification du code PHP
 	make phpstan
 	make analysis
 	make rector
+	make twig
 
 analysis: ## Analyse de la qualité du code PHP
 	./vendor/bin/phpinsights analyse src -c phpinsights.php
@@ -34,6 +35,9 @@ phpstan: ## Analyse statique du code PHP
 
 rector: ## Analyse refactoring du code PHP
 	./vendor/bin/rector process --dry-run --config=rector.php
+
+twig: ## Analyse TwigCS
+	./vendor/bin/twigcs --config .twig_cs.dist.php
 
 # SERVEUR SYMFONY ######################################################################################################
 

@@ -7,10 +7,12 @@ namespace App\Controller;
 use App\Application\ConfigApplication;
 use App\Exception\ConfigErrorException;
 use App\Exception\DbErrorException;
+use App\Form\LegendForm;
 use App\Repository\GetAsDataRepository;
 use App\Repository\KnowlinksRepository;
 use App\Util\Annotation\Menu;
 use Doctrine\DBAL\Exception;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -27,9 +29,10 @@ class IndexController extends BaseController
     #[Route(
         path: '/',
         name: 'index',
-        methods: ['GET'],
+        methods: ['GET|POST'],
     )]
     public function index(
+        Request $request,
         GetAsDataRepository $asDataRepository,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = \sprintf(
@@ -38,10 +41,16 @@ class IndexController extends BaseController
             '24 hours'
         );
 
+        $form = $this->createForm(LegendForm::class);
+        $form->handleRequest($request);
+
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
             'data' => $asDataRepository::get($this->base_data['top']),
             'knownlinks' => KnowlinksRepository::get(),
+            'form' => [
+                'legend' => $form->createView(),
+            ],
         ]);
     }
 
