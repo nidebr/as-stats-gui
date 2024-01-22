@@ -1,0 +1,11 @@
+{% use "bootstrap_5_layout.html.twig" %}
+
+{# Checkbox #}
+
+{% block checkbox_row -%}
+    <div{% with {attr: row_attr|merge({class: (row_attr.class|default(''))|trim})} %}{{ block('attributes') }}{% endwith %}>{#--#}
+        {{- form_widget(form) -}}
+        <em>{{- form_help(form) -}}</em>
+        {{- form_errors(form) -}}
+    </div>
+{%- endblock checkbox_row %}

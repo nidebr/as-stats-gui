@@ -44,9 +44,15 @@ class IndexController extends BaseController
         $form = $this->createForm(LegendForm::class);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $asDataRepository::get($this->base_data['top'], null, (array) $form->getData());
+        } else {
+            $data = $asDataRepository::get($this->base_data['top']);
+        }
+
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
-            'data' => $asDataRepository::get($this->base_data['top']),
+            'data' => $data,
             'knownlinks' => KnowlinksRepository::get(),
             'form' => [
                 'legend' => $form->createView(),
@@ -57,9 +63,10 @@ class IndexController extends BaseController
     #[Route(
         path: '/{topinterval}',
         name: 'index_topinterval',
-        methods: ['GET'],
+        methods: ['GET|POST'],
     )]
     public function indexTopInterval(
+        Request $request,
         ConfigApplication $Config,
         GetAsDataRepository $asDataRepository,
         string $topinterval,
@@ -70,11 +77,23 @@ class IndexController extends BaseController
             $Config::getAsStatsConfigTopInterval()[$topinterval]['label']
         );
 
+        $form = $this->createForm(LegendForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $asDataRepository::get($this->base_data['top'], $topinterval, (array) $form->getData());
+        } else {
+            $data = $asDataRepository::get($this->base_data['top'], $topinterval);
+        }
+
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
-            'data' => $asDataRepository::get($this->base_data['top'], $topinterval),
+            'data' => $data,
             'hours' => $Config::getAsStatsConfigTopInterval()[$topinterval]['label'],
             'knownlinks' => KnowlinksRepository::get(),
+            'form' => [
+                'legend' => $form->createView(),
+            ],
         ]);
     }
 }

@@ -1,17 +1,24 @@
 <div class="col-lg-2 col-sm-12">
     <div class="sticky-top sticky-top-legend">
+        {{ form_start(form.legend) }}
         <div class="card">
-            {{ form_start(form.legend) }}
             <div class="card-body">
                 <h3 class="card-title">
                     <strong>Legend</strong>
                 </h3>
                 <div class="table-responsive">
-                    <table class="table table-borderless table-vcenter table-sm">
+                    <table class="table table-borderless table-sm">
                         <tbody>
                         {% if knownlinks is defined %}
                             {% for link in knownlinks %}
                                 <tr>
+                                    <td class="align-middle">
+                                        {% for field in form.legend %}
+                                            {% if field.vars.name == link.tag %}
+                                                {{ form_row(field) }}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
                                     <td>
                                         <table class="table-legend">
                                             <tr>
@@ -24,14 +31,6 @@
                                             </tr>
                                         </table>
                                     </td>
-                                    <td class="small">{{ link.descr }}</td>
-                                    <td>
-                                        {% for field in form.legend %}
-                                            {% if field.vars.name == link.tag %}
-                                                {{ form_widget(field) }}
-                                            {% endif %}
-                                        {% endfor %}
-                                    </td>
                                 </tr>
                             {% endfor %}
                         {% endif %}
@@ -39,7 +38,10 @@
                     </table>
                 </div>
             </div>
-            {{ form_end(form.legend) }}
+            <div class="card-footer">
+                <button type="submit" class="btn btn-tabler btn-icon float-end">{{ icon('filter') }}</i></button>
+            </div>
         </div>
+        {{ form_end(form.legend) }}
     </div>
 </div>

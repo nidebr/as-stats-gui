@@ -60,4 +60,16 @@ class KnowlinksRepository
 
         return $knownlinks;
     }
+
+    public static function select(array $selectedLink): array
+    {
+        $selected_links = [];
+
+        foreach ($selectedLink as $tag => $check) {
+            if ($check) {
+                $selected_links[] = $tag;
+            }
+        }
+        return $selected_links;
+    }
 }

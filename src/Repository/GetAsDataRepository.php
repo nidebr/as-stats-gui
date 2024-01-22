@@ -16,7 +16,7 @@ class GetAsDataRepository
      * @throws Exception
      * @throws DbErrorException
      */
-    public static function get(int $top, ?string $topInterval = null): array
+    public static function get(int $top, ?string $topInterval = null, array $selectedLinks = []): array
     {
         if (0 === $top) {
             return [];
@@ -33,7 +33,7 @@ class GetAsDataRepository
         $data = new DbAsStatsRepository($dbName);
         $asInfoRepository = new DbAsInfoRepository();
 
-        foreach ($data->getASStatsTop($top, []) as $as => $nbytes) {
+        foreach ($data->getASStatsTop($top, KnowlinksRepository::select($selectedLinks)) as $as => $nbytes) {
             $return['asinfo'][$as]['info'] = $asInfoRepository->getAsInfo($as);
 
             $return['asinfo'][$as]['v4'] = [

@@ -20,9 +20,12 @@ class LegendForm extends AbstractType
         foreach (KnowlinksRepository::get() as $knowlink) {
             $builder
                 ->add(\sprintf('%s', $knowlink['tag']), CheckboxType::class, [
-                    'label' => false,
+                    'label' => $knowlink['descr'],
                     'translation_domain' => false,
                     'required' => false,
+                    'label_attr' => [
+                        'class' => 'small float-left',
+                    ],
                 ])
             ;
         }

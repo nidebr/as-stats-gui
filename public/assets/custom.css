@@ -24,3 +24,8 @@
 .sticky-top-legend {
     top: 5px !important;
 }
+
+.form-check {
+    min-height: unset !important;
+    margin-bottom: unset !important;
+}
