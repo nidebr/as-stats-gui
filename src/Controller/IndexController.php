@@ -46,14 +46,17 @@ class IndexController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $asDataRepository::get($this->base_data['top'], null, (array) $form->getData());
+            $selectedLinks = KnowlinksRepository::select((array) $form->getData());
         } else {
             $data = $asDataRepository::get($this->base_data['top']);
+            $selectedLinks = [];
         }
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
             'data' => $data,
             'knownlinks' => KnowlinksRepository::get(),
+            'selected_links' => $selectedLinks,
             'form' => [
                 'legend' => $form->createView(),
             ],

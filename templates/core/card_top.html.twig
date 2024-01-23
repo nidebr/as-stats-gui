@@ -17,12 +17,12 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col mt-1">
-                        graph_v4
+                    <div class="col-6">
+                        {{ gen_graph(as, 4) }}
                     </div>
                     {% if configapplication_graph_showv6() %}
-                        <div class="col-5">
-                            graph_v6
+                        <div class="col-6">
+                            {{ gen_graph(as, 6) }}
                         </div>
                     {% endif %}
                 </div>
