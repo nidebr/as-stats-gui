@@ -18,11 +18,13 @@
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        {{ gen_graph(as, 4) }}
+                        {% set title = "AS#{as} - #{as_data.info.description} - IPv4" %}
+                        {{ gen_graph(as, 4, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, true) }}
                     </div>
                     {% if configapplication_graph_showv6() %}
                         <div class="col-6">
-                            {{ gen_graph(as, 6) }}
+                            {% set title = "AS#{as} - #{as_data.info.description} - IPv6" %}
+                            {{ gen_graph(as, 6, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, true) }}
                         </div>
                     {% endif %}
                 </div>

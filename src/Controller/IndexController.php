@@ -45,18 +45,26 @@ class IndexController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $asDataRepository::get($this->base_data['top'], null, (array) $form->getData());
-            $selectedLinks = KnowlinksRepository::select((array) $form->getData());
+            $this->data['data'] = $asDataRepository::get($this->base_data['top'], null, (array) $form->getData());
+            $this->data['selectedLinks'] = KnowlinksRepository::select((array) $form->getData());
         } else {
-            $data = $asDataRepository::get($this->base_data['top']);
-            $selectedLinks = [];
+            $this->data['data'] = $asDataRepository::get($this->base_data['top']);
+            $this->data['selectedLinks'] = [];
         }
+
+        $this->data['start'] = time() - 24 * 3600;
+        $this->data['end'] = time();
+        $this->data['graph_size'] = [
+            'width' => ConfigApplication::getAsStatsConfigGraph()['top_graph_width'],
+            'height' => ConfigApplication::getAsStatsConfigGraph()['top_graph_height'],
+        ];
+
+        dump($this->data);
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
-            'data' => $data,
+            'data' => $this->data,
             'knownlinks' => KnowlinksRepository::get(),
-            'selected_links' => $selectedLinks,
             'form' => [
                 'legend' => $form->createView(),
             ],

@@ -24,13 +24,13 @@ class GenGraphExtension extends AbstractExtension
         ];
     }
 
-    public function genGraph(int $as, int $ipversion): string
+    public function genGraph(int $as, int $ipversion, string $title, int $start, int $end, string $selectedLinks, ?int $width = null, ?int $height = null, bool $nolegend = false): string
     {
         return \sprintf(
-            '<img class="img-fuild" alt="Graph IPv%s for AS%s" src="%s">',
+            '<img alt="Graph IPv%s for AS%s" src="%s">',
             $ipversion,
             $as,
-            $this->router->generate('render', ['as' => $as, 'v' => 4, 'title' => 'dede', 'nolegend' => 1, 'start' => 1705921337, 'end' => 1706007737, 'width' => 600, 'height' => 220])
+            $this->router->generate('render', ['as' => $as, 'v' => $ipversion, 'title' => $title, 'nolegend' => $nolegend, 'start' => $start, 'end' => $end, 'width' => $width, 'height' => $height, 'selected_links' => $selectedLinks])
         );
     }
 }

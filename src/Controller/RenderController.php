@@ -52,7 +52,7 @@ class RenderController extends AbstractController
 
         $knownlinks = KnowlinksRepository::get();
 
-        if (isset($req['selected_links'])) {
+        if (isset($req['selected_links']) && $req['selected_links'] !== '') {
             $reverse = [];
 
             foreach ($knownlinks as $link) {
@@ -108,7 +108,7 @@ class RenderController extends AbstractController
             $cmd .= \sprintf('--title IPv%s ', $req['v']);
         }
 
-        if (isset($req['nolegend']) && $req['nolegend']) {
+        if (isset($req['nolegend']) && $req['nolegend'] === '1') {
             $cmd .= '--no-legend ';
         }
 

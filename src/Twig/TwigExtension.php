@@ -16,6 +16,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFilter('format_bytes', [$this, 'formatBytes']),
+            new TwigFilter('concat_link', [$this, 'concatSelectedLinks']),
         ];
     }
 
@@ -38,5 +39,15 @@ class TwigExtension extends AbstractExtension
         }
 
         return \sprintf('%s bytes', $bytes);
+    }
+
+    public function concatSelectedLinks(array $selectedLinks): string
+    {
+        $result = '';
+        foreach ($selectedLinks as $link) {
+            $result .= \sprintf('%s,', $link);
+        }
+
+        return rtrim($result, ',');
     }
 }
