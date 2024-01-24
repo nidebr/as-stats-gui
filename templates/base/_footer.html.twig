@@ -4,18 +4,29 @@
             <div class="col-lg-auto ms-lg-auto">
                 <ul class="list-inline list-inline-dots mb-0">
                     <li class="list-inline-item">
+                        <a href="https://github.com/nidebr/as-stats-gui" class="link-secondary" target="_blank">Source code</a>
+                    </li>
+                    <li class="list-inline-item">
                         {% if base_data.release is defined %}
-                            <b>Version</b> {{ base_data.release|default('')|raw }}
+                            <strong>Version</strong> {{ base_data.release|default('')|raw }}
                         {% else %}
-                            <b>Version</b> N/A
+                            <strong>Version</strong> N/A
                         {% endif %}
+                    </li>
+                    <li class="list-inline-item">
+                        Copyright &copy; {{ 'now'|date('Y') }}
                     </li>
                 </ul>
             </div>
             <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 <ul class="list-inline list-inline-dots mb-0">
                     <li class="list-inline-item">
-                        Copyright &copy; {{ 'now'|date('Y') }}
+                        <a href="https://github.com/manuelkasper/AS-Stats" class="link-secondary" target="_blank"><strong>AS-Stats</strong></a>
+                        written by Manuel Kasper for Monzoon Networks AG
+                    </li>
+                    <li class="list-inline-item">
+                        <strong>GUI</strong>
+                        written by Nicolas Debrigode for Hexanet SAS
                     </li>
                 </ul>
             </div>

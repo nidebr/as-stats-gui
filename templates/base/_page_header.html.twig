@@ -3,10 +3,11 @@
         <div class="col">
             <div class="d-flex row align-items-center">
                 {% if base_data['content_wrapper']['titre'] is defined %}
-                    <div class="col-auto">
-                        <h2 class="page-title">
-                            {{ base_data['content_wrapper']['titre']|default('') }}
-                        </h2>
+                    <h2 class="page-title">
+                        {{ base_data['content_wrapper']['titre']|default('') }}
+                    </h2>
+                    <div class="page-pretitle">
+                        {{ base_data['content_wrapper']['small']|default('') }}
                     </div>
                 {% endif %}
             </div>

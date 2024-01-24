@@ -2,10 +2,6 @@
 
 {% block title %}Top {{ base_data.top }} AS ({{ hours|default('24 hours') }}){% endblock %}
 
-{% block css %}
-    {{ parent() }}
-{% endblock %}
-
 {% set counter = 0 %}
 
 {% block content %}

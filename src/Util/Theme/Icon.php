@@ -8,6 +8,7 @@ enum Icon: string
 {
     // Menu
     case menu_home = 'ti-home icon';
+    case menu_view = 'ti-chart-histogram icon';
 
     // Form
     case filter = 'ti-filter';
@@ -22,6 +23,7 @@ enum Icon: string
     case top_ip = 'ti-chart-pie';
     case up = 'ti-arrow-up';
     case down = 'ti-arrow-down';
+    case search = 'ti-search';
 
     /**
      * @return array<string>

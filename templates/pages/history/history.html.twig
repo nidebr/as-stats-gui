@@ -1,0 +1,36 @@
+{% extends "base/_layout.html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% set counter = 0 %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-2">
+            <div class="row row-cards">
+                <div class="col-12">
+                    {% include 'pages/history/_search.html.twig' %}
+                </div>
+                <div class="col-12">
+                    custom links
+                </div>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="row row-cards">
+                <div class="col-12">
+                    graph daily
+                </div>
+                <div class="col-12">
+                    graph weekly
+                </div>
+                <div class="col-12">
+                    graph monthly
+                </div>
+                <div class="col-12">
+                    graph yearly
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

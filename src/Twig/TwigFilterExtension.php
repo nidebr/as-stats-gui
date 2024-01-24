@@ -7,7 +7,7 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class TwigExtension extends AbstractExtension
+class TwigFilterExtension extends AbstractExtension
 {
     /**
      * @return array<TwigFilter>

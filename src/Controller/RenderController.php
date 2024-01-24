@@ -10,10 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(
+    path: '/render',
+)]
 class RenderController extends AbstractController
 {
     #[Route(
-        path: '/render/graph/{as}',
+        path: '/graph/{as}',
         name: 'render',
         methods: ['GET'],
     )]

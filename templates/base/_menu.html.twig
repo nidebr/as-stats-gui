@@ -23,7 +23,7 @@
                     </div>
                 </li>
             {% else %}
-                <li class="nav-item">
+                <li class="nav-item {% if "top_as" == current_menu %}active{% endif %}">
                     <a class="nav-link" href="{{ path('index') }}">
                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                         {{ icon('menu_home') }}
@@ -34,6 +34,16 @@
                     </a>
                 </li>
             {% endif %}
+                <li class="nav-item {% if "view_as" == current_menu %}active{% endif %}">
+                    <a class="nav-link" href="{{ path('index') }}">
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            {{ icon('menu_view') }}
+                        </span>
+                        <span class="nav-link-title">
+                          View AS
+                        </span>
+                    </a>
+                </li>
         </ul>
     </div>
 </div>
