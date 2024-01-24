@@ -1,6 +1,6 @@
 <div class="card">
     <div class="row g-0">
-        <div class="col-auto">
+        <div class="col-1">
             {% if (block('rank') is defined and block('rank') is not empty) %}
                 <div class="card-body">
                     {% block rank %}{% endblock %}
@@ -17,14 +17,20 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6">
+                    {% if configapplication_graph('showv6') %}
+                        {% set col_ipv4 = 'col-lg-6 col-sm-12' %}
+                    {% else %}
+                        {% set col_ipv4 = 'col-lg-12' %}
+                    {% endif %}
+
+                    <div class="{{ col_ipv4 }}">
                         {% set title = "AS#{as} - #{as_data.info.description} - IPv4" %}
-                        {{ gen_graph(as, 4, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, true) }}
+                        <div class="text-center">{{ gen_graph(as, 4, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, configapplication_graph('showlegendontop')) }}</div>
                     </div>
-                    {% if configapplication_graph_showv6() %}
-                        <div class="col-6">
+                    {% if configapplication_graph('showv6') %}
+                        <div class="col-lg-6 col-sm-12">
                             {% set title = "AS#{as} - #{as_data.info.description} - IPv6" %}
-                            {{ gen_graph(as, 6, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, true) }}
+                            <div class="text-center">{{ gen_graph(as, 6, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, configapplication_graph('showlegendontop')) }}</div>
                         </div>
                     {% endif %}
                 </div>
@@ -39,7 +45,7 @@
                                 {{ icon('top_ip', 'icon icon-inline fix-icon-inline') }}
                                 IPv4: ~ {{ as_data.v4.in|format_bytes }} in / {{ as_data.v4.out|format_bytes }} out
                             </div>
-                            {% if configapplication_graph_showv6() %}
+                            {% if configapplication_graph('showv6') %}
                                 <div class="list-inline-item">
                                     {{ icon('top_ip', 'icon icon-inline fix-icon-inline') }}
                                     IPv6: ~ {{ as_data.v6.in|format_bytes }} in / {{ as_data.v6.out|format_bytes }} out

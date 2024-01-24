@@ -15,7 +15,7 @@
         <div class="col-md-auto ms-auto d-print-none">
             <div class="col">
                 <div class="list-inline list-inline-dots mb-0 text-secondary d-sm-block d-none">
-                    {% if configapplication_graph_outispositive() %}
+                    {% if configapplication_graph('outispositive') %}
                         <div class="list-inline-item">{{ icon('up') }} Outbound traffic</div>
                         <div class="list-inline-item">{{ icon('down') }} Inbound traffic</div>
                     {% else %}

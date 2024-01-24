@@ -33,6 +33,7 @@ class IndexController extends BaseController
     )]
     public function index(
         Request $request,
+        ConfigApplication $Config,
         GetAsDataRepository $asDataRepository,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = \sprintf(
@@ -55,11 +56,9 @@ class IndexController extends BaseController
         $this->data['start'] = time() - 24 * 3600;
         $this->data['end'] = time();
         $this->data['graph_size'] = [
-            'width' => ConfigApplication::getAsStatsConfigGraph()['top_graph_width'],
-            'height' => ConfigApplication::getAsStatsConfigGraph()['top_graph_height'],
+            'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
+            'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
         ];
-
-        dump($this->data);
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
@@ -92,14 +91,23 @@ class IndexController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $asDataRepository::get($this->base_data['top'], $topinterval, (array) $form->getData());
+            $this->data['data'] = $asDataRepository::get($this->base_data['top'], $topinterval, (array) $form->getData());
+            $this->data['selectedLinks'] = KnowlinksRepository::select((array) $form->getData());
         } else {
-            $data = $asDataRepository::get($this->base_data['top'], $topinterval);
+            $this->data['data'] = $asDataRepository::get($this->base_data['top'], $topinterval);
+            $this->data['selectedLinks'] = [];
         }
+
+        $this->data['start'] = time() - $Config::getAsStatsConfigTopInterval()[$topinterval]['hours'] * 3600;
+        $this->data['end'] = time();
+        $this->data['graph_size'] = [
+            'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
+            'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
+        ];
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
-            'data' => $data,
+            'data' => $this->data,
             'hours' => $Config::getAsStatsConfigTopInterval()[$topinterval]['label'],
             'knownlinks' => KnowlinksRepository::get(),
             'form' => [

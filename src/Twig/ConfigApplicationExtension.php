@@ -22,23 +22,8 @@ class ConfigApplicationExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('configapplication_graph_showv6', [$this, 'getGraphShowV6']),
-            new TwigFunction('configapplication_graph_outispositive', [$this, 'getGraphOutIsPositive']),
             new TwigFunction('configapplication_graph', [$this, 'getConfigGraph']),
         ];
-    }
-
-    /**
-     * @throws ConfigErrorException
-     */
-    public function getGraphShowV6(): bool
-    {
-        return $this->configApplication::getAsStatsConfigGraph()['showv6'];
-    }
-
-    public function getGraphOutIsPositive(): bool
-    {
-        return $this->configApplication::getAsStatsConfigGraph()['outispositive'];
     }
 
     public function getConfigGraph(string $key): mixed

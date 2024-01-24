@@ -9,6 +9,7 @@ config:
         brighten_negative: true
         vertical_label: true
         showtitledetail: true
+        showlegendontop: false
         show95th: true
         rrdpath: "/home/nidebr/data/DEV/asstats/rrd"
         rrdtool: "/usr/bin/rrdtool"
