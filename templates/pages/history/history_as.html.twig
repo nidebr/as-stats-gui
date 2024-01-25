@@ -4,19 +4,110 @@
     {{ custom_links_history(data.as) }}
 {% endblock %}
 
+{% set title_v4 = "AS#{data.as} - #{data.asinfo.description} - IPv4" %}
+{% set title_v6 = "AS#{data.as} - #{data.asinfo.description} - IPv6" %}
+
 {% block graphs %}
     <div class="row row-cards">
         <div class="col-12">
-            graph daily
+            {% embed 'core/card_history.html.twig' with {data: data, title_v4: title_v4, title_v6: title_v6} only %}
+                {% block title %}
+                    Daily
+                {% endblock %}
+                {% block graph %}
+                    {% if configapplication_graph('showv6') %}
+                        {% set col_ipv4 = 'col-lg-6 col-sm-12' %}
+                    {% else %}
+                        {% set col_ipv4 = 'col-lg-12' %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="{{ col_ipv4 }}">
+                            <div class="text-center">{{ gen_graph(data.as, 4, title_v4, data.start.daily, data.end, '') }}</div>
+                        </div>
+                        {% if configapplication_graph('showv6') %}
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="text-center">{{ gen_graph(data.as, 6, title_v6, data.start.daily, data.end, '') }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
         </div>
         <div class="col-12">
-            graph weekly
+            {% embed 'core/card_history.html.twig' with {data: data, title_v4: title_v4, title_v6: title_v6} only %}
+                {% block title %}
+                    Weekly
+                {% endblock %}
+                {% block graph %}
+                    {% if configapplication_graph('showv6') %}
+                        {% set col_ipv4 = 'col-lg-6 col-sm-12' %}
+                    {% else %}
+                        {% set col_ipv4 = 'col-lg-12' %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="{{ col_ipv4 }}">
+                            <div class="text-center">{{ gen_graph(data.as, 4, title_v4, data.start.weekly, data.end, '') }}</div>
+                        </div>
+                        {% if configapplication_graph('showv6') %}
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="text-center">{{ gen_graph(data.as, 6, title_v6, data.start.weekly, data.end, '') }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
         </div>
         <div class="col-12">
-            graph monthly
+            {% embed 'core/card_history.html.twig' with {data: data, title_v4: title_v4, title_v6: title_v6} only %}
+                {% block title %}
+                    Monthly
+                {% endblock %}
+                {% block graph %}
+                    {% if configapplication_graph('showv6') %}
+                        {% set col_ipv4 = 'col-lg-6 col-sm-12' %}
+                    {% else %}
+                        {% set col_ipv4 = 'col-lg-12' %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="{{ col_ipv4 }}">
+                            <div class="text-center">{{ gen_graph(data.as, 4, title_v4, data.start.monthly, data.end, '') }}</div>
+                        </div>
+                        {% if configapplication_graph('showv6') %}
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="text-center">{{ gen_graph(data.as, 6, title_v6, data.start.monthly, data.end, '') }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
         </div>
         <div class="col-12">
-            graph yearly
+            {% embed 'core/card_history.html.twig' with {data: data, title_v4: title_v4, title_v6: title_v6} only %}
+                {% block title %}
+                    Yearly
+                {% endblock %}
+                {% block graph %}
+                    {% if configapplication_graph('showv6') %}
+                        {% set col_ipv4 = 'col-lg-6 col-sm-12' %}
+                    {% else %}
+                        {% set col_ipv4 = 'col-lg-12' %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="{{ col_ipv4 }}">
+                            <div class="text-center">{{ gen_graph(data.as, 4, title_v4, data.start.yearly, data.end, '') }}</div>
+                        </div>
+                        {% if configapplication_graph('showv6') %}
+                            <div class="col-lg-6 col-sm-12">
+                                <div class="text-center">{{ gen_graph(data.as, 6, title_v6, data.start.yearly, data.end, '') }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
         </div>
     </div>
 {% endblock %}

@@ -14,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route(
     path: '/history',
 )]
-
 #[Menu('view_as')]
 class HistoryController extends BaseController
 {
@@ -55,6 +54,7 @@ class HistoryController extends BaseController
         DbAsInfoRepository $asInfoRepository
     ): Response {
         $this->data['as'] = $as;
+        $this->data['asinfo'] = $asInfoRepository->getAsInfo($this->data['as']);
 
         $this->base_data['content_wrapper']['titre'] = \sprintf(
             'History for AS%s',
@@ -63,15 +63,19 @@ class HistoryController extends BaseController
 
         $this->base_data['content_wrapper']['small'] = \sprintf(
             '%s',
-            $asInfoRepository->getAsInfo($this->data['as'])['name'],
+            $this->data['asinfo']['name'],
         );
 
-        $form = $this->createForm(SearchASForm::class);
+        $this->data['end'] = time();
+        $this->data['start']['daily'] = time() - 24 * 3600;
+        $this->data['start']['weekly'] = time() - 6.9 * 86400;
+        $this->data['start']['monthly'] = time() - 30 * 86400;
+        $this->data['start']['yearly'] = time() - 365 * 86400;
 
         return $this->render('pages/history/history_as.html.twig', [
             'base_data' => $this->base_data,
             'data' => $this->data,
-            'form' => $form->createView(),
+            'form' => $this->createForm(SearchASForm::class)->createView(),
         ]);
     }
 }
