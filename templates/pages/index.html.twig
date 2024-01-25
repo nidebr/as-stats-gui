@@ -1,7 +1,5 @@
 {% extends "base/_layout.html.twig" %}
 
-{% block title %}Top {{ base_data.top }} AS ({{ hours|default('24 hours') }}){% endblock %}
-
 {% set counter = 0 %}
 
 {% block content %}
@@ -30,7 +28,7 @@
                             {% block customlinks %}
                                 <div class="col-md-auto">
                                     <div class="mt-3 badges">
-                                        {{ attribute(data.data.customlinks, as)|raw }}
+                                        {{ custom_links_top(as)|raw }}
                                     </div>
                                 </div>
                             {% endblock %}

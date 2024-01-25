@@ -25,6 +25,8 @@ enum Icon: string
     case down = 'ti-arrow-down';
     case search = 'ti-search';
 
+    case custom_links_history_external = 'ti-external-link';
+
     /**
      * @return array<string>
      */

@@ -1,0 +1,22 @@
+{% extends 'pages/history/history.html.twig' %}
+
+{% block customlinks %}
+    {{ custom_links_history(data.as) }}
+{% endblock %}
+
+{% block graphs %}
+    <div class="row row-cards">
+        <div class="col-12">
+            graph daily
+        </div>
+        <div class="col-12">
+            graph weekly
+        </div>
+        <div class="col-12">
+            graph monthly
+        </div>
+        <div class="col-12">
+            graph yearly
+        </div>
+    </div>
+{% endblock %}

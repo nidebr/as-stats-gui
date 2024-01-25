@@ -16,8 +16,11 @@ class GetAsDataRepository
      * @throws Exception
      * @throws DbErrorException
      */
-    public static function get(int $top, ?string $topInterval = null, array $selectedLinks = []): array
-    {
+    public static function get(
+        int $top,
+        ?string $topInterval = null,
+        array $selectedLinks = []
+    ): array {
         if (0 === $top) {
             return [];
         }
@@ -47,8 +50,6 @@ class GetAsDataRepository
                     'out' => $nbytes[3],
                 ];
             }
-
-            $return['customlinks'][$as] = CustomLinksRepository::generate($as);
         }
 
         return $return;

@@ -68,7 +68,7 @@ class HistoryController extends BaseController
 
         $form = $this->createForm(SearchASForm::class);
 
-        return $this->render('pages/history/history.html.twig', [
+        return $this->render('pages/history/history_as.html.twig', [
             'base_data' => $this->base_data,
             'data' => $this->data,
             'form' => $form->createView(),

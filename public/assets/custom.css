@@ -29,3 +29,7 @@
     min-height: unset !important;
     margin-bottom: unset !important;
 }
+
+.card-title {
+    font-weight: var(--tblr-font-weight-bold) !important;
+}
