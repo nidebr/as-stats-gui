@@ -17,7 +17,7 @@
                             Top AS - 24 hours
                         </a>
                         {% for key, item in base_data.top_interval %}
-                            <a class="dropdown-item" href="{{ path('index_topinterval', {'topinterval': key}) }}">
+                            <a class="dropdown-item" href="{{ path('index.topinterval', {'topinterval': key}) }}">
                                 Top AS - {{ item.label }}
                             </a>
                         {% endfor %}
@@ -58,10 +58,13 @@
                 </a>
                 <div class="dropdown-menu">
                     {% if configapplication_myasn() %}
-                        <a class="dropdown-item" href="{{ path('my_ix') }}">
+                        <a class="dropdown-item" href="{{ path('ix.my_ix') }}">
                             My IX
                         </a>
                     {% endif %}
+                    <a class="dropdown-item" href="{{ path('ix.search') }}">
+                        Search IX
+                    </a>
                 </div>
             </li>
         </ul>

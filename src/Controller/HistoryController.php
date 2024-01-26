@@ -33,7 +33,7 @@ class HistoryController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            return $this->redirectToRoute('history_as', [
+            return $this->redirectToRoute('history.as', [
                 'as' => $form->get('as')->getData(),
             ]);
         }
@@ -46,7 +46,7 @@ class HistoryController extends BaseController
 
     #[Route(
         path: '/{as}',
-        name: 'history_as',
+        name: 'history.as',
         methods: ['GET'],
     )]
     public function historyAs(

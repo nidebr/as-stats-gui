@@ -40,7 +40,7 @@ class GenGraphExtension extends AbstractExtension
             $ipversion,
             $as,
             $this->router->generate(
-                'render',
+                'render.graph.as',
                 [
                     'as' => $as,
                     'v' => $ipversion,

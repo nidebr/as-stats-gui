@@ -17,7 +17,7 @@ class RenderController extends AbstractController
 {
     #[Route(
         path: '/graph/{as}',
-        name: 'render',
+        name: 'render.graph.as',
         methods: ['GET'],
     )]
     public function renderGraph(

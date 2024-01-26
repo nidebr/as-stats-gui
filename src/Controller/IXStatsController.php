@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Application\ConfigApplication;
 use App\Exception\ConfigErrorException;
 use App\Exception\DbErrorException;
+use App\Form\SearchIXForm;
 use App\Form\SelectMyIXForm;
 use App\Repository\GetAsDataRepository;
 use App\Repository\KnowlinksRepository;
@@ -32,10 +33,10 @@ class IXStatsController extends BaseController
      */
     #[Route(
         path: '/my-ix',
-        name: 'my_ix',
+        name: 'ix.my_ix',
         methods: ['GET|POST'],
     )]
-    public function history(
+    public function myIX(
         Request $request,
         PeeringDBRepository $peeringDBRepository,
         GetAsDataRepository $asDataRepository,
@@ -80,6 +81,29 @@ class IXStatsController extends BaseController
         }
 
         return $this->render('pages/ix/my_ix/index.html.twig', [
+            'base_data' => $this->base_data,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    #[Route(
+        path: '/search',
+        name: 'ix.search',
+        methods: ['GET|POST'],
+    )]
+    public function searchIX(
+        Request $request,
+    ): Response {
+        $this->base_data['content_wrapper']['titre'] = 'Search IX Stats';
+
+        $form = $this->createForm(SearchIXForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $form->getData();
+        }
+
+        return $this->render('pages/ix/search_ix/index.html.twig', [
             'base_data' => $this->base_data,
             'form' => $form->createView(),
         ]);

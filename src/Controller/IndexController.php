@@ -72,7 +72,7 @@ class IndexController extends BaseController
 
     #[Route(
         path: '/{topinterval}',
-        name: 'index_topinterval',
+        name: 'index.topinterval',
         methods: ['GET|POST'],
     )]
     public function indexTopInterval(
