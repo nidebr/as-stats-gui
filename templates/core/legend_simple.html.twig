@@ -1,0 +1,36 @@
+<div class="sticky-top sticky-top-legend">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">
+                <strong>Legend</strong>
+            </h3>
+            <div class="table-responsive">
+                <table class="table table-borderless table-sm">
+                    <tbody>
+                    {% if knownlinks is defined %}
+                        {% for link in knownlinks %}
+                            <tr>
+                                <td class="align-middle">
+                                    <small>{{ link.descr }}</small>
+                                </td>
+                                <td>
+                                    <table class="table-legend">
+                                        <tr>
+                                            {% if configapplication_graph('brighten_negative') %}
+                                                <td class="table-legend-td table-legend-td-brighten" style="background-color: #{{ link.color }}">&nbsp;</td>
+                                                <td class="table-legend-td table-legend-td-brighten" style="opacity: 0.73; background-color: #{{ link.color }}">&nbsp;</td>
+                                            {% else %}
+                                                <td class="table-legend-td" style="background-color: #{{ link.color }}">&nbsp;</td>
+                                            {% endif %}
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

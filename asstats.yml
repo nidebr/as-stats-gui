@@ -3,6 +3,7 @@ config:
     daystatsfile: '/home/nidebr/data/DEV/asstats/stats/asstats_day.txt'
     knownlinksfile: '/home/nidebr/data/DEV/asstats/conf/knownlinks'
     asinfofile: 'ressources/asinfo.db'
+    myasn: 34863
     graph:
         showv6: true
         outispositive: false

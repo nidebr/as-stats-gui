@@ -1,0 +1,44 @@
+{% extends "pages/ix/my_ix/index.html.twig" %}
+
+{% set counter = 0 %}
+
+{% block legend %}
+    {% if knownlinks is defined %}
+        {% include 'core/legend_simple.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+{% block graph %}
+    <div class="col">
+        <div class="row row-cards">
+            <div class="space-y">
+                {% for as, as_data in data.data.asinfo %}
+                    {% set counter = counter + 1 %}
+                    {% embed 'core/card_top.html.twig' with {as: as, as_data: as_data, data: data, counter: counter, hours: hours|default('24 hours')} only %}
+                        {% block rank %}
+                            <div class="display-6 fw-bold rank">
+                                # {{ counter }}
+                            </div>
+                        {% endblock %}
+
+                        {% block title %}
+                            <h3 class="mb-0">
+                                <span class="me-2 flag flag-{{ as_data.info.country|lower }}"></span>
+                                <strong>AS{{ as }}:</strong>
+                                <span class="small text-uppercase"><i>{{ as_data.info.name|default(as_data.info.description) }}</i></span>
+                            </h3>
+                        {% endblock %}
+
+                        {#% block customlinks %}
+                            <div class="col-md-auto">
+                                <div class="mt-3 badges">
+                                    {{ custom_links_top(as)|raw }}
+                                </div>
+                            </div>
+                        {% endblock %#}
+                    {% endembed %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

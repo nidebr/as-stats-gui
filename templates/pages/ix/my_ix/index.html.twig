@@ -1,0 +1,13 @@
+{% extends "base/_layout.html.twig" %}
+
+{% block content %}
+    <div class="row row-cards">
+        <div class="col-lg-2 col-sm-12 space-y">
+            {% include 'pages/ix/my_ix/_search.html.twig' %}
+            {% block legend %}{% endblock %}
+        </div>
+        <div class="col">
+            {% block graph %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

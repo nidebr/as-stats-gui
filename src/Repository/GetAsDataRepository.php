@@ -18,8 +18,9 @@ class GetAsDataRepository
      */
     public static function get(
         int $top,
-        ?string $topInterval = null,
-        array $selectedLinks = []
+        string $topInterval = '',
+        array $selectedLinks = [],
+        array $listAsn = [],
     ): array {
         if (0 === $top) {
             return [];
@@ -27,7 +28,7 @@ class GetAsDataRepository
 
         $return = [];
 
-        if ($topInterval) {
+        if ('' !== $topInterval && '0' !== $topInterval) {
             $dbName = ConfigApplication::getAsStatsConfigTopInterval()[$topInterval]['statsfile'];
         } else {
             $dbName = ConfigApplication::getAsStatsConfigDayStatsFile();
@@ -36,7 +37,7 @@ class GetAsDataRepository
         $data = new DbAsStatsRepository($dbName);
         $asInfoRepository = new DbAsInfoRepository();
 
-        foreach ($data->getASStatsTop($top, KnowlinksRepository::select($selectedLinks)) as $as => $nbytes) {
+        foreach ($data->getASStatsTop($top, KnowlinksRepository::select($selectedLinks), $listAsn) as $as => $nbytes) {
             $return['asinfo'][$as]['info'] = $asInfoRepository->getAsInfo($as);
 
             $return['asinfo'][$as]['v4'] = [

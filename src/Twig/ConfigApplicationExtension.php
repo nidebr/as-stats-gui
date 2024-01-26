@@ -23,12 +23,13 @@ class ConfigApplicationExtension extends AbstractExtension
     {
         return [
             new TwigFunction('configapplication_graph', [$this, 'getConfigGraph']),
+            new TwigFunction('configapplication_myasn', [$this, 'getConfigMyAsn']),
         ];
     }
 
     public function getConfigGraph(string $key): mixed
     {
-        if ($key === '' || $key === '0') {
+        if ('' === $key || '0' === $key) {
             return '';
         }
 
@@ -37,5 +38,10 @@ class ConfigApplicationExtension extends AbstractExtension
         }
 
         return $this->configApplication::getAsStatsConfigGraph()[$key];
+    }
+
+    public function getConfigMyAsn(): ?int
+    {
+        return $this->configApplication::getAsStatsConfigMyAsn();
     }
 }

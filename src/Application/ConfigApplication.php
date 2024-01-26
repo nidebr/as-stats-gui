@@ -66,6 +66,19 @@ class ConfigApplication
         return self::getAsStatsConfig()['top'];
     }
 
+    public static function getAsStatsConfigMyAsn(): ?int
+    {
+        if (false === \array_key_exists('myasn', self::getAsStatsConfig())) {
+            return null;
+        }
+
+        if (!self::getAsStatsConfig()['myasn']) {
+            return null;
+        }
+
+        return self::getAsStatsConfig()['myasn'];
+    }
+
     /**
      * @throws ConfigErrorException
      */

@@ -66,7 +66,7 @@ class DbAsStatsRepository
                     ->setMaxResults($ntop)
                     ->fetchAllAssociative();
             }
-        } catch (Exception) {
+        } catch (Exception $e) {
             throw new DbErrorException(\sprintf('Problem with stats files %s', $this->dbname));
         }
 

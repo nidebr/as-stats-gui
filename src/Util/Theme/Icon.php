@@ -9,6 +9,7 @@ enum Icon: string
     // Menu
     case menu_home = 'ti-home icon';
     case menu_view = 'ti-chart-histogram icon';
+    case menu_ix = 'ti-list-details icon';
 
     // Form
     case filter = 'ti-filter';

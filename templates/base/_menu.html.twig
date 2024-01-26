@@ -1,6 +1,7 @@
 <div class="collapse navbar-collapse" id="navbar-menu">
     <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
         <ul class="navbar-nav">
+
             {% if base_data.top_interval %}
                 <li class="nav-item dropdown {% if "top_as" == current_menu %}active{% endif %}">
                     <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
@@ -34,16 +35,35 @@
                     </a>
                 </li>
             {% endif %}
-                <li class="nav-item {% if "view_as" == current_menu %}active{% endif %}">
-                    <a class="nav-link" href="{{ path('history') }}">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            {{ icon('menu_view') }}
-                        </span>
-                        <span class="nav-link-title">
-                          View AS
-                        </span>
-                    </a>
-                </li>
+
+            <li class="nav-item {% if "view_as" == current_menu %}active{% endif %}">
+                <a class="nav-link" href="{{ path('history') }}">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        {{ icon('menu_view') }}
+                    </span>
+                    <span class="nav-link-title">
+                      View AS
+                    </span>
+                </a>
+            </li>
+
+            <li class="nav-item dropdown {% if "view_ix" == current_menu %}active{% endif %}">
+                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        {{ icon('menu_ix') }}
+                    </span>
+                    <span class="nav-link-title">
+                        IX Stats
+                    </span>
+                </a>
+                <div class="dropdown-menu">
+                    {% if configapplication_myasn() %}
+                        <a class="dropdown-item" href="{{ path('my_ix') }}">
+                            My IX
+                        </a>
+                    {% endif %}
+                </div>
+            </li>
         </ul>
     </div>
 </div>

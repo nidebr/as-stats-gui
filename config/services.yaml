@@ -27,3 +27,8 @@ services:
     App\Application\ConfigApplication:
         arguments:
             - '%kernel.environment%'
+
+    ## peeringdb client
+    App\Client\PeeringDbClient:
+        $host: '%env(PEERINGDB_HOST)%'
+        $uri: '%env(PEERINGDB_URI)%'

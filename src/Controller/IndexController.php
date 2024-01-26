@@ -46,7 +46,7 @@ class IndexController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->data['data'] = $asDataRepository::get($this->base_data['top'], null, (array) $form->getData());
+            $this->data['data'] = $asDataRepository::get($this->base_data['top'], '', (array) $form->getData());
             $this->data['selectedLinks'] = KnowlinksRepository::select((array) $form->getData());
         } else {
             $this->data['data'] = $asDataRepository::get($this->base_data['top']);

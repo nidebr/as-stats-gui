@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use App\Application\ConfigApplication;
+use App\Exception\ConfigErrorException;
+use App\Exception\DbErrorException;
+use App\Form\SelectMyIXForm;
+use App\Repository\GetAsDataRepository;
+use App\Repository\KnowlinksRepository;
+use App\Repository\PeeringDBRepository;
+use App\Util\Annotation\Menu;
+use Doctrine\DBAL\Exception;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+#[Route(
+    path: '/ix',
+)]
+#[Menu('view_ix')]
+class IXStatsController extends BaseController
+{
+    protected array $data = [];
+
+    /**
+     * @throws ConfigErrorException
+     * @throws DbErrorException
+     * @throws Exception
+     */
+    #[Route(
+        path: '/my-ix',
+        name: 'my_ix',
+        methods: ['GET|POST'],
+    )]
+    public function history(
+        Request $request,
+        PeeringDBRepository $peeringDBRepository,
+        GetAsDataRepository $asDataRepository,
+        ConfigApplication $Config,
+    ): Response {
+        $this->base_data['content_wrapper']['titre'] = 'My IX Stats';
+
+        $form = $this->createForm(SelectMyIXForm::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $ixInfo = $peeringDBRepository->getIXInfo((int) $form->get('myix')->getData());
+
+            $this->base_data['content_wrapper']['titre'] = \sprintf(
+                'Top %s (%s)',
+                $this->base_data['top'],
+                '24 hours'
+            );
+
+            $this->base_data['content_wrapper']['small'] = $ixInfo['name'];
+            $this->data['data'] = $asDataRepository::get(
+                $this->base_data['top'],
+                '',
+                [],
+                $peeringDBRepository->getIXMembers((int) $form->get('myix')->getData()),
+            );
+
+            $this->data['start'] = time() - 24 * 3600;
+            $this->data['end'] = time();
+            $this->data['graph_size'] = [
+                'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
+                'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
+            ];
+            $this->data['selectedLinks'] = [];
+
+            return $this->render('pages/ix/my_ix/show.html.twig', [
+                'base_data' => $this->base_data,
+                'data' => $this->data,
+                'knownlinks' => KnowlinksRepository::get(),
+                'form' => $form->createView(),
+            ]);
+        }
+
+        return $this->render('pages/ix/my_ix/index.html.twig', [
+            'base_data' => $this->base_data,
+            'form' => $form->createView(),
+        ]);
+    }
+}
