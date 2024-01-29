@@ -33,3 +33,8 @@
 .card-title {
     font-weight: var(--tblr-font-weight-bold) !important;
 }
+
+.auto-search-wrapper input {
+    padding: .5625rem .75rem !important;
+    font-size: .875rem !important;
+}

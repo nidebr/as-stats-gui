@@ -13,7 +13,9 @@ use App\Repository\GetAsDataRepository;
 use App\Repository\KnowlinksRepository;
 use App\Repository\PeeringDBRepository;
 use App\Util\Annotation\Menu;
+use App\Util\GetJsonParameters;
 use Doctrine\DBAL\Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -93,6 +95,9 @@ class IXStatsController extends BaseController
     )]
     public function searchIX(
         Request $request,
+        PeeringDBRepository $peeringDBRepository,
+        GetAsDataRepository $asDataRepository,
+        ConfigApplication $Config,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = 'Search IX Stats';
 
@@ -100,12 +105,76 @@ class IXStatsController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $form->getData();
+            $this->base_data['content_wrapper']['titre'] = \sprintf(
+                'Top %s (%s)',
+                $this->base_data['top'],
+                '24 hours'
+            );
+
+            $this->base_data['content_wrapper']['small'] = $form->get('ix')->getData();
+
+            $this->data['data'] = $asDataRepository::get(
+                $this->base_data['top'],
+                '',
+                [],
+                $peeringDBRepository->getIXMembers((int) $form->get('ix_hidden')->getData()),
+            );
+
+            $this->data['start'] = time() - 24 * 3600;
+            $this->data['end'] = time();
+            $this->data['graph_size'] = [
+                'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
+                'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
+            ];
+            $this->data['selectedLinks'] = [];
+
+            return $this->render('pages/ix/search_ix/show.html.twig', [
+                'base_data' => $this->base_data,
+                'data' => $this->data,
+                'knownlinks' => KnowlinksRepository::get(),
+                'form' => $form->createView(),
+            ]);
         }
 
         return $this->render('pages/ix/search_ix/index.html.twig', [
             'base_data' => $this->base_data,
             'form' => $form->createView(),
         ]);
+    }
+
+    #[Route(
+        path: '/search/get-ixname',
+        name: 'ix.search.get_ixname',
+        methods: ['POST'],
+    )]
+    public function getIXName(
+        Request $request,
+        PeeringDBRepository $peeringDBRepository,
+    ): JsonResponse {
+        $req = GetJsonParameters::getAll($request);
+
+        if (!\array_key_exists('name', $req)) {
+            return new JsonResponse(['message' => 'Bad JSON request.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $data = $peeringDBRepository->getIXName($req['name']);
+
+            if (200 !== $data['status_code']) {
+                throw new \Exception('No data from API.');
+            }
+
+            $return = [];
+            foreach ($data['response']['data'] as $value) {
+                $return[] = [
+                    'id' => $value['id'],
+                    'name' => \sprintf('%s (%s / %s', $value['name'], $value['city'], $value['country']),
+                ];
+            }
+
+            return new JsonResponse($return);
+        } catch (\Exception $e) {
+            return new JsonResponse(['message' => $e->getMessage()], Response::HTTP_NOT_FOUND);
+        }
     }
 }

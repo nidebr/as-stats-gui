@@ -4,7 +4,9 @@
         <h3 class="card-title">Search IX</h3>
         <div class="row g2">
             <div class="col">
-                {{ form_widget(form.ix) }}
+                <div class="auto-search-wrapper">
+                    {{ form_widget(form.ix) }}
+                </div>
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-icon">{{ icon('search', 'icon') }}</button>

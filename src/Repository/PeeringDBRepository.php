@@ -41,4 +41,13 @@ class PeeringDBRepository
 
         return $data['response']['data'][0];
     }
+
+    public function getIXName(string $regex): array
+    {
+        if ('' === $regex || '0' === $regex) {
+            return [];
+        }
+
+        return $this->peeringDbClient->get(\sprintf('ix?name__contains=%s', $regex));
+    }
 }

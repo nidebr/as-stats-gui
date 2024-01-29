@@ -1,5 +1,11 @@
 {% extends "base/_layout.html.twig" %}
 
+{% block css %}
+    {{ parent() }}
+
+    <link rel="stylesheet" href="{{ asset('assets/js/autocomplete/autocomplete.min.css') }}"/>
+{% endblock %}
+
 {% block content %}
     <div class="row row-cards">
         <div class="col-lg-2 col-sm-12 space-y">
@@ -14,10 +20,46 @@
 
 {% block js %}
     {{ parent() }}
+    <script src="{{ asset('assets/js/autocomplete/autocomplete.min.js') }}"></script>
+    <script src="{{ asset('assets/js/axios/axios.min.js') }}"></script>
 
-    <script type="text/javascript">
-        var input = document.querySelector('#{{ form.ix.vars.id }}');
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var hidden_ix_name = document.querySelector('#{{ form.ix_hidden.vars.id }}');
 
-        console.log(input);
+            new Autocomplete('{{ form.ix.vars.id }}', {
+                cache: true,
+                howManyCharacters: 2,
+                onSearch: ({ currentValue }) => {
+                    const api = '{{ path('ix.search.get_ixname') }}';
+                    var json_data = {name: currentValue};
+
+                    return axios
+                        .post(api, json_data)
+                        .then((response) => {
+                            if (!response.data) {
+                                return [];
+                            }
+
+                            return response.data;
+                        })
+                        .catch(() => {
+                            return [];
+                        });
+                },
+
+                onResults: ({ matches }) => {
+                    return matches
+                        .map((el) => {
+                            return `<li>${el.name}</li>`;
+                        })
+                        .join('');
+                },
+
+                onSelectedItem: ({ object }) => {
+                    hidden_ix_name.value = object.id;
+                },
+            });
+        });
     </script>
 {% endblock %}
