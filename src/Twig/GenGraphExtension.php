@@ -21,7 +21,7 @@ class GenGraphExtension extends AbstractExtension
     {
         return [
             new TwigFunction('gen_graph', [$this, 'genGraph'], ['is_safe' => ['html']]),
-            //new TwigFunction('gen_graph_linkusage', [$this, 'genGraphLinkUsage'], ['is_safe' => ['html']]),
+            new TwigFunction('gen_graph_linkusage', [$this, 'genGraphLinksUsage'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -52,6 +52,34 @@ class GenGraphExtension extends AbstractExtension
                     'width' => $width,
                     'height' => $height,
                     'selected_links' => $selectedLinks,
+                ]
+            )
+        );
+    }
+
+    public function genGraphLinksUsage(
+        string $link,
+        int $ipversion,
+        string $title,
+        int $start,
+        int $end,
+        ?int $width = null,
+        ?int $height = null,
+    ): string {
+        return \sprintf(
+            '<img alt="Graph IPv%s for Link %s" src="%s">',
+            $ipversion,
+            $link,
+            $this->router->generate(
+                'render.links.usage.graph',
+                [
+                    'link' => $link,
+                    'v' => $ipversion,
+                    'title' => $title,
+                    'start' => $start,
+                    'end' => $end,
+                    'width' => $width,
+                    'height' => $height,
                 ]
             )
         );

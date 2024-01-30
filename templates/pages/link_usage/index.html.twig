@@ -1,5 +1,34 @@
 {% extends "base/_layout.html.twig" %}
 
 {% block content %}
-dede
+    <div class="row row-cards">
+        {% for link in knownlinks %}
+            <div class="col-lg-6 col-sm-12">
+                <div class="space-y">
+                    {% embed 'core/card_history.html.twig' with {link: link, data: data} only %}
+                        {% block title %}
+                            {{ link.descr }}
+                        {% endblock %}
+
+                        {% block graph %}
+                            <div class="row">
+                                <div class="space-y">
+                                    <div class="col-12">
+                                        {% set title_v4 = "#{link.descr} - IPv4" %}
+                                        <div class="text-center">{{ gen_graph_linkusage(link.tag, 4, title_v4, data.start, data.end) }}</div>
+                                    </div>
+                                    {% if configapplication_graph('showv6') %}
+                                        <div class="col-12">
+                                            {% set title_v6 = "#{link.descr} - IPv6" %}
+                                            <div class="text-center">{{ gen_graph_linkusage(link.tag, 6, title_v6, data.start, data.end) }}</div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endblock %}
+                    {% endembed %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

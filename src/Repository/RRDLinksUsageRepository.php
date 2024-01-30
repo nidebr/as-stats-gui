@@ -62,8 +62,14 @@ class RRDLinksUsageRepository
         $i = 0;
 
         foreach ($this->topas['asinfo'] as $as => $value) {
+            if (ConfigApplication::getAsStatsConfigGraph()['outispositive'] && ConfigApplication::getAsStatsConfigGraph()['brighten_negative']) {
+                $col = \sprintf('%sBB', $this->colors[$i]);
+            } else {
+                $col = $this->colors[$i];
+            }
+
             $descr = \str_replace(':', '\:', $value['info']['description']); // Escaping colons in description
-            $cmd .= \sprintf('AREA:as%1$s_%2$sin_bits#%3$s:"AS%1$s (%4$s)\\n"', $as, $this->v6, $this->colors[$i], $descr);
+            $cmd .= \sprintf('AREA:as%1$s_%2$sin_bits#%3$s:"AS%1$s (%4$s)\\n"', $as, $this->v6, $col, $descr);
 
             if ($i > 0) {
                 $cmd .= ':STACK';
@@ -81,7 +87,13 @@ class RRDLinksUsageRepository
         $i = 0;
 
         foreach ($this->topas['asinfo'] as $as => $value) {
-            $cmd .= \sprintf('AREA:as%s_%sout_bits#%s:', $as, $this->v6, $this->colors[$i]);
+            if (ConfigApplication::getAsStatsConfigGraph()['outispositive'] || !ConfigApplication::getAsStatsConfigGraph()['brighten_negative']) {
+                $col = $this->colors[$i];
+            } else {
+                $col = \sprintf('%sBB', $this->colors[$i]);
+            }
+
+            $cmd .= \sprintf('AREA:as%s_%sout_bits#%s:', $as, $this->v6, $col);
 
             if ($i > 0) {
                 $cmd .= ':STACK';
