@@ -52,9 +52,18 @@ class LinksUsageController extends BaseController
     )]
     public function indexTopInterval(
         string $topinterval,
+        GetStartEndGraph $getStartEndGraph,
     ): Response {
+        $this->base_data['content_wrapper']['titre'] = \sprintf(
+            'Top %s AS - per link usage (%s)',
+            $this->configApplication::getLinksUsageTop(),
+            $this->configApplication::getAsStatsConfigTopInterval()[$topinterval]['label']
+        );
+
         return $this->render('pages/link_usage/index.html.twig', [
             'base_data' => $this->base_data,
+            'knownlinks' => KnowlinksRepository::get(),
+            'data' => $getStartEndGraph->get($topinterval),
         ]);
     }
 }
