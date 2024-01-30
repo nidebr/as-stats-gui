@@ -148,4 +148,30 @@ class ConfigApplication
 
         return self::getAsStatsConfig()['graph'];
     }
+
+    public static function getLinksUsageColor(): array
+    {
+        if (false === \array_key_exists('linksusage', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.linksusage variable');
+        }
+
+        if (false === \array_key_exists('color', self::getAsStatsConfig()['linksusage'])) {
+            throw new ConfigErrorException('Unable to found config.linksusage.color variable');
+        }
+
+        return self::getAsStatsConfig()['linksusage']['color'];
+    }
+
+    public static function getLinksUsageTop(): int
+    {
+        if (false === \array_key_exists('linksusage', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.linksusage variable');
+        }
+
+        if (false === \array_key_exists('top', self::getAsStatsConfig()['linksusage'])) {
+            throw new ConfigErrorException('Unable to found config.linksusage.top variable');
+        }
+
+        return self::getAsStatsConfig()['linksusage']['top'];
+    }
 }

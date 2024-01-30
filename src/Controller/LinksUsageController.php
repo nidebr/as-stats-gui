@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\KnowlinksRepository;
 use App\Util\Annotation\Menu;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
     path: '/links/usage',
 )]
 #[Menu('links_usage')]
-class LinkUsageController extends BaseController
+class LinksUsageController extends BaseController
 {
     protected array $data = [];
 
@@ -25,6 +26,7 @@ class LinkUsageController extends BaseController
     {
         return $this->render('pages/link_usage/index.html.twig', [
             'base_data' => $this->base_data,
+            'knownlinks' => KnowlinksRepository::get(),
         ]);
     }
 

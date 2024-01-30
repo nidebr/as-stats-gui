@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Repository\RRDRepository;
+use App\Application\ConfigApplication;
+use App\Exception\ConfigErrorException;
+use App\Exception\DbErrorException;
+use App\Repository\GetAsDataRepository;
+use App\Repository\RRDAsnRepository;
+use App\Repository\RRDLinksUsageRepository;
+use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +30,41 @@ class RenderController extends AbstractController
         int $as,
         Request $request,
     ): Response {
-        $cmd = new RRDRepository($as, $request->query->all());
+        $cmd = new RRDAsnRepository($as, $request->query->all());
+
+        $response = new Response();
+        $response->headers->set('Content-type', 'image/png');
+        $response->sendHeaders();
+        $response->setContent(
+            \sprintf(
+                '%s',
+                passthru($cmd->generateCmd())
+            )
+        );
+
+        return $response;
+    }
+
+    /**
+     * @throws ConfigErrorException
+     * @throws DbErrorException
+     * @throws Exception
+     */
+    #[Route(
+        path: '/links/usage/graph/{link}',
+        name: 'render.links.usage.graph',
+        methods: ['GET'],
+    )]
+    public function renderGraphLinksUsage(
+        string $link,
+        Request $request,
+        GetAsDataRepository $asDataRepository,
+    ): Response {
+        $cmd = new RRDLinksUsageRepository(
+            $link,
+            $request->query->all(),
+            $asDataRepository::get(ConfigApplication::getLinksUsageTop(), '', [$link => true])
+        );
 
         $response = new Response();
         $response->headers->set('Content-type', 'image/png');

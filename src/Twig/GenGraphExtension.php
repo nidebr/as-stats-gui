@@ -21,6 +21,7 @@ class GenGraphExtension extends AbstractExtension
     {
         return [
             new TwigFunction('gen_graph', [$this, 'genGraph'], ['is_safe' => ['html']]),
+            //new TwigFunction('gen_graph_linkusage', [$this, 'genGraphLinkUsage'], ['is_safe' => ['html']]),
         ];
     }
 

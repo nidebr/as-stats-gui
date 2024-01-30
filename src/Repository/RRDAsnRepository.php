@@ -5,68 +5,31 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Application\ConfigApplication;
+use App\Util\RRDGraph;
 
-class RRDRepository
+class RRDAsnRepository
 {
-    private int $as;
     private array $request;
     private array $knowlinks;
     private string $rrdfile;
     private string $v6;
+    private RRDGraph $rrdGraph;
 
     public function __construct(int $as, array $req)
     {
-        $this->as = $as;
         $this->request = $req;
 
+        $this->rrdGraph = new RRDGraph($this->request);
         $this->knowlinks = $this->selectedLinks();
-        $this->rrdfile = $this->getRRDFileForAS();
-        $this->v6 = $this->addV6Graph();
-    }
-
-    private function getRRDFileForAS(): string
-    {
-        return \sprintf(
-            '%s/%s/%s.rrd',
-            ConfigApplication::getAsStatsConfigGraph()['rrdpath'],
-            \sprintf('%02x', $this->as % 256),
-            $this->as
-        );
-    }
-
-    private function getGraphSize(): array
-    {
-        $width = ConfigApplication::getAsStatsConfigGraph()['default_graph_width'];
-        $height = ConfigApplication::getAsStatsConfigGraph()['default_graph_height'];
-
-        if (isset($this->request['width'])) {
-            $width = (int) $this->request['width'];
-        }
-
-        if (isset($this->request['height'])) {
-            $height = (int) $this->request['height'];
-        }
-
-        return [
-            'width' => $width,
-            'height' => $height,
-        ];
-    }
-
-    private function addV6Graph(): string
-    {
-        if ($this->request['v'] === '6') {
-            return 'v6_';
-        }
-
-        return '';
+        $this->rrdfile = $this->rrdGraph->getRRDFileForAS($as);
+        $this->v6 = $this->rrdGraph->addV6Graph();
     }
 
     private function selectedLinks(): array
     {
         $knownlinks = KnowlinksRepository::get();
 
-        if (isset($this->request['selected_links']) && $this->request['selected_links'] !== '') {
+        if (isset($this->request['selected_links']) && '' !== $this->request['selected_links']) {
             $reverse = [];
 
             foreach ($knownlinks as $link) {
@@ -97,43 +60,6 @@ class RRDRepository
         }
 
         return $knownlinks;
-    }
-
-    private function verticalLabel(): string
-    {
-        if (ConfigApplication::getAsStatsConfigGraph()['vertical_label']) {
-            if (ConfigApplication::getAsStatsConfigGraph()['outispositive']) {
-                return '--vertical-label \'<- IN | OUT ->\' ';
-            }
-
-            return '--vertical-label \'<- OUT | IN ->\' ';
-        }
-
-        return '';
-    }
-
-    private function addLegend(): string
-    {
-        if (isset($this->request['legend']) && $this->request['legend'] === '0') {
-            return '--no-legend ';
-        }
-
-        return '';
-    }
-
-    private function addStartEnd(): string
-    {
-        $cmd = '';
-
-        if (isset($this->request['start']) && is_numeric($this->request['start'])) {
-            $cmd .= \sprintf('--start %s ', $this->request['start']);
-        }
-
-        if (isset($this->request['end']) && is_numeric($this->request['end'])) {
-            $cmd .= \sprintf('--end %s ', $this->request['end']);
-        }
-
-        return $cmd;
     }
 
     private function addData(): string
@@ -183,7 +109,7 @@ class RRDRepository
         return $cmd;
     }
 
-    public function generateStackAreaInbound(): string
+    private function generateStackAreaInbound(): string
     {
         $cmd = '';
         $i = 0;
@@ -194,7 +120,7 @@ class RRDRepository
                 $col = $link['color'];
             }
 
-            $descr = \str_replace(':', '\:', $link['descr']); # Escaping colons in description
+            $descr = \str_replace(':', '\:', $link['descr']); // Escaping colons in description
             $cmd .= \sprintf('AREA:%s_%sin_bits#%s:"%s"', $link['tag'], $this->v6, $col, $descr);
 
             if ($i > 0) {
@@ -202,13 +128,13 @@ class RRDRepository
             }
 
             $cmd .= ' ';
-            $i++;
+            ++$i;
         }
 
         return $cmd;
     }
 
-    public function generateStackAreaOutbound(): string
+    private function generateStackAreaOutbound(): string
     {
         $cmd = '';
         $i = 0;
@@ -226,13 +152,13 @@ class RRDRepository
             }
 
             $cmd .= ' ';
-            $i++;
+            ++$i;
         }
 
         return $cmd;
     }
 
-    public function add95th(): string
+    private function add95th(): string
     {
         $cmd = '';
         if (ConfigApplication::getAsStatsConfigGraph()['show95th']) {
@@ -245,20 +171,9 @@ class RRDRepository
         return $cmd;
     }
 
-    public function addTitle(): string
-    {
-        $cmd = '';
-        if (ConfigApplication::getAsStatsConfigGraph()['showtitledetail'] && isset($this->request['title']) && $this->request['title'] !== '') {
-            $cmd .= \sprintf('--title %s ', \escapeshellarg(\sprintf('%s', $this->request['title'])));
-        } elseif (isset($this->request['v']) && is_numeric($this->request['v'])) {
-            $cmd .= \sprintf('--title IPv%s ', $this->request['v']);
-        }
-
-        return $cmd;
-    }
     public function generateCmd(): string
     {
-        $graphSize = $this->getGraphSize();
+        $graphSize = $this->rrdGraph->getGraphSize();
 
         return \sprintf(
             '%s graph - --slope-mode --alt-autoscale --upper-limit 0 --lower-limit 0 --imgformat=PNG \
@@ -268,10 +183,10 @@ class RRDRepository
             ConfigApplication::getAsStatsConfigGraph()['rrdtool'],
             $graphSize['height'],
             $graphSize['width'],
-            $this->verticalLabel(),
-            $this->addTitle(),
-            $this->addLegend(),
-            $this->addStartEnd(),
+            $this->rrdGraph->verticalLabel(),
+            $this->rrdGraph->addTitle(),
+            $this->rrdGraph->addLegend(),
+            $this->rrdGraph->addStartEnd(),
             $this->addData(),
             $this->generateStackAreaInbound(),
             $this->generateStackAreaOutbound(),
