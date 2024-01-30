@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application\ConfigApplication;
 use App\Exception\ConfigErrorException;
 use App\Exception\DbErrorException;
+use App\Exception\KnownLinksEmptyException;
 use App\Form\SearchIXForm;
 use App\Form\SelectMyIXForm;
 use App\Repository\GetAsDataRepository;
@@ -32,6 +32,7 @@ class IXStatsController extends BaseController
      * @throws ConfigErrorException
      * @throws DbErrorException
      * @throws Exception
+     * @throws KnownLinksEmptyException
      */
     #[Route(
         path: '/my-ix',
@@ -42,7 +43,6 @@ class IXStatsController extends BaseController
         Request $request,
         PeeringDBRepository $peeringDBRepository,
         GetAsDataRepository $asDataRepository,
-        ConfigApplication $Config,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = 'My IX Stats';
 
@@ -69,8 +69,8 @@ class IXStatsController extends BaseController
             $this->data['start'] = time() - 24 * 3600;
             $this->data['end'] = time();
             $this->data['graph_size'] = [
-                'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
-                'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
+                'width' => $this->configApplication::getAsStatsConfigGraph()['top_graph_width'],
+                'height' => $this->configApplication::getAsStatsConfigGraph()['top_graph_height'],
             ];
             $this->data['selectedLinks'] = [];
 
@@ -88,6 +88,12 @@ class IXStatsController extends BaseController
         ]);
     }
 
+    /**
+     * @throws ConfigErrorException
+     * @throws KnownLinksEmptyException
+     * @throws DbErrorException
+     * @throws Exception
+     */
     #[Route(
         path: '/search',
         name: 'ix.search',
@@ -97,7 +103,6 @@ class IXStatsController extends BaseController
         Request $request,
         PeeringDBRepository $peeringDBRepository,
         GetAsDataRepository $asDataRepository,
-        ConfigApplication $Config,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = 'Search IX Stats';
 
@@ -123,8 +128,8 @@ class IXStatsController extends BaseController
             $this->data['start'] = time() - 24 * 3600;
             $this->data['end'] = time();
             $this->data['graph_size'] = [
-                'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
-                'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
+                'width' => $this->configApplication::getAsStatsConfigGraph()['top_graph_width'],
+                'height' => $this->configApplication::getAsStatsConfigGraph()['top_graph_height'],
             ];
             $this->data['selectedLinks'] = [];
 

@@ -8,28 +8,47 @@ use App\Application\ConfigApplication;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class BaseController extends AbstractController
+abstract class BaseController extends AbstractController
 {
+    protected ConfigApplication $configApplication;
     protected array $base_data = [];
 
     public function __construct(
-        ConfigApplication $Config,
+        ConfigApplication $configApplication,
         RequestStack $requestStack,
     ) {
-        $this->base_data['release'] = $Config::getRelease();
-        $this->base_data['top_interval'] = $Config::getAsStatsConfigTopInterval();
-        $this->base_data['request'] = $requestStack->getCurrentRequest()->query->all(); /* @phpstan-ignore-line */
+        $this->configApplication = $configApplication;
+        $this->base_data = self::getBaseData($requestStack);
+    }
 
-        $this->base_data['top'] = $Config::getAsStatsConfigTop();
+    private function getBaseData(
+        RequestStack $requestStack,
+    ): array {
+        try {
+            $request = $requestStack->getCurrentRequest()->query->all(); /* @phpstan-ignore-line */
+            $top = $this->configApplication::getAsStatsConfigTop();
 
-        if (\array_key_exists('top', $this->base_data['request'])) {
-            $this->base_data['request']['top'] = (int) $this->base_data['request']['top'];
-
-            if ($this->base_data['request']['top'] > 200) {
-                $this->base_data['top'] = $this->base_data['request']['top'] = 200;
-            } elseif (0 !== $this->base_data['request']['top']) {
-                $this->base_data['top'] = $this->base_data['request']['top'];
+            if (\array_key_exists('top', $request)) {
+                if ($request['top'] > 200) {
+                    $top = $request['top'] = 200;
+                } elseif (0 !== (int) $request['top']) {
+                    $top = (int) $request['top'];
+                }
             }
+
+            return [
+                'release' => $this->configApplication::getRelease(),
+                'top_interval' => $this->configApplication::getAsStatsConfigTopInterval(),
+                'request' => $request,
+                'top' => $top,
+            ];
+        } catch (\Exception) {
+            return [
+                'release' => null,
+                'top_interval' => [],
+                'request' => [],
+                'top' => null,
+            ];
         }
     }
 }

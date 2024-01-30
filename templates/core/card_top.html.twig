@@ -24,7 +24,7 @@
                     {% endif %}
 
                     <div class="{{ col_ipv4 }}">
-                        {% set title = "AS#{as} - #{as_data.info.description} - IPv4" %}
+                        {% set title = "AS#{as} - #{as_data.info.description|default('')} - IPv4" %}
                         <div class="text-center">
                             <a href="{{ path('history.as', {'as': as}) }}">
                                 {{ gen_graph(as, 4, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, configapplication_graph('showlegendontop')) }}
@@ -33,7 +33,7 @@
                     </div>
                     {% if configapplication_graph('showv6') %}
                         <div class="col-lg-6 col-sm-12">
-                            {% set title = "AS#{as} - #{as_data.info.description} - IPv6" %}
+                            {% set title = "AS#{as} - #{as_data.info.description|default('')} - IPv6" %}
                             <div class="text-center">
                                 <a href="{{ path('history.as', {'as': as}) }}">
                                     {{ gen_graph(as, 6, title, data.start, data.end, data.selectedLinks|concat_link, data.graph_size.width, data.graph_size.height, configapplication_graph('showlegendontop')) }}

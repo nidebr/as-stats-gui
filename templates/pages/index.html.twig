@@ -19,9 +19,9 @@
 
                             {% block title %}
                                 <h3 class="mb-0">
-                                    <span class="me-2 flag flag-{{ as_data.info.country|lower }}"></span>
+                                    <span class="me-2 flag flag-{{ as_data.info.country|default('eu')|lower }}"></span>
                                     <strong>AS{{ as }}:</strong>
-                                    <span class="small text-uppercase"><i>{{ as_data.info.name|default(as_data.info.description) }}</i></span>
+                                    <span class="small text-uppercase"><i>{{ as_data.info.name|default(as_data.info.description|default('')) }}</i></span>
                                 </h3>
                             {% endblock %}
 

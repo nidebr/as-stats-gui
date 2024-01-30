@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Application\ConfigApplication;
 use App\Exception\ConfigErrorException;
 use App\Exception\DbErrorException;
+use App\Exception\KnownLinksEmptyException;
 use App\Form\LegendForm;
 use App\Repository\GetAsDataRepository;
 use App\Repository\KnowlinksRepository;
 use App\Util\Annotation\Menu;
+use App\Util\GetStartEndGraph;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ class IndexController extends BaseController
 
     /**
      * @throws ConfigErrorException
+     * @throws KnownLinksEmptyException
      * @throws DbErrorException
      * @throws Exception
      */
@@ -33,8 +35,8 @@ class IndexController extends BaseController
     )]
     public function index(
         Request $request,
-        ConfigApplication $Config,
         GetAsDataRepository $asDataRepository,
+        GetStartEndGraph $getStartEndGraph,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = \sprintf(
             'Top %s (%s)',
@@ -53,12 +55,12 @@ class IndexController extends BaseController
             $this->data['selectedLinks'] = [];
         }
 
-        $this->data['start'] = time() - 24 * 3600;
-        $this->data['end'] = time();
         $this->data['graph_size'] = [
-            'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
-            'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
+            'width' => $this->configApplication::getAsStatsConfigGraph()['top_graph_width'],
+            'height' => $this->configApplication::getAsStatsConfigGraph()['top_graph_height'],
         ];
+
+        $this->data = \array_merge($this->data, $getStartEndGraph->get());
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
@@ -70,6 +72,12 @@ class IndexController extends BaseController
         ]);
     }
 
+    /**
+     * @throws ConfigErrorException
+     * @throws KnownLinksEmptyException
+     * @throws DbErrorException
+     * @throws Exception
+     */
     #[Route(
         path: '/{topinterval}',
         name: 'index.topinterval',
@@ -77,14 +85,14 @@ class IndexController extends BaseController
     )]
     public function indexTopInterval(
         Request $request,
-        ConfigApplication $Config,
         GetAsDataRepository $asDataRepository,
+        GetStartEndGraph $getStartEndGraph,
         string $topinterval,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = \sprintf(
             'Top %s (%s)',
-            $Config::getAsStatsConfigTop(),
-            $Config::getAsStatsConfigTopInterval()[$topinterval]['label']
+            $this->configApplication::getAsStatsConfigTop(),
+            $this->configApplication::getAsStatsConfigTopInterval()[$topinterval]['label']
         );
 
         $form = $this->createForm(LegendForm::class);
@@ -98,17 +106,17 @@ class IndexController extends BaseController
             $this->data['selectedLinks'] = [];
         }
 
-        $this->data['start'] = time() - $Config::getAsStatsConfigTopInterval()[$topinterval]['hours'] * 3600;
-        $this->data['end'] = time();
         $this->data['graph_size'] = [
-            'width' => $Config::getAsStatsConfigGraph()['top_graph_width'],
-            'height' => $Config::getAsStatsConfigGraph()['top_graph_height'],
+            'width' => $this->configApplication::getAsStatsConfigGraph()['top_graph_width'],
+            'height' => $this->configApplication::getAsStatsConfigGraph()['top_graph_height'],
         ];
+
+        $this->data = \array_merge($this->data, $getStartEndGraph->get($topinterval));
 
         return $this->render('pages/index.html.twig', [
             'base_data' => $this->base_data,
             'data' => $this->data,
-            'hours' => $Config::getAsStatsConfigTopInterval()[$topinterval]['label'],
+            'hours' => $this->configApplication::getAsStatsConfigTopInterval()[$topinterval]['label'],
             'knownlinks' => KnowlinksRepository::get(),
             'form' => [
                 'legend' => $form->createView(),
