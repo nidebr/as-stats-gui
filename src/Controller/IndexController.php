@@ -68,6 +68,7 @@ class IndexController extends BaseController
             'knownlinks' => KnowlinksRepository::get(),
             'form' => [
                 'legend' => $form->createView(),
+                'top' => $this->addFormTopAs($request),
             ],
         ]);
     }

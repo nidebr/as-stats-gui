@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Application\ConfigApplication;
+use App\Form\TopAsForm;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class BaseController extends AbstractController
@@ -50,5 +53,13 @@ abstract class BaseController extends AbstractController
                 'top' => null,
             ];
         }
+    }
+
+    public function addFormTopAs(Request $request): FormView
+    {
+        $form = $this->createForm(TopAsForm::class);
+        $form->handleRequest($request);
+
+        return $form->createView();
     }
 }
