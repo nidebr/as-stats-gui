@@ -87,12 +87,23 @@ class DbAsInfoRepository
     public function getAsInfo(int $asn): array
     {
         try {
-            return (array) $this->cnx->createQueryBuilder()
+            $return = $this->cnx->createQueryBuilder()
                 ->select('*')
                 ->from('asinfo')
                 ->where('asn = :asn')
                 ->setParameter('asn', $asn)
                 ->fetchAssociative();
+
+            if (false === $return) {
+                $return = [
+                    'asn' => $asn,
+                    'country' => 'EU',
+                    'name' => 'UNKNOWN',
+                    'description' => 'UNKNOWN',
+                ];
+            }
+
+            return (array) $return;
         } catch (Exception) {
             throw new DbErrorException(\sprintf('Problem with ASInfo DB files %s', $this->dbname));
         }

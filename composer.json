@@ -18,10 +18,12 @@
         "symfony/http-client": "7.0.*",
         "symfony/process": "7.0.*",
         "symfony/runtime": "7.0.*",
+        "symfony/translation": "7.0.*",
         "symfony/twig-bundle": "7.0.*",
         "symfony/validator": "7.0.*",
         "symfony/yaml": "7.0.*",
         "twig/extra-bundle": "^3.0",
+        "twig/intl-extra": "^3.8",
         "twig/string-extra": "^3.0",
         "twig/twig": "^3.0"
     },

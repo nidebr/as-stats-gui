@@ -1,0 +1,6 @@
+hour: >-
+    {num_hours, plural,
+        =0      {# heure}
+        =1      {# heure}
+        other   {# heures}
+    }

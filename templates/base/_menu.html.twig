@@ -46,6 +46,17 @@
                 </a>
             </li>
 
+            <li class="nav-item {% if "asset" == current_menu %}active{% endif %}">
+                <a class="nav-link" href="{{ path('asset') }}">
+                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        {{ icon('menu_asset') }}
+                    </span>
+                    <span class="nav-link-title">
+                      View AS-SET
+                    </span>
+                </a>
+            </li>
+
             <li class="nav-item dropdown {% if "view_ix" == current_menu %}active{% endif %}">
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                     <span class="nav-link-icon d-md-none d-lg-inline-block">

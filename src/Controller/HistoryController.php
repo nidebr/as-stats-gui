@@ -56,6 +56,10 @@ class HistoryController extends BaseController
         $this->data['as'] = $as;
         $this->data['asinfo'] = $asInfoRepository->getAsInfo($this->data['as']);
 
+        if ('UNKNOWN' === $this->data['asinfo']['name']) {
+            $this->addFlash('error', \sprintf('Unable to find AS%s in database ASInfo, please update.', $this->data['as']));
+        }
+
         $this->base_data['content_wrapper']['titre'] = \sprintf(
             'History for AS%s',
             $this->data['as'],

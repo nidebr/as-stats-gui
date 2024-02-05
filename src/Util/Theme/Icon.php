@@ -11,6 +11,7 @@ enum Icon: string
     case menu_view = 'ti-chart-histogram icon';
     case menu_ix = 'ti-list-details icon';
     case menu_linksusage = 'ti-package icon';
+    case menu_asset = 'ti-file-neutral icon';
 
     // Form
     case filter = 'ti-filter';

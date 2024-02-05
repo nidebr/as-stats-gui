@@ -16,3 +16,4 @@ parameters:
 	ignoreErrors:
 		- '#Only booleans are allowed#'
 		- '#Cannot cast mixed to int.#'
+		- '#Cannot cast mixed to string.#'

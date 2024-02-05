@@ -66,6 +66,15 @@ class ConfigApplication
         return self::getAsStatsConfig()['top'];
     }
 
+    public static function getLangage(): string
+    {
+        if (false === \array_key_exists('langage', self::getAsStatsConfig())) {
+            return 'en';
+        }
+
+        return self::getAsStatsConfig()['langage'];
+    }
+
     public static function getAsStatsConfigMyAsn(): ?int
     {
         if (false === \array_key_exists('myasn', self::getAsStatsConfig())) {
@@ -173,5 +182,44 @@ class ConfigApplication
         }
 
         return self::getAsStatsConfig()['linksusage']['top'];
+    }
+
+    public static function getAsStatsAssetPath(): string
+    {
+        if (false === \array_key_exists('asset', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.asset variable');
+        }
+
+        if (false === \array_key_exists('assetpath', self::getAsStatsConfig()['asset'])) {
+            throw new ConfigErrorException('Unable to found config.asset.assetpath variable');
+        }
+
+        return self::getRootPathApp().self::getAsStatsConfig()['asset']['assetpath'];
+    }
+
+    public static function getAsStatsAssetCacheLife(): int
+    {
+        if (false === \array_key_exists('asset', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.asset variable');
+        }
+
+        if (false === \array_key_exists('asset_cache_life', self::getAsStatsConfig()['asset'])) {
+            throw new ConfigErrorException('Unable to found config.asset.asset_cache_life variable');
+        }
+
+        return self::getAsStatsConfig()['asset']['asset_cache_life'];
+    }
+
+    public static function getAsStatsAssetWhois(): string
+    {
+        if (false === \array_key_exists('asset', self::getAsStatsConfig())) {
+            throw new ConfigErrorException('Unable to found config.asset variable');
+        }
+
+        if (false === \array_key_exists('whois', self::getAsStatsConfig()['asset'])) {
+            throw new ConfigErrorException('Unable to found config.asset.whois variable');
+        }
+
+        return self::getAsStatsConfig()['asset']['whois'];
     }
 }

@@ -14,6 +14,7 @@ use App\Repository\KnowlinksRepository;
 use App\Repository\PeeringDBRepository;
 use App\Util\Annotation\Menu;
 use App\Util\GetJsonParameters;
+use App\Util\GetStartEndGraph;
 use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,6 +44,7 @@ class IXStatsController extends BaseController
         Request $request,
         PeeringDBRepository $peeringDBRepository,
         GetAsDataRepository $asDataRepository,
+        GetStartEndGraph $getStartEndGraph,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = 'My IX Stats';
 
@@ -66,13 +68,13 @@ class IXStatsController extends BaseController
                 $peeringDBRepository->getIXMembers((int) $form->get('myix')->getData()),
             );
 
-            $this->data['start'] = time() - 24 * 3600;
-            $this->data['end'] = time();
             $this->data['graph_size'] = [
                 'width' => $this->configApplication::getAsStatsConfigGraph()['top_graph_width'],
                 'height' => $this->configApplication::getAsStatsConfigGraph()['top_graph_height'],
             ];
             $this->data['selectedLinks'] = [];
+
+            $this->data = \array_merge($this->data, $getStartEndGraph->get());
 
             return $this->render('pages/ix/my_ix/show.html.twig', [
                 'base_data' => $this->base_data,
@@ -103,6 +105,7 @@ class IXStatsController extends BaseController
         Request $request,
         PeeringDBRepository $peeringDBRepository,
         GetAsDataRepository $asDataRepository,
+        GetStartEndGraph $getStartEndGraph,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = 'Search IX Stats';
 
@@ -125,13 +128,13 @@ class IXStatsController extends BaseController
                 $peeringDBRepository->getIXMembers((int) $form->get('ix_hidden')->getData()),
             );
 
-            $this->data['start'] = time() - 24 * 3600;
-            $this->data['end'] = time();
             $this->data['graph_size'] = [
                 'width' => $this->configApplication::getAsStatsConfigGraph()['top_graph_width'],
                 'height' => $this->configApplication::getAsStatsConfigGraph()['top_graph_height'],
             ];
             $this->data['selectedLinks'] = [];
+
+            $this->data = \array_merge($this->data, $getStartEndGraph->get());
 
             return $this->render('pages/ix/search_ix/show.html.twig', [
                 'base_data' => $this->base_data,

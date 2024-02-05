@@ -1,10 +1,10 @@
 {{ form_start(form) }}
 <div class="card">
     <div class="card-body">
-        <h3 class="card-title">Search AS</h3>
+        <h3 class="card-title">Search AS-SET</h3>
         <div class="row">
             <div class="col">
-                {{ form_widget(form.as, {'value': data.as|default('')}) }}
+                {{ form_widget(form.asset, {'value': data.asset.name|default('')}) }}
             </div>
             <div class="col-auto">
                 <button type="submit" class="btn btn-icon">{{ icon('search', 'icon') }}</button>

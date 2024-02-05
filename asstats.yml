@@ -4,6 +4,10 @@ config:
     knownlinksfile: '/home/nidebr/data/DEV/asstats/conf/knownlinks'
     asinfofile: 'ressources/asinfo.db'
     myasn: 34863
+    asset:
+        whois: '/usr/bin/whois'
+        assetpath: 'asset'
+        asset_cache_life: 604800 # 604800 seconds = 7 days
     graph:
         showv6: true
         outispositive: false
@@ -21,7 +25,7 @@ config:
         top_graph_width: 600
         top_graph_height: 220
     linksusage:
-        top: 3
+        top: 10
         color:
             - A6CEE3
             - 1F78B4
