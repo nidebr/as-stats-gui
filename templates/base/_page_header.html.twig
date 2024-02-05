@@ -17,11 +17,11 @@
             <div class="col">
                 <div class="list-inline list-inline-dots mb-0 text-secondary d-sm-block d-none">
                     {% if configapplication_graph('outispositive') %}
-                        <div class="list-inline-item">{{ icon('up') }} Outbound traffic</div>
-                        <div class="list-inline-item">{{ icon('down') }} Inbound traffic</div>
+                        <div class="list-inline-item">{{ icon('up') }} {{ 'outbound traffic'|trans }}</div>
+                        <div class="list-inline-item">{{ icon('down') }} {{ 'inbound traffic'|trans }}</div>
                     {% else %}
-                        <div class="list-inline-item">{{ icon('up') }} Inbound traffic</div>
-                        <div class="list-inline-item">{{ icon('down') }} Outbound traffic</div>
+                        <div class="list-inline-item">{{ icon('up') }} {{ 'inbound traffic'|trans }}</div>
+                        <div class="list-inline-item">{{ icon('down') }} {{ 'outbound traffic'|trans }}</div>
                     {% endif %}
                 </div>
             </div>

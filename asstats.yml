@@ -1,4 +1,5 @@
 config:
+    language: 'fr'
     top: 20
     daystatsfile: '/home/nidebr/data/DEV/asstats/stats/asstats_day.txt'
     knownlinksfile: '/home/nidebr/data/DEV/asstats/conf/knownlinks'

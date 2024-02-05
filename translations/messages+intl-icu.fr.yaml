@@ -4,3 +4,6 @@ hour: >-
         =1      {# heure}
         other   {# heures}
     }
+
+outbound traffic: Trafic sortant
+inbound traffic: Trafic entrant

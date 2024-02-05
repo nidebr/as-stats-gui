@@ -16,7 +16,6 @@ use Doctrine\DBAL\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Menu('top_as')]
 class IndexController extends BaseController
@@ -38,12 +37,11 @@ class IndexController extends BaseController
         Request $request,
         GetAsDataRepository $asDataRepository,
         GetStartEndGraph $getStartEndGraph,
-        TranslatorInterface $translator,
     ): Response {
         $this->base_data['content_wrapper']['titre'] = \sprintf(
             'Top %s (%s)',
             $this->base_data['top'],
-            $translator->trans('hour', ['num_hours' => 24]),
+            $this->translator->trans('hour', ['num_hours' => 24]),
         );
 
         $form = $this->createForm(LegendForm::class);

@@ -11,21 +11,25 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Translation\LocaleSwitcher;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class BaseController extends AbstractController
 {
     protected ConfigApplication $configApplication;
+    protected TranslatorInterface $translator;
     protected array $base_data = [];
 
     public function __construct(
         ConfigApplication $configApplication,
         RequestStack $requestStack,
         LocaleSwitcher $localeSwitcher,
+        TranslatorInterface $translator,
     ) {
         $this->configApplication = $configApplication;
         $this->base_data = self::getBaseData($requestStack);
+        $this->translator = $translator;
 
-        $localeSwitcher->setLocale($this->configApplication::getLangage());
+        $localeSwitcher->setLocale($this->configApplication::getLanguage());
     }
 
     private function getBaseData(

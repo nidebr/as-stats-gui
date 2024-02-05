@@ -66,9 +66,9 @@ class ConfigApplication
         return self::getAsStatsConfig()['top'];
     }
 
-    public static function getLangage(): string
+    public static function getLanguage(): string
     {
-        if (false === \array_key_exists('langage', self::getAsStatsConfig())) {
+        if (false === \array_key_exists('language', self::getAsStatsConfig())) {
             return 'en';
         }
 
