@@ -40,7 +40,7 @@ $customlinks = array(
 	'CIDR v4' => 'http://www.cidr-report.org/cgi-bin/as-report?as=AS%as%&view=2.0',
 	'CIDR v6' => 'http://www.cidr-report.org/cgi-bin/as-report?as=AS%as%&view=2.0&v=6',
 	'Radar Qrator' => 'https://radar.qrator.net/as%as%/',
-	'BGP.Tools' => 'https://bgp.tools/as/%as%/'
+	'BGP.Tools' => 'https://bgp.tools/as/%as%'
 );
 
 /* Custom time intervals for top N AS */
