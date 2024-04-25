@@ -10,7 +10,7 @@ class PeeringDB {
 
   public function __construct() {
     global $peeringdb;
-    $this->url = 'https://peeringdb.com/api';
+    $this->url = 'https://www.peeringdb.com/api';
   }
 
   protected function sendRequest( $url ) {

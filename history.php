@@ -93,7 +93,7 @@ if ( isset($_GET['as']) ) {
                 <div class="box-body">
                   <form class="navbar-form navbar-left" role="search">
                   <div class="input-group">
-                  <input type="text" class="form-control menu-input" name="as" placeholder="Search AS" value="<?php echo $val_searchas; ?>">
+                  <input type="text" class="form-control menu-input" name="as" placeholder="Search AS" value="<?php echo htmlspecialchars($val_searchas); ?>">
                   <span class="input-group-btn">
                   <button type="submit" class="btn btn-flat button-input"><i class="fa fa-search"></i></button>
                   </span>
